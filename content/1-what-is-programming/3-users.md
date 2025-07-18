@@ -27,7 +27,7 @@ Users and on the left in this diagram, developers are on the right.
   - **Outputting Data**: `alert` is a simple way for the computer to display
     data to a user.
 
-[![program diagram](../assets/a-program.png)](https://excalidraw.com/#json=40qMI89WByj9Yhhh94Ghg,4zpL-AmDgpnbyFJWJfNQhg)
+[![program diagram](./a-program.png)](https://excalidraw.com/#json=40qMI89WByj9Yhhh94Ghg,4zpL-AmDgpnbyFJWJfNQhg)
 
 ---
 

@@ -136,7 +136,7 @@ This diagram might help to see the big picture:
 - **Composite/Non-Primitive Types**: Structures that _store_ and _organize_
   data, like the basket you use to carry your groceries.
 
-![data types diagram](../../0-printables/data-types.jpeg)
+![data types diagram](./data-types.jpeg)
 
 </details>
 
@@ -371,7 +371,7 @@ first value that will be stored in your variable:
 <summary>example code</summary>
 <br>
 
-![variable diagram](../../0-printables/variable-declare-initialize.jpg)
+![variable diagram](./variable-declare-initialize.jpg)
 
 ```js
 'use strict';

@@ -87,6 +87,5 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const virDir = await crawlDirectory(absPathIn);
 
   const absPathOut = resolve(join('public', relPathOut));
-  console.log(virDir);
   await writeFile(absPathOut, JSON.stringify(virDir, null, ''), 'utf-8');
 }

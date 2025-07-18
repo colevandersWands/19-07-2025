@@ -1,5 +1,126 @@
 /* Markdown Exercise Styles */
 
+/* Interactive Code Block Toolbar */
+.codeBlockContainer {
+  position: relative;
+  margin: 16px 0;
+  border: 1px solid #464647;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #1e1e1e;
+}
+
+.codeToolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #2d2d30;
+  border-bottom: 1px solid #464647;
+  font-size: 12px;
+}
+
+.toolbarButton {
+  background: #3c3c3c;
+  border: 1px solid #464647;
+  color: #d4d4d4;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.toolbarButton:hover {
+  background: #4a4a4a;
+  border-color: #569cd6;
+}
+
+.toolbarButton.runButton:hover {
+  background: #0e7a0d;
+  border-color: #14a085;
+}
+
+.toolbarButton.traceButton:hover {
+  background: #8b5cf6;
+  border-color: #a855f7;
+}
+
+.toolbarButton.stepButton:hover {
+  background: #1976d2;
+  border-color: #2196f3;
+}
+
+.toolbarButton.annotateButton:hover {
+  background: #f57c00;
+  border-color: #ff9800;
+}
+
+/* Generic Panel Styles */
+.runPanel,
+.tracePanel {
+  background: #2d2d30;
+  border-bottom: 1px solid #464647;
+  max-height: 400px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background: #3c3c3c;
+  border-bottom: 1px solid #464647;
+}
+
+.panelHeader h3 {
+  margin: 0;
+  color: #9cdcfe;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.panelClose {
+  background: none;
+  border: none;
+  color: #d4d4d4;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 2px;
+  border-radius: 2px;
+}
+
+.panelClose:hover {
+  background: #464647;
+  color: #ffffff;
+}
+
+.panelContent {
+  padding: 15px;
+}
+
+.panelHint {
+  color: #9d9d9d;
+  font-style: italic;
+  margin: 0;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Specific panel variations */
+.runPanel .panelHeader h3 {
+  color: #4caf50;
+}
+
+.tracePanel .panelHeader h3 {
+  color: #2196f3;
+}
+
 .container {
   height: 100%;
   display: flex;

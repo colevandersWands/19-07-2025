@@ -3,14 +3,10 @@
     "allow": [
       "Bash(cp:*)",
       "Bash(rm:*)",
-      "Bash(npm test)",
-      "Bash(npm run build:*)",
       "Bash(ls:*)",
-      "Bash(npm run preview:*)",
       "Bash(curl:*)",
       "Bash(pkill:*)",
       "Bash(true)",
-      "Bash(npm install:*)",
       "Bash(yamllint:*)"
     ],
     "deny": []

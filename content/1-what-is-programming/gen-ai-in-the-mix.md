@@ -16,7 +16,7 @@ without generative AI
 <summary>Click to expand diagram without AI</summary>
 <br>
 
-![the big picture](../../assets/the-big-picture.png)
+![the big picture](./the-big-picture.png)
 
 </details>
 
@@ -38,7 +38,7 @@ Some questions to guide your study:
   taking the whole diagram into account?
 - What does gen AI's placement outside of the main circle make you think of?
 
-![the big picture + AI](../../assets/the-big-picture-plus-ai.png)
+![the big picture + AI](./the-big-picture-plus-ai.png)
 
 </details>
 
@@ -53,13 +53,13 @@ AI changes the role of each
 1. <details>
    <summary>Programming + Generative AI</summary>
 
-   ![computers and developers](../../assets/computers-and-developers.png)
+   ![computers and developers](./computers-and-developers.png)
 
   </details>
 
 2. <details>
    <summary>A Program + Generative AI</summary>
 
-   ![a program](../../assets/a-program.png)
+   ![a program](./a-program.png)
 
   </details>
