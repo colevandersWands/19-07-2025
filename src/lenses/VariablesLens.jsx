@@ -12,11 +12,11 @@ import styles from './VariablesLens.module.css';
  */
 const VariablesLens = ({ resource, selectedCode, onHighlight }) => {
   const { virtualFS } = useApp();
-  
+
   // Get file editor to access latest content
   const getFileEditor = useCallback(() => {
     if (!virtualFS || !resource.path) return null;
-    
+
     const findFile = (node, path) => {
       if (node.path === path) return node;
       if (node.children && Array.isArray(node.children)) {
@@ -27,60 +27,60 @@ const VariablesLens = ({ resource, selectedCode, onHighlight }) => {
       }
       return null;
     };
-    
+
     return findFile(virtualFS, resource.path);
   }, [virtualFS, resource.path]);
-  
+
   // Get current content (edited or original)
   const currentContent = getCurrentContent(resource, getFileEditor, '');
   const code = selectedCode || currentContent;
   const [analysis, setAnalysis] = useState(null);
   const [error, setError] = useState(null);
   const [hoveredVariable, setHoveredVariable] = useState(null);
-  
+
   // URL-based configuration
   useEffect(() => {
     const variablesConfig = URLManager.getLensConfig('variables');
-    
+
     // Apply lens configuration if present
     if (variablesConfig) {
       try {
         // Variables lens might have highlighting options in the future
-        variablesConfig
+        variablesConfig;
       } catch (error) {
         console.warn('Failed to parse variables parameters:', error);
       }
     }
   }, []);
-  
+
   // Update URL when lens becomes active (register that variables lens is being used)
   useEffect(() => {
     // Register that variables lens is active with minimal config
     URLManager.updateLensConfig('variables', 'active');
-    
+
     return () => {
       // Clean up when component unmounts
       // Note: Don't remove from URL on unmount as user might navigate back
     };
   }, []);
-  
 
   // Collect all identifiers from the scope tree
   const collectIdentifiers = (globalScope, locations) => {
     const collect = (scope) => {
       const newIdentifiers = scope.variableList.reduce((acc, v) => {
         return acc.concat(
-          v.references.map(r => r.node),
-          v.declarations.map(r => r.node)
+          v.references.map((r) => r.node),
+          v.declarations.map((r) => r.node),
         );
       }, []);
       return [].concat.apply(newIdentifiers, scope.children.map(collect));
     };
 
     const identifiers = collect(globalScope);
-    
+
     // Remove duplicates and sort by position
-    return identifiers.filter((v, i) => i === identifiers.indexOf(v))
+    return identifiers
+      .filter((v, i) => i === identifiers.indexOf(v))
       .sort((a, b) => {
         const locA = locations.get(a);
         const locB = locations.get(b);
@@ -93,78 +93,84 @@ const VariablesLens = ({ resource, selectedCode, onHighlight }) => {
 
   // Wrap identifiers in spans for variable highlighting (SL1-style implementation)
   const wrapIdentifiersInSpans = (program, identifiers, locations) => {
-    const escapeHTML = (str) => 
-      str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    
+    const escapeHTML = (str) =>
+      str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
     // Add line numbers and convert to interactive HTML
     const lines = program.split('\n');
     let lineNumber = 1;
     let globalOffset = 0;
     let result = '';
-    
+
     for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
       const line = lines[lineIndex];
       const lineStart = globalOffset;
       const lineEnd = globalOffset + line.length;
-      
+
       // Add line number
       result += `<span class="line-number">${String(lineNumber).padStart(3, ' ')}:</span> `;
-      
+
       // Process identifiers within this line
       let lineOutput = '';
       let lastPos = 0;
-      
+
       // Find identifiers that fall within this line
       const lineIdentifiers = [];
       for (let i = 0; i < identifiers.length; i++) {
         const identifier = identifiers[i];
         const location = locations.get(identifier);
-        if (location && location.start.offset >= lineStart && location.start.offset < lineEnd) {
+        if (
+          location &&
+          location.start.offset >= lineStart &&
+          location.start.offset < lineEnd
+        ) {
           lineIdentifiers.push({
             index: i,
             identifier,
             location,
             relativeStart: location.start.offset - lineStart,
-            relativeEnd: location.end.offset - lineStart
+            relativeEnd: location.end.offset - lineStart,
           });
         }
       }
-      
+
       // Sort by position within line
       lineIdentifiers.sort((a, b) => a.relativeStart - b.relativeStart);
-      
+
       // Build line with highlighted identifiers
       for (const item of lineIdentifiers) {
         const { index, relativeStart, relativeEnd } = item;
-        
+
         // Add text before identifier
         lineOutput += escapeHTML(line.substring(lastPos, relativeStart));
-        
+
         // Add highlighted identifier
         const identifierText = line.substring(relativeStart, relativeEnd);
         const trailingWhitespaceMatch = identifierText.match(/\s*$/);
-        const trailingWhitespaceIndex = trailingWhitespaceMatch ? trailingWhitespaceMatch.index : identifierText.length;
-        
+        const trailingWhitespaceIndex = trailingWhitespaceMatch
+          ? trailingWhitespaceMatch.index
+          : identifierText.length;
+
         lineOutput += `<span class="code-binding" data-identifier="${index}">${escapeHTML(identifierText.substring(0, trailingWhitespaceIndex))}</span>`;
         lineOutput += identifierText.substring(trailingWhitespaceIndex);
-        
+
         lastPos = relativeEnd;
       }
-      
+
       // Add remaining text in line
       lineOutput += escapeHTML(line.substring(lastPos));
-      
+
       result += lineOutput;
-      
+
       // Add newline (except for last line)
       if (lineIndex < lines.length - 1) {
         result += '\n';
       }
-      
+
       globalOffset += line.length + 1; // +1 for newline character
       lineNumber++;
     }
-    
+
     return result;
   };
 
@@ -182,20 +188,20 @@ const VariablesLens = ({ resource, selectedCode, onHighlight }) => {
       const locations = treeAndLocations.locations;
       const globalScope = analyze(tree);
       const lookup = new ScopeLookup(globalScope);
-      
+
       // Collect identifiers in source order
       const identifiers = collectIdentifiers(globalScope, locations);
-      
+
       // Create annotated code with variable information
       const annotatedCode = wrapIdentifiersInSpans(code, identifiers, locations);
-      
+
       setAnalysis({
         tree,
         locations,
         globalScope,
         lookup,
         identifiers,
-        annotatedCode
+        annotatedCode,
       });
       setError(null);
     } catch (err) {
@@ -207,7 +213,7 @@ const VariablesLens = ({ resource, selectedCode, onHighlight }) => {
   // Handle variable hover (SL1-style)
   const handleVariableHover = (identifier) => {
     if (!analysis || !analysis.lookup) return;
-    
+
     try {
       const variable = analysis.lookup.lookup(identifier);
       if (variable && variable.length === 1) {
@@ -218,7 +224,9 @@ const VariablesLens = ({ resource, selectedCode, onHighlight }) => {
         }
       } else if (variable && variable.length > 1) {
         // Handle ambiguous variables
-        setError(`Ambiguous variable: "${identifier.name}" could refer to ${variable.length} different variables`);
+        setError(
+          `Ambiguous variable: "${identifier.name}" could refer to ${variable.length} different variables`,
+        );
         setHoveredVariable(null);
       } else {
         // No variable found
@@ -235,14 +243,14 @@ const VariablesLens = ({ resource, selectedCode, onHighlight }) => {
   // Highlight all instances of a variable
   const highlightVariable = (variable) => {
     if (!variable || !analysis) return;
-    
+
     try {
       // Clear previous highlights
       clearHighlights();
-      
+
       // Highlight declarations
       if (variable.declarations) {
-        variable.declarations.forEach(decl => {
+        variable.declarations.forEach((decl) => {
           if (decl && decl.node) {
             const id = analysis.identifiers.indexOf(decl.node);
             const element = document.querySelector(`span[data-identifier="${id}"]`);
@@ -255,11 +263,11 @@ const VariablesLens = ({ resource, selectedCode, onHighlight }) => {
     } catch (err) {
       console.warn('Error highlighting variable declarations:', err);
     }
-    
+
     try {
       // Highlight references
       if (variable.references) {
-        variable.references.forEach(ref => {
+        variable.references.forEach((ref) => {
           if (ref && ref.node) {
             const id = analysis.identifiers.indexOf(ref.node);
             const element = document.querySelector(`span[data-identifier="${id}"]`);
@@ -274,7 +282,7 @@ const VariablesLens = ({ resource, selectedCode, onHighlight }) => {
               if (ref.accessibility && ref.accessibility.isDelete) {
                 element.classList.add('var-delete');
               }
-              
+
               // Fallback: if no accessibility info, just mark as reference
               if (!ref.accessibility) {
                 element.classList.add('var-ref');
@@ -291,10 +299,16 @@ const VariablesLens = ({ resource, selectedCode, onHighlight }) => {
   // Clear all variable highlights
   const clearHighlights = () => {
     const selectors = ['.var-decl', '.var-read', '.var-write', '.var-delete', '.var-ref'];
-    selectors.forEach(selector => {
+    selectors.forEach((selector) => {
       const elements = document.querySelectorAll(selector);
-      elements.forEach(element => {
-        element.classList.remove('var-decl', 'var-read', 'var-write', 'var-delete', 'var-ref');
+      elements.forEach((element) => {
+        element.classList.remove(
+          'var-decl',
+          'var-read',
+          'var-write',
+          'var-delete',
+          'var-ref',
+        );
       });
     });
   };
@@ -311,14 +325,14 @@ const VariablesLens = ({ resource, selectedCode, onHighlight }) => {
   // Get variable information for display
   const getVariableInfo = (variable) => {
     if (!variable) return null;
-    
+
     return {
       name: variable.name,
       declarations: variable.declarations.length,
       references: variable.references.length,
-      reads: variable.references.filter(r => r.accessibility.isRead).length,
-      writes: variable.references.filter(r => r.accessibility.isWrite).length,
-      scope: variable.scope ? variable.scope.type : 'unknown'
+      reads: variable.references.filter((r) => r.accessibility.isRead).length,
+      writes: variable.references.filter((r) => r.accessibility.isWrite).length,
+      scope: variable.scope ? variable.scope.type : 'unknown',
     };
   };
 
@@ -370,14 +384,11 @@ const VariablesLens = ({ resource, selectedCode, onHighlight }) => {
           </span>
         </div>
       </div>
-      
+
       <div className={styles.content}>
         <div className={styles.codePanel}>
-          <div className={styles.codeLabel}>
-            Interactive Variable Analysis:
-          </div>
           <div className={styles.codeContainer}>
-            <div 
+            <div
               className={styles.variableCode}
               dangerouslySetInnerHTML={{ __html: analysis.annotatedCode }}
               onMouseOver={(e) => {
@@ -390,7 +401,7 @@ const VariablesLens = ({ resource, selectedCode, onHighlight }) => {
             />
           </div>
         </div>
-        
+
         {hoveredVariable && (
           <div className={styles.variableInfo}>
             <div className={styles.infoLabel}>Variable Information:</div>

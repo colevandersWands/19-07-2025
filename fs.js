@@ -61,9 +61,7 @@ export const getFile = (path) => {
 
   for (const part of parts) {
     if (current?.children) {
-      current = current.children.find(
-        (child) => (console.log(child), child.name === part),
-      );
+      current = current.children.find((child) => child.name === part);
       if (!current) {
         console.warn(`File path segment "${part}" not found in virtual filesystem`);
         return null;

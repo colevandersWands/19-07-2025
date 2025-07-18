@@ -75,7 +75,7 @@
 }
 
 .variableCode {
-  font-family: "Source Code Pro", "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  font-family: 'Source Code Pro', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
   font-size: 10pt;
   color: #d4d4d4;
   line-height: 15pt;
@@ -94,7 +94,7 @@
 
 /* Variable highlighting styles from SL1 */
 .variableCode :global(.code-binding) {
-  font-family: "Source Code Pro", "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  font-family: 'Source Code Pro', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
   font-weight: bold;
   background-color: white;
   cursor: help;
@@ -109,6 +109,29 @@
   transform: scale(1.05);
   z-index: 10;
   position: relative;
+}
+
+.askMeButton {
+  padding: 0.5rem 1rem;
+  border: 1px solid #007acc;
+  background: rgba(0, 122, 204, 0.1);
+  color: #007acc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: inherit;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.askMeButton:hover {
+  background: rgba(0, 122, 204, 0.2);
+  border-color: #1177bb;
+  color: #1177bb;
+}
+
+.askMeButton:active {
+  background: rgba(0, 122, 204, 0.3);
 }
 
 /* Variable type colors from SL1 */
@@ -273,11 +296,11 @@
     flex-direction: column;
     gap: 8px;
   }
-  
+
   .infoGrid {
     grid-template-columns: 1fr;
   }
-  
+
   .annotatedCode {
     max-height: 200px;
     font-size: 11px;

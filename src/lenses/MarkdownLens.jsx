@@ -435,9 +435,9 @@ const MarkdownExercise = ({ resource }) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
+      {/* <div className={styles.header}>
         <h2 className={styles.filename}>📄 {resource.name}</h2>
-      </div>
+      </div> */}
 
       {/* Annotation Toolbar */}
       <div className={styles.toolbar}>

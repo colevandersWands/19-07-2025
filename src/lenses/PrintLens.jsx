@@ -12,14 +12,14 @@ import styles from './PrintLens.module.css';
 const PrintLens = ({ resource }) => {
   const { trackStudyAction, virtualFS } = useApp();
   const { enableColorize } = useColorize();
-  
+
   const fileName = resource?.name || '';
   const language = resource?.lang || '.txt';
-  
+
   // Get file editor to access latest content
   const getFileEditor = useCallback(() => {
     if (!virtualFS || !resource.path) return null;
-    
+
     const findFile = (node, path) => {
       if (node.path === path) return node;
       if (node.children && Array.isArray(node.children)) {
@@ -30,18 +30,18 @@ const PrintLens = ({ resource }) => {
       }
       return null;
     };
-    
+
     return findFile(virtualFS, resource.path);
   }, [virtualFS, resource.path]);
-  
+
   // Get current content (edited or original)
   const code = getCurrentContent(resource, getFileEditor, '');
-  
+
   // Print settings state
   const [fontSize, setFontSize] = useState(1.0);
   const [showLineNumbers, setShowLineNumbers] = useState(true);
   const [isPrintPreview, setIsPrintPreview] = useState(false);
-  
+
   const contentRef = useRef(null);
   const printWindowRef = useRef(null);
 
@@ -57,7 +57,7 @@ const PrintLens = ({ resource }) => {
       '.css': 'css',
       '.json': 'json',
       '.md': 'markdown',
-      '.txt': 'text'
+      '.txt': 'text',
     };
     return langMap[language] || 'text';
   };
@@ -67,47 +67,44 @@ const PrintLens = ({ resource }) => {
     if (!enableColorize || lang === 'text') {
       return code;
     }
-    
+
     // Basic highlighting patterns
     let highlighted = code;
-    
+
     if (lang === 'javascript' || lang === 'jsx' || lang === 'typescript') {
       // Keywords
       highlighted = highlighted.replace(
         /\b(const|let|var|function|class|if|else|for|while|return|import|export|from|default)\b/g,
-        '<span class="keyword">$1</span>'
+        '<span class="keyword">$1</span>',
       );
-      
+
       // Strings
       highlighted = highlighted.replace(
         /(["'`])((?:\\.|(?!\1)[^\\])*?)\1/g,
-        '<span class="string">$1$2$1</span>'
+        '<span class="string">$1$2$1</span>',
       );
-      
+
       // Comments
-      highlighted = highlighted.replace(
-        /\/\/.*$/gm,
-        '<span class="comment">$&</span>'
-      );
+      highlighted = highlighted.replace(/\/\/.*$/gm, '<span class="comment">$&</span>');
       highlighted = highlighted.replace(
         /\/\*[\s\S]*?\*\//g,
-        '<span class="comment">$&</span>'
+        '<span class="comment">$&</span>',
       );
     }
-    
+
     return highlighted;
   };
 
   // Format code with print-optimized syntax highlighting using SL1 approach
   const formatCodeWithSyntaxHighlighting = () => {
     const langClass = getLanguageClass();
-    
+
     if (enableColorize) {
       // Use SL1-style approach: let Prism handle the highlighting
       return (
         <div className={styles.printCodeContainer}>
           <pre className={showLineNumbers ? 'line-numbers' : ''}>
-            <code 
+            <code
               key={`${showLineNumbers}-${langClass}-${code.length}`}
               ref={(el) => {
                 if (el && window.Prism) {
@@ -126,12 +123,10 @@ const PrintLens = ({ resource }) => {
     } else {
       // Plain text version with optional line numbers
       const formattedCode = showLineNumbers ? addLineNumbersToPlainText(code) : code;
-      
+
       return (
         <div className={styles.printCodeContainer}>
-          <pre className={styles.printCodePlain}>
-            {formattedCode}
-          </pre>
+          <pre className={styles.printCodePlain}>{formattedCode}</pre>
         </div>
       );
     }
@@ -140,10 +135,12 @@ const PrintLens = ({ resource }) => {
   // Add line numbers to plain text
   const addLineNumbersToPlainText = (plainCode) => {
     const lines = plainCode.split('\n');
-    return lines.map((line, index) => {
-      const lineNumber = (index + 1).toString().padStart(3, ' ');
-      return `${lineNumber}: ${line}`;
-    }).join('\n');
+    return lines
+      .map((line, index) => {
+        const lineNumber = (index + 1).toString().padStart(3, ' ');
+        return `${lineNumber}: ${line}`;
+      })
+      .join('\n');
   };
 
   // Handle print functionality
@@ -154,9 +151,9 @@ const PrintLens = ({ resource }) => {
         fontSize,
         showLineNumbers,
         colorized: enableColorize,
-        lineCount: code.split('\n').length
+        lineCount: code.split('\n').length,
       });
-      
+
       setIsPrintPreview(true);
       setTimeout(() => {
         window.print();
@@ -169,27 +166,27 @@ const PrintLens = ({ resource }) => {
   const handlePrintNewWindow = () => {
     const printWindow = window.open('', '_blank', 'width=800,height=600');
     printWindowRef.current = printWindow;
-    
+
     const printContent = generatePrintHTML();
     printWindow.document.write(printContent);
     printWindow.document.close();
-    
+
     printWindow.onload = () => {
       printWindow.focus();
       printWindow.print();
     };
-    
+
     trackStudyAction('print_new_window', resource, {
       fontSize,
       showLineNumbers,
-      colorized: enableColorize
+      colorized: enableColorize,
     });
   };
 
   // Generate standalone HTML for printing using SL1 approach
   const generatePrintHTML = () => {
     const langClass = getLanguageClass();
-    
+
     // SL1 approach: escape HTML and let Prism handle highlighting
     const escapeHTML = (str) => {
       const pre = document.createElement('pre');
@@ -221,7 +218,9 @@ const PrintLens = ({ resource }) => {
             <pre><code id="code-goes-here" class="${showLineNumbers ? 'line-numbers ' : ''}language-${langClass}"></code></pre>
           </div>
         </div>
-        ${enableColorize ? `
+        ${
+          enableColorize
+            ? `
         <script>
           document.addEventListener('DOMContentLoaded', function() {
             const codeElement = document.getElementById('code-goes-here');
@@ -231,14 +230,16 @@ const PrintLens = ({ resource }) => {
             }
           });
         </script>
-        ` : `
+        `
+            : `
         <script>
           document.addEventListener('DOMContentLoaded', function() {
             const codeElement = document.getElementById('code-goes-here');
             codeElement.textContent = ${JSON.stringify(code)};
           });
         </script>
-        `}
+        `
+        }
       </body>
       </html>
     `;
@@ -380,7 +381,7 @@ const PrintLens = ({ resource }) => {
 
       .token.function,
       .token.class-name {
-        color: #dd4a68;
+        color: #291c1fff;
       }
 
       .token.regex,
@@ -454,20 +455,25 @@ const PrintLens = ({ resource }) => {
   return (
     <div className={`${styles.printLens} ${isPrintPreview ? styles.printPreview : ''}`}>
       {/* Header */}
-      <div className={styles.header}>
-        <h3>=¨ Print View</h3>
+      {/* <div className={styles.header}>
+        <h3>=ï¿½ Print View</h3>
         <span className={styles.fileName}>{fileName}</span>
         <div className={styles.fileInfo}>
           {getLanguageClass()} " {code.split('\n').length} lines
         </div>
-      </div>
+      </div> */}
 
       {/* Print Controls */}
       <div className={styles.controls}>
+        <button
+          className={styles.printButton}
+          onClick={handlePrintNewWindow}
+          title="Open in new window and print"
+        >
+          =ï¿½ Print in New Window
+        </button>
         <div className={styles.controlGroup}>
-          <label className={styles.controlLabel}>
-            Font Size: {fontSize.toFixed(1)}x
-          </label>
+          <label className={styles.controlLabel}>Font Size: {fontSize.toFixed(1)}x</label>
           <input
             type="range"
             min="0.5"
@@ -489,34 +495,20 @@ const PrintLens = ({ resource }) => {
             Show line numbers
           </label>
         </div>
-
-      </div>
-
-      {/* Print Actions */}
-      <div className={styles.actions}>
-        <button
-          className={styles.printButton}
-          onClick={handlePrintNewWindow}
-          title="Open in new window and print"
-        >
-          =Ä Print in New Window
-        </button>
       </div>
 
       {/* Code Preview */}
-      <div 
+      <div
         ref={contentRef}
         className={`${styles.codeContainer} ${!showLineNumbers ? styles.noLineNumbers : ''}`}
         style={{ fontSize: `${fontSize}rem` }}
       >
-        <div className={styles.codeContent}>
-          {formatCodeWithSyntaxHighlighting()}
-        </div>
+        <div className={styles.codeContent}>{formatCodeWithSyntaxHighlighting()}</div>
       </div>
 
       {/* Print Instructions */}
       <div className={styles.instructions}>
-        <h4>=¡ Print Tips</h4>
+        <h4>=ï¿½ Print Tips</h4>
         <ul>
           <li>Adjust font size for optimal readability</li>
           <li>Toggle colorization globally to save ink when printing</li>

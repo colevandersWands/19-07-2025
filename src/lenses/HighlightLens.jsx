@@ -152,7 +152,7 @@ const HighlightExercise = ({ resource }) => {
 
   // Generate flowchart from code
   const generateFlowchart = async (sourceCode) => {
-    if (!sourceCode.trim()) {
+    if (!sourceCode) {
       setFlowchartSvg('');
       setFlowchartError(null);
       return;
@@ -552,17 +552,17 @@ const HighlightExercise = ({ resource }) => {
 
   // Annotation tools configuration
   const tools = [
-    { id: 'highlight', name: 'Highlight', icon: '🖍️', description: 'Highlight lines' },
+    // { id: 'highlight', name: 'Highlight', icon: '🖍️', description: 'Highlight lines' },
     { id: 'pen', name: 'Pen', icon: '✏️', description: 'Draw freehand' },
     { id: 'eraser', name: 'Eraser', icon: '🧽', description: 'Erase drawings' },
     { id: 'note', name: 'Note', icon: '📝', description: 'Add text notes' },
-    { id: 'arrow', name: 'Arrow', icon: '➡️', description: 'Draw arrows (coming soon)' },
-    {
-      id: 'circle',
-      name: 'Circle',
-      icon: '⭕',
-      description: 'Circle text (coming soon)',
-    },
+    // { id: 'arrow', name: 'Arrow', icon: '➡️', description: 'Draw arrows (coming soon)' },
+    // {
+    //   id: 'circle',
+    //   name: 'Circle',
+    //   icon: '⭕',
+    //   description: 'Circle text (coming soon)',
+    // },
   ];
 
   const colors = [
@@ -581,22 +581,13 @@ const HighlightExercise = ({ resource }) => {
         <div className={styles.fileInfo}>
           <div className={styles.titleSection}>
             <h2 className={styles.title}>🔍 Highlight & Annotate</h2>
-            <button
-              className={`${styles.actionButton} ${styles.viewToggleButton}`}
-              onClick={toggleViewMode}
-              title={
-                viewMode === 'code' ? 'Switch to flowchart view' : 'Switch to code view'
-              }
-            >
-              {viewMode === 'code' ? '📊 Code to Flowchart' : '📄 Flowchart to Code'}
-            </button>
           </div>
           <div className={styles.fileDetails}>
-            <span className={styles.fileName}>{resource.name}</span>
-            <span className={styles.fileType}>{resource.lang}</span>
-            <span className={styles.annotationCount}>
+            {/* <span className={styles.fileName}>{resource.name}</span> */}
+            {/* <span className={styles.fileType}>{resource.lang}</span> */}
+            {/* <span className={styles.annotationCount}>
               {annotations.length} annotations
-            </span>
+            </span> */}
             <button
               className={styles.askMeButton}
               onClick={async () => {
@@ -624,6 +615,13 @@ const HighlightExercise = ({ resource }) => {
           </div>
         </div>
       </div>
+
+      {/* Embedded Trace functionality */}
+      <EmbeddedTrace
+        code={getCurrentCode()}
+        fileName={resource.name}
+        onTraceData={(data) => undefined}
+      />
 
       {/* Annotation Toolbar */}
       <div className={styles.toolbar}>
@@ -666,10 +664,18 @@ const HighlightExercise = ({ resource }) => {
           </div>
         </div>
 
+        <button
+          className={`${styles.actionButton} ${styles.viewToggleButton}`}
+          onClick={toggleViewMode}
+          title={viewMode === 'code' ? 'Switch to flowchart view' : 'Switch to code view'}
+        >
+          {viewMode === 'code' ? '📊 Code to Flowchart' : '📄 Flowchart to Code'}
+        </button>
+
         <div className={styles.toolGroup}>
-          <button className={styles.actionButton} onClick={handleCopyCode}>
+          {/* <button className={styles.actionButton} onClick={handleCopyCode}>
             📋 Copy Code
-          </button>
+          </button> */}
           {annotations.length > 0 && (
             <button
               className={`${styles.actionButton} ${styles.clearButton}`}
@@ -796,13 +802,6 @@ const HighlightExercise = ({ resource }) => {
           </div>
         )}
       </div>
-
-      {/* Embedded Trace functionality */}
-      <EmbeddedTrace
-        code={getCurrentCode()}
-        fileName={resource.name}
-        onTraceData={(data) => undefined}
-      />
 
       {/* Instructions */}
       <div className={styles.instructions}>
