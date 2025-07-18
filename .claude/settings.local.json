@@ -9,7 +9,8 @@
       "Bash(npm run preview:*)",
       "Bash(curl:*)",
       "Bash(pkill:*)",
-      "Bash(true)"
+      "Bash(true)",
+      "Bash(npm install:*)"
     ],
     "deny": []
   }
