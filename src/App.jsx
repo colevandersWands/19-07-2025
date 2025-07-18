@@ -11,7 +11,7 @@ import { loadFS, getRandomFile, getFile } from '../fs.js';
 import URLManager from '../shared/utils/urlManager.js';
 import styles from './App.module.css';
 
-import defaultLesson from '../public/variablesing.json' with { type: 'json' };
+import content from '../public/content.json' with { type: 'json' };
 
 /**
  * Main Application Component
@@ -60,7 +60,7 @@ const AppContent = () => {
 
         // Load initial filesystem (examples or from URL)
         // const virtualFS = await loadFS('/variablesing.json');
-        const virtualFS = defaultLesson;
+        const virtualFS = content;
         setVirtualFS(virtualFS);
 
         // Check if URL specifies a file to load or has compressed code
