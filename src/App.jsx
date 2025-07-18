@@ -11,7 +11,7 @@ import { loadFS, getRandomFile, getFile } from '../fs.js';
 import URLManager from '../shared/utils/urlManager.js';
 import styles from './App.module.css';
 
-import defaultLesson from './public/variablesing.json' with { type: 'json' };
+import defaultLesson from '../public/variablesing.json' with { type: 'json' };
 
 /**
  * Main Application Component
