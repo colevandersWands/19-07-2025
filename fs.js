@@ -155,8 +155,14 @@ const addVirtualFSMetadata = (node, root) => {
 };
 
 export const getRandomFile = (dir = virtualFS) => {
+  if (!dir) {
+    console.warn('getRandomFile called with null/undefined directory');
+    return null;
+  }
+  
   const files = [];
   const collect = (node) => {
+    if (!node) return;
     if (node.type === 'file') files.push(node);
     else if (node.children) {
       for (const child of node.children) {
@@ -165,5 +171,5 @@ export const getRandomFile = (dir = virtualFS) => {
     }
   };
   collect(dir);
-  return files[Math.floor(Math.random() * files.length)];
+  return files.length > 0 ? files[Math.floor(Math.random() * files.length)] : null;
 };

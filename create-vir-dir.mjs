@@ -16,13 +16,15 @@ export async function crawlDirectory(relativePath) {
 
     if (stats.isDirectory()) {
       const entries = await readdir(dirPath);
-      const children = await Promise.all(
-        entries.map(async (entry) => {
-          const absChild = join(dirPath, entry);
-          const relChild = join(virtualPath, entry).replace(/\\/g, '/');
-          return crawl(absChild, relChild);
-        }),
-      );
+      const children = (
+        await Promise.all(
+          entries.map(async (entry) => {
+            const absChild = join(dirPath, entry);
+            const relChild = join(virtualPath, entry).replace(/\\/g, '/');
+            return crawl(absChild, relChild);
+          }),
+        )
+      ).filter((entry) => entry !== undefined);
       return {
         name: basename(dirPath),
         type: 'directory',
@@ -85,5 +87,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const virDir = await crawlDirectory(absPathIn);
 
   const absPathOut = resolve(join('public', relPathOut));
+  console.log(virDir);
   await writeFile(absPathOut, JSON.stringify(virDir, null, ''), 'utf-8');
 }

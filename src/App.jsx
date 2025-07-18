@@ -13,6 +13,8 @@ import styles from './App.module.css';
 
 import content from '../public/content.json' with { type: 'json' };
 
+// Content is loaded dynamically via loadFS
+
 /**
  * Main Application Component
  */
@@ -59,9 +61,9 @@ const AppContent = () => {
         setIsLoading(true);
 
         // Load initial filesystem (examples or from URL)
-        // const virtualFS = await loadFS('/variablesing.json');
-        const virtualFS = content;
-        setVirtualFS(virtualFS);
+        // const virtualFS = await loadFS('./variablesing.json');
+        const virtualFS = setVirtualFS(content);
+
 
         // Check if URL specifies a file to load or has compressed code
         const { filePath, lensParams, compressedCode, pseudocode } =

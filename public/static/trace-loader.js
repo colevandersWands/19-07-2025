@@ -24,16 +24,6 @@ function getStaticPath(path) {
   return basePath ? `${basePath}/${cleanPath}` : `/${cleanPath}`;
 }
 
-// Dynamic imports with correct base path
-// const modulePromises = {
-//   state: import(getStaticPath('static/data/state.js')),
-//   config: import(getStaticPath('static/data/config.js')),
-//   advice: import(getStaticPath('static/advice/index.js')),
-//   pointcut: import(getStaticPath('static/pointcut.js')),
-//   traceLog: import(getStaticPath('static/lib/trace-log.js')),
-//   walker: import(getStaticPath('static/estree-walker/index.js')),
-// };
-
 // Global loading state
 window.traceSystemLoading = false;
 window.traceSystemLoaded = false;
