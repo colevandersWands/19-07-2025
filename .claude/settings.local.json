@@ -10,7 +10,8 @@
       "Bash(curl:*)",
       "Bash(pkill:*)",
       "Bash(true)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(yamllint:*)"
     ],
     "deny": []
   }
