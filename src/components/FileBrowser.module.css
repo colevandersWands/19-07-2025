@@ -1,0 +1,95 @@
+/* File Browser Styles */
+
+.browserContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.browserHeader {
+  padding: 15px 20px;
+  border-bottom: 1px solid #464647;
+  background: #2d2d30;
+}
+
+.browserHeader h3 {
+  font-size: 14px;
+  color: #9cdcfe;
+  margin: 0 0 5px 0;
+  font-weight: 600;
+}
+
+.currentFile {
+  font-size: 11px;
+  color: #cccccc;
+  opacity: 0.8;
+}
+
+.fileTree {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+.treeNode {
+  /* Container for tree item and children */
+}
+
+.treeItem {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  font-size: 13px;
+  gap: 8px;
+}
+
+.treeItem:hover {
+  background: #2a2d2e;
+}
+
+.treeItem.selected {
+  background: #094771;
+  color: #ffffff;
+}
+
+.expandIcon {
+  font-size: 10px;
+  flex-shrink: 0;
+  width: 12px;
+  text-align: center;
+  color: #cccccc;
+  transition: transform 0.15s ease;
+}
+
+.expandIcon:hover {
+  color: #ffffff;
+}
+
+.icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.modifiedIndicator {
+  color: #f9c23c;
+  font-size: 16px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.loadingMessage {
+  padding: 20px;
+  text-align: center;
+  color: #888;
+  font-size: 12px;
+}

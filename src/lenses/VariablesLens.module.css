@@ -1,0 +1,285 @@
+/* Variables Lens Styles */
+
+.variablesLens {
+  background: #1e1e1e;
+  border: 1px solid #464647;
+  border-radius: 6px;
+  color: #d4d4d4;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  padding: 16px;
+  height: 100%;
+  min-height: 400px;
+  max-height: none;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  margin-bottom: 16px;
+  border-bottom: 1px solid #464647;
+  padding-bottom: 12px;
+}
+
+.header h4 {
+  color: #9cdcfe;
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 11px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+}
+
+.codePanel {
+  flex: 1;
+}
+
+.codeLabel {
+  font-size: 12px;
+  color: #9cdcfe;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.codeContainer {
+  background: #2d2d30;
+  border: 1px solid #464647;
+  border-radius: 4px;
+  padding: 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  min-height: 100px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.variableCode {
+  font-family: "Source Code Pro", "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  font-size: 10pt;
+  color: #d4d4d4;
+  line-height: 15pt;
+  white-space: pre;
+}
+
+/* Line number styling */
+.variableCode :global(.line-number) {
+  color: #666;
+  margin-right: 0.5em;
+  user-select: none;
+  display: inline-block;
+  width: 3em;
+  text-align: right;
+}
+
+/* Variable highlighting styles from SL1 */
+.variableCode :global(.code-binding) {
+  font-family: "Source Code Pro", "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  font-weight: bold;
+  background-color: white;
+  cursor: help;
+  padding: 0 3px;
+  border: 1px dotted #888;
+  border-radius: 2px;
+  color: black;
+  transition: all 0.2s ease;
+}
+
+.variableCode :global(.code-binding):hover {
+  transform: scale(1.05);
+  z-index: 10;
+  position: relative;
+}
+
+/* Variable type colors from SL1 */
+.varRead,
+.variableCode :global(.var-read) {
+  background-color: #be171f;
+  color: white;
+  border-color: black;
+  border-style: solid;
+}
+
+.varWrite,
+.variableCode :global(.var-write) {
+  background-color: #78835b;
+  color: white;
+  border-color: black;
+  border-style: solid;
+}
+
+.varReadWrite,
+.variableCode :global(.var-read.var-write) {
+  background-color: #1a697a;
+  color: white;
+  border-color: black;
+  border-style: solid;
+}
+
+.varDecl,
+.variableCode :global(.var-decl) {
+  background-color: #f6a935;
+  color: black;
+  border-color: black;
+  border-style: solid;
+}
+
+.varDelete,
+.variableCode :global(.var-delete) {
+  background-color: #eee2ae;
+  color: black;
+  border-color: black;
+  border-style: solid;
+}
+
+.variableInfo {
+  background: #2d2d30;
+  border: 1px solid #464647;
+  border-radius: 4px;
+  padding: 12px;
+}
+
+.infoLabel {
+  font-size: 12px;
+  color: #9cdcfe;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.infoContent {
+  font-size: 11px;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.infoItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  background: #383838;
+  border-radius: 3px;
+}
+
+.infoKey {
+  color: #cccccc;
+  font-weight: 500;
+}
+
+.infoValue {
+  color: #9cdcfe;
+  font-weight: 600;
+}
+
+.error {
+  background: #2d1b1b;
+  border: 1px solid #5a2d2d;
+  border-radius: 4px;
+  padding: 16px;
+  color: #ff6b6b;
+}
+
+.error h4 {
+  color: #ff6b6b;
+  margin: 0 0 8px 0;
+  font-size: 14px;
+}
+
+.error p {
+  margin: 0 0 12px 0;
+  font-size: 12px;
+}
+
+.errorHelp {
+  background: #1a1a1a;
+  border-radius: 4px;
+  padding: 12px;
+  margin-top: 12px;
+}
+
+.errorHelp p {
+  margin: 0 0 8px 0;
+  font-size: 11px;
+  color: #cccccc;
+}
+
+.errorHelp ul {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 11px;
+  color: #888;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+}
+
+.loading p {
+  margin: 0;
+  font-size: 12px;
+}
+
+/* Scrollbar styling */
+.variablesLens::-webkit-scrollbar,
+.annotatedCode::-webkit-scrollbar {
+  width: 8px;
+}
+
+.variablesLens::-webkit-scrollbar-track,
+.annotatedCode::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.variablesLens::-webkit-scrollbar-thumb,
+.annotatedCode::-webkit-scrollbar-thumb {
+  background: #464647;
+  border-radius: 4px;
+}
+
+.variablesLens::-webkit-scrollbar-thumb:hover,
+.annotatedCode::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .legend {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .annotatedCode {
+    max-height: 200px;
+    font-size: 11px;
+  }
+}

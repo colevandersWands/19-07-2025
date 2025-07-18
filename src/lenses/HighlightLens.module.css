@@ -1,0 +1,532 @@
+/* Highlight Exercise Styles */
+
+.highlightContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #464647;
+  background: #2d2d30;
+}
+
+.fileInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titleSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.title {
+  font-size: 18px;
+  color: #9cdcfe;
+  margin: 0;
+  font-weight: 600;
+}
+
+.fileDetails {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fileName {
+  color: #cccccc;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.fileType {
+  background: #0e639c;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.annotationCount {
+  color: #4caf50;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.askMeButton {
+  padding: 0.5rem 1rem;
+  border: 1px solid #007acc;
+  background: rgba(0, 122, 204, 0.1);
+  color: #007acc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: inherit;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.askMeButton:hover {
+  background: rgba(0, 122, 204, 0.2);
+  border-color: #1177bb;
+  color: #1177bb;
+}
+
+.askMeButton:active {
+  background: rgba(0, 122, 204, 0.3);
+}
+
+/* Annotation Toolbar */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 20px;
+  background: #383838;
+  border-bottom: 1px solid #464647;
+  flex-wrap: wrap;
+}
+
+.toolGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolLabel {
+  font-size: 12px;
+  color: #9cdcfe;
+  font-weight: 500;
+  margin-right: 4px;
+}
+
+.tools {
+  display: flex;
+  gap: 4px;
+}
+
+.toolButton {
+  background: #2d2d30;
+  border: 1px solid #464647;
+  color: #d4d4d4;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.toolButton:hover:not(:disabled) {
+  background: #404040;
+  border-color: #555;
+}
+
+.toolButton.active {
+  background: #0e639c;
+  border-color: #007acc;
+  color: white;
+}
+
+.toolButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.colors {
+  display: flex;
+  gap: 4px;
+}
+
+.colorButton {
+  width: 24px;
+  height: 24px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.colorButton:hover {
+  transform: scale(1.1);
+}
+
+.colorButton.active {
+  border-color: #fff;
+  box-shadow: 0 0 0 1px #007acc;
+}
+
+.actionButton {
+  background: #0e639c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.actionButton:hover {
+  background: #1177bb;
+}
+
+.clearButton {
+  background: #dc2626;
+}
+
+.clearButton:hover {
+  background: #b91c1c;
+}
+
+/* Main Content */
+.content {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.codeDisplay {
+  height: 100%;
+  overflow-y: auto;
+  padding: 20px;
+  position: relative;
+  user-select: none;
+}
+
+.codeWrapper {
+  position: relative;
+}
+
+.annotationOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.annotationLine {
+  position: absolute;
+  width: 100%;
+  height: 1.5em;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: all 0.2s ease;
+  border-radius: 3px;
+}
+
+.annotationLine:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.syntaxHighlightedCode {
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #d4d4d4;
+}
+
+/* Annotations */
+.drawingOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.notesOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.noteAnnotation {
+  position: absolute;
+  background: #2d2d30;
+  border: 2px solid #ffeb3b;
+  border-radius: 6px;
+  padding: 8px;
+  max-width: 200px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
+  z-index: 20;
+}
+
+.noteContent {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #d4d4d4;
+  margin-bottom: 4px;
+}
+
+.deleteNote {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #dc2626;
+  color: white;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.deleteNote:hover {
+  background: #b91c1c;
+}
+
+/* Note Input Dialog */
+.noteInput {
+  position: absolute;
+  background: #2d2d30;
+  border: 1px solid #007acc;
+  border-radius: 6px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 30;
+  min-width: 200px;
+}
+
+.noteTextarea {
+  width: 100%;
+  background: #1e1e1e;
+  border: 1px solid #464647;
+  color: #d4d4d4;
+  padding: 8px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 12px;
+  resize: none;
+  outline: none;
+  min-height: 60px;
+  margin-bottom: 8px;
+}
+
+.noteTextarea:focus {
+  border-color: #007acc;
+}
+
+.noteActions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.noteButton {
+  background: #0e639c;
+  color: white;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.noteButton:hover {
+  background: #1177bb;
+}
+
+.noteButton:last-child {
+  background: #666;
+}
+
+.noteButton:last-child:hover {
+  background: #777;
+}
+
+/* Instructions */
+.instructions {
+  padding: 12px 20px;
+  background: #262626;
+  border-top: 1px solid #464647;
+}
+
+.instructionText {
+  font-size: 11px;
+  color: #cccccc;
+  line-height: 1.4;
+}
+
+/* Scrollbar styling */
+.codeDisplay::-webkit-scrollbar {
+  width: 8px;
+}
+
+.codeDisplay::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.codeDisplay::-webkit-scrollbar-thumb {
+  background: #464647;
+  border-radius: 4px;
+}
+
+.codeDisplay::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+/* Flowchart-specific styles */
+.flowchartDisplay {
+  background: #252526;
+}
+
+.flowchartWrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.svgContainer {
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  max-width: 100%;
+  overflow: auto;
+  padding: 20px;
+}
+
+.svgContainer svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Enhanced interactivity styles */
+.svgContainer svg g:hover,
+.svgContainer svg rect:hover,
+.svgContainer svg circle:hover,
+.svgContainer svg polygon:hover {
+  transition: all 0.2s ease;
+}
+
+.flowchartLoading {
+  text-align: center;
+  color: #ffab00;
+  padding: 40px 20px;
+  font-style: italic;
+  font-size: 16px;
+}
+
+.loadingIcon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.flowchartError {
+  background: #2d1b1b;
+  border: 1px solid #5a2d2d;
+  border-radius: 6px;
+  padding: 16px;
+  margin: 20px;
+  color: #ff6b6b;
+  text-align: center;
+}
+
+.errorIcon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.retryButton {
+  background: #0e639c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.retryButton:hover {
+  background: #1177bb;
+}
+
+.flowchartEmpty {
+  text-align: center;
+  color: #888;
+  padding: 60px 20px;
+}
+
+.emptyIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.viewToggleButton {
+  background: #0e639c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.viewToggleButton:hover {
+  background: #1177bb;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .toolGroup {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .tools,
+  .colors {
+    flex-wrap: wrap;
+  }
+}

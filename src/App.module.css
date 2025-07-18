@@ -1,0 +1,194 @@
+/* Main App Styles */
+
+.appContainer {
+  display: flex;
+  height: 100vh;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.sidebar {
+  width: 300px;
+  background: #252526;
+  border-right: 1px solid #464647;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebarHeader {
+  padding: 20px;
+  border-bottom: 1px solid #464647;
+  background: #2d2d30;
+}
+
+.appTitle {
+  font-size: 20px;
+  color: #9cdcfe;
+  margin: 0 0 5px 0;
+  font-weight: 600;
+}
+
+.appSubtitle {
+  font-size: 12px;
+  color: #cccccc;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Loading states */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  gap: 20px;
+}
+
+.loadingSpinner {
+  font-size: 32px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Error states */
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  gap: 20px;
+  padding: 20px;
+  text-align: center;
+}
+
+.errorIcon {
+  font-size: 48px;
+}
+
+.errorMessage h2 {
+  color: #f48771;
+  margin: 0 0 10px 0;
+}
+
+.errorMessage p {
+  color: #cccccc;
+  margin: 0 0 20px 0;
+  max-width: 400px;
+}
+
+.retryButton {
+  background: #0e639c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.retryButton:hover {
+  background: #1177bb;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .appContainer {
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    border-right: none;
+    border-bottom: 1px solid #464647;
+    overflow-y: auto;
+  }
+  
+  .sidebarHeader {
+    padding: 15px;
+  }
+  
+  .appTitle {
+    font-size: 18px;
+  }
+  
+  .appSubtitle {
+    font-size: 11px;
+  }
+  
+  .mainContent {
+    flex: 1;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .appContainer {
+    font-size: 14px;
+  }
+  
+  .sidebar {
+    max-height: 250px;
+  }
+  
+  .sidebarHeader {
+    padding: 10px;
+  }
+  
+  .appTitle {
+    font-size: 16px;
+  }
+  
+  .appSubtitle {
+    font-size: 10px;
+  }
+  
+  .loadingContainer,
+  .errorContainer {
+    padding: 15px;
+  }
+  
+  .loadingSpinner {
+    font-size: 24px;
+  }
+  
+  .errorIcon {
+    font-size: 32px;
+  }
+  
+  .errorMessage h2 {
+    font-size: 18px;
+  }
+  
+  .errorMessage p {
+    font-size: 14px;
+  }
+  
+  .retryButton {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+}

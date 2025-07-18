@@ -1,0 +1,149 @@
+name: 🚀 Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Set permissions for GitHub Pages deployment
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: 📦 Install dependencies
+      run: |
+        npm ci --prefer-offline --no-audit
+        
+    - name: 🧹 Run linter
+      run: |
+        npm run lint:check
+        
+    - name: 🏗️ Build for production
+      run: |
+        echo "Building for production with base path /19-07-2025/"
+        npm run build:19-07-2025
+        
+    - name: ✅ Validate build output
+      run: |
+        echo "Validating build output..."
+        
+        # Check if dist directory exists
+        if [ ! -d "dist" ]; then
+          echo "❌ Build failed: dist directory not found"
+          exit 1
+        fi
+        
+        # Check if index.html exists
+        if [ ! -f "dist/index.html" ]; then
+          echo "❌ Build failed: index.html not found"
+          exit 1
+        fi
+        
+        # Check if assets directory exists
+        if [ ! -d "dist/assets" ]; then
+          echo "❌ Build failed: assets directory not found"
+          exit 1
+        fi
+        
+        # Check if static directory exists (for SL1 components)
+        if [ ! -d "dist/static" ]; then
+          echo "⚠️  Warning: static directory not found, creating it..."
+          mkdir -p dist/static
+        fi
+        
+        # List build output for debugging
+        echo "📁 Build output structure:"
+        ls -la dist/
+        echo "📄 Assets:"
+        ls -la dist/assets/ || echo "No assets directory"
+        
+        # Check file sizes
+        echo "📊 Build sizes:"
+        du -sh dist/
+        du -sh dist/assets/* 2>/dev/null || echo "No assets to measure"
+        
+        echo "✅ Build validation successful!"
+        
+    - name: 🔗 Add base path to assets
+      run: |
+        echo "Ensuring all assets use correct base path..."
+        
+        # Verify that index.html has correct paths
+        if grep -q 'src="./static/' dist/index.html; then
+          echo "✅ Static assets use relative paths"
+        else
+          echo "⚠️  Warning: Some static assets may not use relative paths"
+        fi
+        
+        # Create .nojekyll file to prevent GitHub Pages from ignoring files with underscores
+        touch dist/.nojekyll
+        
+        # Add build info
+        echo "Build Date: $(date)" > dist/build-info.txt
+        echo "Commit: ${{ github.sha }}" >> dist/build-info.txt
+        echo "Branch: ${{ github.ref_name }}" >> dist/build-info.txt
+        
+    - name: 📤 Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist
+        publish_branch: gh-pages
+        force_orphan: true
+        user_name: 'github-actions[bot]'
+        user_email: 'github-actions[bot]@users.noreply.github.com'
+        commit_message: |
+          🚀 Deploy to GitHub Pages
+          
+          Source commit: ${{ github.sha }}
+          Build date: $(date)
+          
+          🤖 Automated deployment from main branch
+          
+    - name: 📝 Deployment summary
+      run: |
+        echo "🎉 Deployment completed successfully!"
+        echo "📍 Your app should be available at: https://domain.td/19-07-2025"
+        echo "🔗 GitHub Pages URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+        echo "📦 Build size: $(du -sh dist/ | cut -f1)"
+        echo "⏱️  Build time: $(date)"
+        
+    - name: 🏥 Health check
+      run: |
+        echo "Performing post-deployment health check..."
+        
+        # Check if critical files exist
+        critical_files=("dist/index.html" "dist/assets")
+        for file in "${critical_files[@]}"; do
+          if [ -e "$file" ]; then
+            echo "✅ $file exists"
+          else
+            echo "❌ $file missing"
+            exit 1
+          fi
+        done
+        
+        echo "✅ All critical files present"
+        echo "🚀 Ready for classroom use!"

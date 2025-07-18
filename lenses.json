@@ -1,0 +1,21 @@
+{
+  "lenses": {
+    "embed": {
+      "template": "minimal",
+      "styles": false,
+      "title": "Spiral Lens Output"
+    },
+    "lines": {
+      "numbers": false,
+      "prefix": "→ "
+    },
+    "wordcount": {
+      "includeWhitespace": true,
+      "showCharacters": false
+    }
+  },
+  "defaults": {
+    ".jsx": ["embed"],
+    ".vue": ["embed"]
+  }
+}

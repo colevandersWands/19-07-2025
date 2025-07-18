@@ -1,0 +1,97 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--background-color);
+  color: var(--text-color);
+}
+
+.header {
+  padding: 20px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--header-background);
+}
+
+.header h2 {
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+  color: var(--accent-color);
+}
+
+.header p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.flowchartArea {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.placeholder {
+  text-align: center;
+  max-width: 400px;
+}
+
+.placeholderIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.placeholder h3 {
+  margin: 0 0 1rem 0;
+  color: var(--text-color);
+}
+
+.placeholder p {
+  margin: 0.5rem 0;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  gap: 1rem;
+}
+
+.spinner {
+  font-size: 2rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  gap: 1rem;
+  color: var(--error-color);
+}
+
+.errorIcon {
+  font-size: 2rem;
+}
+
+.error h3 {
+  margin: 0;
+  color: var(--error-color);
+}
+
+.error p {
+  margin: 0;
+  text-align: center;
+}

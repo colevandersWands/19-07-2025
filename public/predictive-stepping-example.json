@@ -1,0 +1,569 @@
+{
+  "name": "predictive-stepping",
+  "type": "directory",
+  "path": "/",
+  "children": [
+    {
+      "name": "README.md",
+      "type": "file",
+      "ext": ".md",
+      "base": "README",
+      "dir": "",
+      "path": "/README.md",
+      "lang": ".md",
+      "content": "# Predictive Stepping\n\nPractice predicting each step of program execution, using your browser's debugger to check your predictions every step of the way.\n\n---\n\n## Learning Objectives\n\n### The Browser's Debugger\n\n- 🥚 **Stepping Through**: You can use the _Step_ button to go through a program\n  one statement at a time, pausing an any line you want to inspect.\n- 🥚 **Scope Panel**: You can use the _Scope_ panel in your debugger to find the\n  value of all active variables at step of execution, including when a variable\n  is _uninitialized_.\n- 🥚 **Hovering Previews**: You can preview the value of any expression or\n  initialized variable in your program, including parts of a longer expression.\n- 🥚 **Breakpoints**: Once in the Debugger, you can set and unset breakpoints to\n  skip ahead to specific lines. You can also set and unset breakpoints within a\n  line when possible.\n- 🥚 **Stepping Over**: You can step over functions in your program to skip\n  their _implementation_ and focus on your program's behavior.\n- 🐣 **`debugger` Statement**: You understand the difference between `debugger`\n  and a breakpoint, and can write a `debugger` statement in your source code to\n  pause the program before specific lines.\n\n### Debugging Workflows\n\n- **Programs with `prompt/alert/confirm` interactions**:\n  - 🥚 You can open, run, debug _and_ edit these JavaScript programs programs with Study Lenses.\n- **Programs with HTML, CSS and DOM Interactions**:\n  - 🥚 You can edit these programs in VSCode.\n  - 🥚 You can open these programs' in the browser using a file path, LiveServer or Study Lenses.\n  - 🥚 You run and debug these programs in the browser using your browser's devtools.\n\n---\n\n## During Class\n\nPractice stepping through and predicting programs behavior using your browser's debugger.\n\n### Before Break\n\n- **All Together**:\n  - Discuss the [Predictive Stepping](./predictive-stepping.md) study method.\n  - A coach demonstrates the debugger features in `/1-isolate/examples`\n- **In Small Groups**:\n  - Practice stepping through and predicting the programs in\n    `/1-isolate/exercises`\n\n**Break!**\n\n### After Break\n\n- **All Together**:\n  - A coach demonstrates how to step through JavaScript in an\n    HTML project with `/2-integrate/examples`\n- **In Small Groups**:\n  - Practice stepping through and predicting the programs in\n    `/2-integrate/exercises`\n- **All Together**\n  - Each group will share: What went well? What went less well? Lessons learned?\n  - Discuss!"
+    },
+    {
+      "name": "predictive-stepping.md",
+      "type": "file",
+      "ext": ".md",
+      "base": "predictive-stepping",
+      "dir": "",
+      "path": "/predictive-stepping.md",
+      "lang": ".md",
+      "content": "# Predictive Stepping\n\n_Predictive Stepping_ is a study method where you quiz yourself on each step of a program's execution, checking your predictions with using a debugger. After you have a basic familiarity with your debugger, this study method is simple and effective - it's like having a teacher by your side every day of the week!\n\nBefore learning more about predictive stepping, you first need to understand ...\n\n## Program Memory\n\n_Program Memory_ is a term that refers to the values stored in memory at EACH\nSPECIFIC moment of execution. These values can change often, sometimes at every\nstep of your program! Learning to program requires you to understand:\n\n- how does the JS engine represent memory?\n- how does the JS engine interpret your code line-by-line?\n- how does each instruction interact with program memory?\n\nYour first goal is learning to see what is happening inside your program at each\nstep:\n\n- **DevTools Debugger**: The best way to peek inside program memory. It will\n  take some practice to use effectively and is worth every second. You can see\n  every value in memory, at every step of your program's execution. Debuggers\n  are designed to help you understand how memory is structured in JS\n\n## The Study Technique\n\nTo check if you _really_ understand a program, practice stepping through it in the debugger like so:\n\n0. Don't step forward yet!\n1. Predict which line will execute next and how it will change program state\n2. Step forward in the program.\n3. Check your prediction.\n4. Investigate if you were wrong: Is this a bug in the program, or is it something you did not understand?\n\nThat's it, happy studies!"
+    },
+    {
+      "name": "LICENSE",
+      "type": "file",
+      "ext": "",
+      "base": "LICENSE",
+      "dir": "",
+      "path": "/LICENSE",
+      "lang": "",
+      "content": "MIT License\n\nCopyright (c) 2023 @DeNepo\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+    },
+    {
+      "name": "study.json",
+      "type": "file",
+      "ext": ".json",
+      "base": "study",
+      "dir": "",
+      "path": "/study.json",
+      "lang": ".json",
+      "content": "{\n  \"--port\": 1337\n}"
+    },
+    {
+      "name": "1-isolate",
+      "type": "directory",
+      "path": "/1-isolate",
+      "children": [
+        {
+          "name": "study.json",
+          "type": "file",
+          "ext": ".json",
+          "base": "study",
+          "dir": "1-isolate",
+          "path": "/1-isolate/study.json",
+          "lang": ".json",
+          "content": "{\n  \"study\": {\n    \"save\": true,\n    \"run\": true,\n    \"debug\": true,\n    \"ask\": true,\n    \"flowchart\": true,\n    \"variables\": true,\n    \"blanks\": true,\n    \"trace\": true,\n    \"table\": true,\n    \"pseudo\": true\n  }\n}"
+        },
+        {
+          "name": "examples",
+          "type": "directory",
+          "path": "/1-isolate/examples",
+          "children": [
+            {
+              "name": "1-stepping-through.js",
+              "type": "file",
+              "ext": ".js",
+              "base": "1-stepping-through",
+              "dir": "1-isolate/examples",
+              "path": "/1-isolate/examples/1-stepping-through.js",
+              "lang": ".js",
+              "content": "\"use strict\";\n\n/* 🥚 Stepping Through\n\n  click the [debug] button to start the program in your debugger\n\n  see the little arrow at the top of the pane on the right?\n    it looks like this:  ->·\n    this evaluates one statement at a time\n\n  your challenge: step through to each commented line and pause\n    look around the debugger, what do you see?\n\n*/\n\nlet didClickOk = confirm('please click \"ok\":');\n\nif (didClickOk !== true) {\n  alert(\":(\")\n} else {\n  alert(\"thank you!\");\n}"
+            },
+            {
+              "name": "2-scope-panel.js",
+              "type": "file",
+              "ext": ".js",
+              "base": "2-scope-panel",
+              "dir": "1-isolate/examples",
+              "path": "/1-isolate/examples/2-scope-panel.js",
+              "lang": ".js",
+              "content": "'use strict';\n\n/* 🥚 Scope Panel\n\n  go through this program one step at a time and watch the Scopes panel\n    this shows you the CURRENT VALUE of each variable in your program\n  the Scope Panel is one of the most important tools you have to understand code\n\n  before pressing the \"step\" button:\n  - predict which line will be next\n  - predict what will change in the Scopes panel -->\n\n  after pressing the \"step\":\n  - were you right about which line was next?\n  - were you right about what changed in the Scopes panel? -->\n\n*/\n\nlet didClickOk = confirm('please click \"ok\":');\n\nlet message = '';\nif (didClickOk !== true) {\n  message = ':(';\n} else {\n  message = 'thank you!';\n}\n\nalert(message);"
+            },
+            {
+              "name": "3-hovering-preview.js",
+              "type": "file",
+              "ext": ".js",
+              "base": "3-hovering-preview",
+              "dir": "1-isolate/examples",
+              "path": "/1-isolate/examples/3-hovering-preview.js",
+              "lang": ".js",
+              "content": "'use strict';\n\n/* 🥚 Hovering Previews\n\n  practice previewing expressions at different steps of execution\n  - variables: hover without highlighting\n  - expressions: highlight and hover\n\n  pause this program each time you reach the `if` check:\n  - highlighting one portion of the `if` check expression\n  - hover your mouse over it to see the value\n  - check the scopes panel to understand how the value was calculated\n\n*/\n\nlet didClickOk = confirm('please click \"ok\":');\n\nlet message = '';\n\n// try previewing the value of this conditional check:\n// 1. hover over `didClickOk` to see it's value\n// |----------|\n// 2. highlight the entire expression and hover over it\n// |-------------------|\nif (didClickOk !== true) {\n  message = ':(';\n} else {\n  message = 'thank you!';\n}\n\nalert(message);"
+            },
+            {
+              "name": "4-continue-to-here.js",
+              "type": "file",
+              "ext": ".js",
+              "base": "4-continue-to-here",
+              "dir": "1-isolate/examples",
+              "path": "/1-isolate/examples/4-continue-to-here.js",
+              "lang": ".js",
+              "content": "'use strict';\n\n/* 🐣 Continue to Here\n\n  click the [debug] button to study this program in the debugger\n\n  then practice skipping ahead to the commented line:\n\n  1. right click the line number on the left in the debugger\n  2. select \"continue to here\"\n  3. look around in the debugger, what do you notice?\n      - which line is highlighted?\n      - what has changed in the panels on the right? -->\n  4. keep using \"continue to here\" on the same line\n      skipping ahead helps focus on specific details in the program\n      you no longer need to step through every line all the time\n      it also helps you avoid stepping past the line you want to study\n\n*/\n\nlet didClickOk = confirm('please click \"ok\":');\n\nlet message = '';\nif (didClickOk !== true) {\n  message = ':(';\n} else {\n  message = 'thank you!';\n}\n\nalert(message);"
+            },
+            {
+              "name": "5-breakpoints.js",
+              "type": "file",
+              "ext": ".js",
+              "base": "5-breakpoints",
+              "dir": "1-isolate/examples",
+              "path": "/1-isolate/examples/5-breakpoints.js",
+              "lang": ".js",
+              "content": "'use strict';\n\n/* 🐣 Breakpoints\n\n  use the [debug] button to pause this program in the devtools\n\n  click on a line number to create a breakpoint\n    you can create as many as you want\n  you can now use the big blue triangle button -->\n    this button will skip ahead to the next breakpoint\n\n  breakpoints are saved in your devtools, not in your source code\n  you can change them while the program is running\n\n*/\n\nlet didClickOk = confirm('please click \"ok\":');\n\nlet message = '';\n// try setting a breakpoint on the conditional check\nif (didClickOk !== true) {\n  message = ':(';\n} else {\n  message = 'thank you!';\n}\n\nalert(message);"
+            },
+            {
+              "name": "6-debugger-statement.js",
+              "type": "file",
+              "ext": ".js",
+              "base": "6-debugger-statement",
+              "dir": "1-isolate/examples",
+              "path": "/1-isolate/examples/6-debugger-statement.js",
+              "lang": ".js",
+              "content": "'use strict';\n\n/* 🐥 Debugger Statement\n\n  The `debugger` statement will make your program pause in the devtools\n\n  `debugger` statements are saved in your source code\n  you can not change them while the program is running\n\n  If you use `debugger`, the program will stop even if you use the [run] button\n\n*/\n\nlet didClickOk = confirm('please click \"ok\":');\n\nlet message = '';\ndebugger;\nif (didClickOk !== true) {\n  message = ':(';\n} else {\n  message = 'thank you!';\n}\n\nalert(message);"
+            }
+          ]
+        },
+        {
+          "name": "exercises",
+          "type": "directory",
+          "path": "/1-isolate/exercises",
+          "children": [
+            {
+              "name": "1-greeting.js",
+              "type": "file",
+              "ext": ".js",
+              "base": "1-greeting",
+              "dir": "1-isolate/exercises",
+              "path": "/1-isolate/exercises/1-greeting.js",
+              "lang": ".js",
+              "content": "'use strict';\n\nlet input = prompt('enter your name:');\n\nlet greeting = '';\nif (input === null) {\n  greeting = 'hello anonymous.';\n} else {\n  greeting = 'hello ' + input + '!';\n}\n\nalert(greeting);\n\n/*  ===== Challenges =====\n  - Ask the user for their first and last names.\n  - Greet them with their full name.\n*/"
+            },
+            {
+              "name": "2-five-characters.js",
+              "type": "file",
+              "ext": ".js",
+              "base": "2-five-characters",
+              "dir": "1-isolate/exercises",
+              "path": "/1-isolate/exercises/2-five-characters.js",
+              "lang": ".js",
+              "content": "\"use strict\";\n\nlet input = prompt(\"enter something with 5 characters:\");\n\nlet message = \"\";\nif (input === null) {\n  message = \":(\";\n} else if (input.length < 5) {\n  message = \"too short\";\n} else if (input.length === 5) {\n  message = \"thank you!\";\n} else {\n  message = \"too long\";\n}\n\nalert(message);\n\n/*  ===== Challenges =====\n  - Give \"input\" a default value before asking for the user input.\n  - Change input's value after asking for the user input so that we always show \"thank you!\".\n  - Add one more conditional so that we never show \":(\" and don't always show \"thank you!\".\n*/"
+            },
+            {
+              "name": "3-eary-words.js",
+              "type": "file",
+              "ext": ".js",
+              "base": "3-eary-words",
+              "dir": "1-isolate/exercises",
+              "path": "/1-isolate/exercises/3-eary-words.js",
+              "lang": ".js",
+              "content": "\"use strict\";\n\nlet input = prompt('enter something with \"ear\" in it');\n\nlet message;\nif (input === null) {\n  message = \"you canceled\";\n} else {\n  if (input.includes(\"ear\")) {\n    message = \"eary!\";\n  } else {\n    message = \"not eary :(\";\n  }\n}\n\nalert(message);"
+            },
+            {
+              "name": "4-eary-words.js",
+              "type": "file",
+              "ext": ".js",
+              "base": "4-eary-words",
+              "dir": "1-isolate/exercises",
+              "path": "/1-isolate/exercises/4-eary-words.js",
+              "lang": ".js",
+              "content": "\"use strict\";\n\nlet input = prompt('enter something with \"ear\" in it');\n\nlet message;\nif (input !== null) {\n  if (input.includes(\"ear\")) {\n    message = \"eary!\";\n  } else {\n    message = \"not eary :(\";\n  }\n} else {\n  message = \"you canceled\";\n}\n\nalert(message);"
+            },
+            {
+              "name": "5-memory-game.js",
+              "type": "file",
+              "ext": ".js",
+              "base": "5-memory-game",
+              "dir": "1-isolate/exercises",
+              "path": "/1-isolate/exercises/5-memory-game.js",
+              "lang": ".js",
+              "content": "\"use strict\";\n\nlet thingToRemember = prompt(\n  \"enter some text, then remember it.\\n\\n\" +\n    \"if you remember it correctly you win\"\n);\n\nif (thingToRemember !== null) {\n  let displayTheText = confirm(\n    \"would you like to see your text one more time?\"\n  );\n  if (displayTheText) {\n    alert(thingToRemember);\n  }\n\n  let guess = prompt(\"now try to remember what it was:\");\n  if (guess !== null && guess === thingToRemember) {\n    alert(\"you win!\");\n  } else {\n    alert(\"try again.\");\n  }\n}\n\nalert(\"good bye\");"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2-integrate",
+      "type": "directory",
+      "path": "/2-integrate",
+      "children": [
+        {
+          "name": "study.json",
+          "type": "file",
+          "ext": ".json",
+          "base": "study",
+          "dir": "2-integrate",
+          "path": "/2-integrate/study.json",
+          "lang": ".json",
+          "content": "{\n  \"study\": {\n    \"save\": true,\n    \"highlight\": true,\n    \"table\": true\n  }\n}"
+        },
+        {
+          "name": "examples",
+          "type": "directory",
+          "path": "/2-integrate/examples",
+          "children": [
+            {
+              "name": "0-the-sources-tab",
+              "type": "directory",
+              "path": "/2-integrate/examples/0-the-sources-tab",
+              "children": [
+                {
+                  "name": "index.html",
+                  "type": "file",
+                  "ext": ".html",
+                  "base": "index",
+                  "dir": "2-integrate/examples/0-the-sources-tab",
+                  "path": "/2-integrate/examples/0-the-sources-tab/index.html",
+                  "lang": ".html",
+                  "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <title>first name only</title>\n\n    <link href=\"./styles.css\" rel=\"stylesheet\" />\n  </head>\n\n  <body>\n    <h1>The \"Sources\" Tab</h1>\n\n    <p>\n      The \"sources\" tab in your devtools shows you the source code for any web\n      page, and has tools for stepping through and debugging your code.\n      <br />\n      Can you find the sources for this page?\n    </p>\n\n    <p>\n      Here's\n      <a href=\"https://www.youtube.com/watch?v=CoESC2XGZLg\" target=\"_blank\"\n        >a video</a\n      >\n      and\n      <a\n        href=\"https://developer.chrome.com/docs/devtools/javascript/sources/\"\n        target=\"_blank\"\n        >an article</a\n      >.\n    </p>\n\n    <script src=\"./app.js\" type=\"module\"></script>\n  </body>\n</html>"
+                },
+                {
+                  "name": "app.js",
+                  "type": "file",
+                  "ext": ".js",
+                  "base": "app",
+                  "dir": "2-integrate/examples/0-the-sources-tab",
+                  "path": "/2-integrate/examples/0-the-sources-tab/app.js",
+                  "lang": ".js",
+                  "content": "/* A Script\n\n  this script is run when the page loads\n  \n  can you find this script in your \"sources\" tab?\n\n*/\n\n// debugger;\n\n// try adding a breakpoint on this line, then refreshing\nconsole.log(\"hello!\");\n\nlet input = confirm(\"yes or no\");\n\nif (input) {\n  alert(\"yes\");\n} else {\n  alert(\"no\");\n}"
+                },
+                {
+                  "name": "styles.css",
+                  "type": "file",
+                  "ext": ".css",
+                  "base": "styles",
+                  "dir": "2-integrate/examples/0-the-sources-tab",
+                  "path": "/2-integrate/examples/0-the-sources-tab/styles.css",
+                  "lang": ".css",
+                  "content": "body {\n  background-color: aquamarine;\n}"
+                }
+              ]
+            },
+            {
+              "name": "1-dom-io",
+              "type": "directory",
+              "path": "/2-integrate/examples/1-dom-io",
+              "children": [
+                {
+                  "name": "index.html",
+                  "type": "file",
+                  "ext": ".html",
+                  "base": "index",
+                  "dir": "2-integrate/examples/1-dom-io",
+                  "path": "/2-integrate/examples/1-dom-io/index.html",
+                  "lang": ".html",
+                  "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <title>DOM I/O</title>\n\n    <link href=\"./styles.css\" rel=\"stylesheet\" />\n  </head>\n\n  <body>\n    <div>\n      <form id=\"example-data\">\n        <label>a string: <input id=\"string-value\" type=\"text\" /> </label>\n        <br />\n        <label>a boolean: <input id=\"boolean-value\" type=\"checkbox\" /> </label\n        ><br />\n        <label\n          >a number: <input id=\"number-value\" type=\"number\" value=\"0\" />\n        </label>\n      </form>\n\n      <hr />\n\n      <pre id=\"example-output\" class=\"computery\"></pre>\n    </div>\n\n    <script src=\"./app.js\" type=\"module\"></script>\n  </body>\n</html>"
+                },
+                {
+                  "name": "app.js",
+                  "type": "file",
+                  "ext": ".js",
+                  "base": "app",
+                  "dir": "2-integrate/examples/1-dom-io",
+                  "path": "/2-integrate/examples/1-dom-io/app.js",
+                  "lang": ".js",
+                  "content": "// --- import the DOM I/O functions to use in this program ---\n\n//  there are only 5 functions, just enough to practice fundamentals\nimport {\n  whenFormDataChanges,\n  readString,\n  readBoolean,\n  readNumber,\n  displayString,\n} from \"../../lib/dom-io/index.js\";\n\n// --- listen for changes in the form's data ---\n// pass the id of a form you want to use: \"example-data\"\n// just use the `() => {` syntax for now, you'll study functions later\nwhenFormDataChanges(\"example-data\", () => {\n  // --- this code will be run each time the form data changes ---\n\n  console.log(\"\\n--- form data changed ---\");\n\n  // --- read user input from the DOM into your program ---\n\n  // reads from an input with type \"text\"\n  let string = readString(\"string-value\"); // id=\"string-value\"\n  console.log(string);\n\n  // reads from an input with type \"checkbox\"\n  let boolean = readBoolean(\"boolean-value\"); // id=\"boolean-value\"\n  console.log(boolean);\n\n  // reads from an input with type \"number\"\n  let number = readNumber(\"number-value\"); // id=\"number-value\"\n  console.log(number);\n\n  // --- display text to the user ---\n\n  let message =\n    \"string:  \" + string + \"\\nboolean: \" + boolean + \"\\nnumber:  \" + number;\n  console.log(message);\n\n  // writes text into a <pre> tag, anything that was there will be overwritten\n  displayString(\"example-output\", message); // id=\"example-output\"\n});"
+                },
+                {
+                  "name": "styles.css",
+                  "type": "file",
+                  "ext": ".css",
+                  "base": "styles",
+                  "dir": "2-integrate/examples/1-dom-io",
+                  "path": "/2-integrate/examples/1-dom-io/styles.css",
+                  "lang": ".css",
+                  "content": ".computery {\n  font-family: monospace;\n  color: chartreuse;\n  background-color: black;\n  height: 5em;\n  width: 20em;\n}"
+                }
+              ]
+            },
+            {
+              "name": "2-step-over",
+              "type": "directory",
+              "path": "/2-integrate/examples/2-step-over",
+              "children": [
+                {
+                  "name": "index.html",
+                  "type": "file",
+                  "ext": ".html",
+                  "base": "index",
+                  "dir": "2-integrate/examples/2-step-over",
+                  "path": "/2-integrate/examples/2-step-over/index.html",
+                  "lang": ".html",
+                  "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <title>step over</title>\n\n    <link href=\"./styles.css\" rel=\"stylesheet\" />\n  </head>\n\n  <body>\n    <div>\n      <form id=\"example-data\">\n        <label>a string: <input id=\"string-value\" type=\"text\" /> </label>\n        <br />\n        <label>a boolean: <input id=\"boolean-value\" type=\"checkbox\" /> </label\n        ><br />\n        <label>a number: <input id=\"number-value\" type=\"number\" /> </label>\n      </form>\n\n      <hr />\n\n      <pre id=\"example-output\" class=\"computery\"></pre>\n    </div>\n\n    <script src=\"./app.js\" type=\"module\"></script>\n  </body>\n</html>"
+                },
+                {
+                  "name": "app.js",
+                  "type": "file",
+                  "ext": ".js",
+                  "base": "app",
+                  "dir": "2-integrate/examples/2-step-over",
+                  "path": "/2-integrate/examples/2-step-over/app.js",
+                  "lang": ".js",
+                  "content": "import {\n  whenFormDataChanges,\n  readString,\n  readBoolean,\n  readNumber,\n  displayString,\n} from \"../../lib/dom-io/index.js\";\n\n/* Stepping Over\n\n  When you step through a program, it will go through every line\n    this includes functions written in a different file\n  sometimes you just want to see the result, not every line\n\n  You can use the \"step over\" button to skip the code inside a function\n    this way you can keep going through your program\n    without being distracted by the extra code\n\n  PS. you don't need to understand functions just yet\n    for now you just need to skip over them in the devtools\n\n*/\n\ndebugger; // once when the script is loaded\nconsole.log(\"--- the script is loading ---\");\n\nwhenFormDataChanges(\"example-data\", () => {\n  debugger; // each time the form data changes\n  console.log(\"--- form data has changed ---\");\n\n  // --- read user input from the DOM ---\n\n  // step over this line\n  let string = readString(\"string-value\");\n\n  // step over this line\n  let boolean = readBoolean(\"boolean-value\");\n\n  // step over this line\n  let number = readNumber(\"number-value\");\n\n  // --- display text to the user ---\n\n  // step normally through this line\n  let message =\n    \"string:  \" + string + \"\\nboolean: \" + boolean + \"\\nnumber:  \" + number;\n\n  // step over this line\n  displayString(\"example-output\", message);\n});\n\nconsole.log(\"--- the script has finished loading ---\");"
+                },
+                {
+                  "name": "styles.css",
+                  "type": "file",
+                  "ext": ".css",
+                  "base": "styles",
+                  "dir": "2-integrate/examples/2-step-over",
+                  "path": "/2-integrate/examples/2-step-over/styles.css",
+                  "lang": ".css",
+                  "content": ".computery {\n  font-family: monospace;\n  color: chartreuse;\n  background-color: black;\n  height: 5em;\n  width: 20em;\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "exercises",
+          "type": "directory",
+          "path": "/2-integrate/exercises",
+          "children": [
+            {
+              "name": "README.md",
+              "type": "file",
+              "ext": ".md",
+              "base": "README",
+              "dir": "2-integrate/exercises",
+              "path": "/2-integrate/exercises/README.md",
+              "lang": ".md",
+              "content": "# DOM I/O\n\nThese exercises do not use `prompt`/`alert`/`confirm`, instead they use the DOM\nI/O library. There are examples in this folder that can help you figure it out,\nand you can also check [the documentation](../../../lib/dom-io/DOCS.md) for more\ninformation.\n\nYou can solve these exercises using only JS language features you've studied so\nfar in Just Enough JavaScript"
+            },
+            {
+              "name": "cat-detector",
+              "type": "directory",
+              "path": "/2-integrate/exercises/cat-detector",
+              "children": [
+                {
+                  "name": "index.html",
+                  "type": "file",
+                  "ext": ".html",
+                  "base": "index",
+                  "dir": "2-integrate/exercises/cat-detector",
+                  "path": "/2-integrate/exercises/cat-detector/index.html",
+                  "lang": ".html",
+                  "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <title>cat detector</title>\n\n    <link href=\"./styles.css\" rel=\"stylesheet\" />\n  </head>\n\n  <body>\n    <div>\n      <form id=\"maybe-a-cat\">\n        <label\n          ><input id=\"catext\" type=\"text\" placeholder=\"cat, please.\"\n        /></label>\n      </form>\n\n      <hr />\n\n      <pre id=\"cat-detection\" class=\"computery\"></pre>\n    </div>\n\n    <script src=\"./app.js\" type=\"module\"></script>\n  </body>\n</html>"
+                },
+                {
+                  "name": "app.js",
+                  "type": "file",
+                  "ext": ".js",
+                  "base": "app",
+                  "dir": "2-integrate/exercises/cat-detector",
+                  "path": "/2-integrate/exercises/cat-detector/app.js",
+                  "lang": ".js",
+                  "content": "import {\n  whenFormDataChanges,\n  readString,\n  displayString,\n} from \"../../lib/dom-io/index.js\";\n\n// ===== declare program constants =====\n\nconst CAT = ` \n   .       .\n   |\\_---_/|\n  /   o o   \\\n  |    U    |\n  \\  ._I_.  /\n   '-_____-'`;\n\nconst NOT_CAT = `\n    \\ \\  / /\n     \\ \\/ /\n      \\  /\n      /  \\\n     / /\\ \\\n    / /  \\ \\`;\n\n// ===== define user interaction =====\n\nwhenFormDataChanges(\"maybe-a-cat\", () => {\n  debugger;\n\n  // --- read user input ---\n\n  let input = readString(\"catext\");\n\n  // --- detect if the input is a cat or not ---\n\n  let isCat;\n  if (input.toLowerCase() === \"cat\") {\n    isCat = true;\n  } else {\n    isCat = false;\n  }\n\n  // --- determine which feedback to display ---\n\n  let feedback;\n  if (isCat) {\n    feedback = CAT;\n  } else {\n    feedback = NOT_CAT;\n  }\n\n  // --- display the message ---\n\n  displayString(\"cat-detection\", feedback);\n});"
+                },
+                {
+                  "name": "styles.css",
+                  "type": "file",
+                  "ext": ".css",
+                  "base": "styles",
+                  "dir": "2-integrate/exercises/cat-detector",
+                  "path": "/2-integrate/exercises/cat-detector/styles.css",
+                  "lang": ".css",
+                  "content": ".computery {\n  font-family: monospace;\n  color: chartreuse;\n  background-color: black;\n  height: 10em;\n  width: 10em;\n}"
+                }
+              ]
+            },
+            {
+              "name": "search",
+              "type": "directory",
+              "path": "/2-integrate/exercises/search",
+              "children": [
+                {
+                  "name": "index.html",
+                  "type": "file",
+                  "ext": ".html",
+                  "base": "index",
+                  "dir": "2-integrate/exercises/search",
+                  "path": "/2-integrate/exercises/search/index.html",
+                  "lang": ".html",
+                  "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf8\" />\n\n    <title>search</title>\n\n    <link href=\"./styles.css\" rel=\"stylesheet\" />\n  </head>\n\n  <body>\n    <form id=\"search-input\">\n      <label>Does <input id=\"text\" type=\"text\" /></label>\n      <label>include <input id=\"query\" type=\"text\" /></label>\n      ?\n      <br />\n      <label>case-sensitive: <input id=\"sensitive\" type=\"checkbox\" /></label>\n    </form>\n\n    <hr />\n\n    <pre id=\"search-result\" class=\"computery\"></pre>\n\n    <script src=\"./app.js\" type=\"module\"></script>\n  </body>\n</html>"
+                },
+                {
+                  "name": "app.js",
+                  "type": "file",
+                  "ext": ".js",
+                  "base": "app",
+                  "dir": "2-integrate/exercises/search",
+                  "path": "/2-integrate/exercises/search/app.js",
+                  "lang": ".js",
+                  "content": "import {\n  whenFormDataChanges,\n  readString,\n  readBoolean,\n  displayString,\n} from \"../../lib/dom-io/index.js\";\n\nwhenFormDataChanges(\"search-input\", () => {\n  debugger;\n\n  console.log(\"--- form data changed ---\");\n\n  // --- read the user's input ---\n\n  let searchThis = readString(\"text\");\n  let findThis = readString(\"query\");\n\n  let caseSensitive = readBoolean(\"sensitive\");\n\n  // --- do the search ---\n\n  let doesExist = false;\n\n  if (caseSensitive) {\n    doesExist = searchThis.includes(findThis);\n  } else {\n    let smallSearchThis = searchThis.toLowerCase();\n    let smallFindThis = findThis.toLowerCase();\n    doesExist = smallSearchThis.includes(smallFindThis);\n  }\n\n  // --- create the message ---\n\n  let message = \"\";\n\n  if (doesExist) {\n    message = \"yes\";\n  } else {\n    message = \"no\";\n  }\n\n  // --- display the search results ---\n\n  displayString(\"search-result\", message);\n});\n\n/*  ===== Challenges =====\n\n  - display a more helpful message than \"yes\" or \"no\"\n  - change the conditional so the `if` is NOT case sensitive and the `else` is\n\n*/"
+                },
+                {
+                  "name": "styles.css",
+                  "type": "file",
+                  "ext": ".css",
+                  "base": "styles",
+                  "dir": "2-integrate/exercises/search",
+                  "path": "/2-integrate/exercises/search/styles.css",
+                  "lang": ".css",
+                  "content": ".computery {\n  font-family: monospace;\n  color: chartreuse;\n  background-color: black;\n  height: 2em;\n  width: 30em;\n}"
+                }
+              ]
+            },
+            {
+              "name": "time-management",
+              "type": "directory",
+              "path": "/2-integrate/exercises/time-management",
+              "children": [
+                {
+                  "name": "index.html",
+                  "type": "file",
+                  "ext": ".html",
+                  "base": "index",
+                  "dir": "2-integrate/exercises/time-management",
+                  "path": "/2-integrate/exercises/time-management/index.html",
+                  "lang": ".html",
+                  "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <title>time management</title>\n\n    <link href=\"./styles.css\" rel=\"stylesheet\" />\n  </head>\n\n  <body>\n    <div>\n      <form id=\"sleep-info\">\n        <label><input id=\"tired\" type=\"checkbox\" /> Are you tired?</label>\n        <br />\n        <label\n          ><input id=\"free-time\" type=\"checkbox\" /> Do you have 20\n          minutes?</label\n        >\n      </form>\n\n      <hr />\n\n      <pre id=\"advice-area\" class=\"computery\"></pre>\n    </div>\n\n    <script src=\"./app.js\" type=\"module\"></script>\n  </body>\n</html>"
+                },
+                {
+                  "name": "app.js",
+                  "type": "file",
+                  "ext": ".js",
+                  "base": "app",
+                  "dir": "2-integrate/exercises/time-management",
+                  "path": "/2-integrate/exercises/time-management/app.js",
+                  "lang": ".js",
+                  "content": "import {\n  whenFormDataChanges,\n  readBoolean,\n  displayString,\n} from \"../../lib/dom-io/index.js\";\n\nwhenFormDataChanges(\"sleep-info\", () => {\n  debugger;\n\n  console.log(\"--- form data changed ---\");\n\n  // --- read user input ---\n\n  // read a boolean from the <input> with id \"tired\"\n  let isTired = readBoolean(\"tired\");\n\n  // read a boolean from the <input> with id \"free-time\"\n  let hasTime = readBoolean(\"free-time\");\n\n  // --- generate advice ---\n\n  let advice = \"\";\n  if (isTired && hasTime) {\n    advice = \"Take a nap!\";\n  } else if (!isTired && hasTime) {\n    advice = \"Study some flashcards.\";\n  } else if (isTired && !hasTime) {\n    advice = \"Make some coffee.\";\n  } else if (!isTired && !hasTime) {\n    advice = \"Have a great day!\";\n  }\n\n  // --- display the advice ---\n\n  // display a string to the <pre> with id \"advice-area\"\n  displayString(\"advice-area\", advice);\n});\n\n/*  ===== Challenges =====\n\n  - change the conditional so it uses `else` instead of `else if`\n\n*/"
+                },
+                {
+                  "name": "styles.css",
+                  "type": "file",
+                  "ext": ".css",
+                  "base": "styles",
+                  "dir": "2-integrate/exercises/time-management",
+                  "path": "/2-integrate/exercises/time-management/styles.css",
+                  "lang": ".css",
+                  "content": ".computery {\n  font-family: monospace;\n  color: chartreuse;\n  background-color: black;\n  height: 5em;\n  width: 20em;\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "lib",
+          "type": "directory",
+          "path": "/2-integrate/lib",
+          "children": [
+            {
+              "name": "dom-io",
+              "type": "directory",
+              "path": "/2-integrate/lib/dom-io",
+              "children": [
+                {
+                  "name": "index.js",
+                  "type": "file",
+                  "ext": ".js",
+                  "base": "index",
+                  "dir": "2-integrate/lib/dom-io",
+                  "path": "/2-integrate/lib/dom-io/index.js",
+                  "lang": ".js",
+                  "content": "// ===== constants =====\n\nconst NO_ARG = Symbol('no arg');\n\n// ===== the listener function =====\n\nexport const whenFormDataChanges = (id = NO_ARG, handler = NO_ARG) => {\n  const functionName = 'whenFormDataChanges';\n\n  validateId(id, functionName);\n\n  if (handler === NO_ARG) {\n    throw new Error(\n      `you did not pass a handler function.\\n-> first argument of ${functionName}\\n`,\n    );\n  }\n  if (typeof handler !== 'function') {\n    throw new TypeError(\n      `handler must be a function.\\n-> second argument of ${functionName}\\n`,\n    );\n  }\n\n  const element = validateGetElement(id);\n\n  if (element.nodeName !== 'FORM') {\n    throw new Error(`${element.nodeName.toLowerCase()}#${id} is not a form.\\n`);\n  }\n\n  element.addEventListener('input', handler);\n};\n\n// ===== input functions =====\n\n// --- reading a string ---\n\nconst stringInputTypes = [\n  'text',\n  // 'password'\n];\n\nexport const readString = (id = NO_ARG) => {\n  const functionName = 'readString';\n\n  validateId(id, functionName);\n\n  const element = validateGetElement(id);\n\n  if (\n    element.nodeName !== 'INPUT' &&\n    element.nodeName !== 'SELECT' &&\n    element.nodeName !== 'FIELDSET'\n  ) {\n    throw new Error(\n      `${element.nodeName.toLowerCase()}#${id} is not an <input>, <fieldset> or <select> element\\n`,\n    );\n  }\n  if (\n    element.nodeName === 'INPUT' &&\n    !stringInputTypes.includes(element.type)\n  ) {\n    throw new Error(\n      `input#${id}[type=${element.type}] is not supported for strings, try using one of these instead:\\n\\n- select\\n- ` +\n        stringInputTypes.map((type) => `input[type=${type}]`).join('\\n- ') +\n        '\\n',\n    );\n  }\n\n  validateIsFormChild(element);\n\n  // if (element.nodeName === 'INPUT' || element.nodeName === 'SELECT') {\n  //   validateHasLabel(element);\n  // }\n\n  return element.nodeName === 'FIELDSET'\n    ? readFieldsetValue(element)\n    : element.nodeName === 'SELECT'\n    ? readSelectValue(element)\n    : element.value;\n};\n\n// --- reading a boolean ---\n\nexport const readBoolean = (id = NO_ARG) => {\n  const functionName = 'readBoolean';\n\n  validateId(id, functionName);\n\n  const element = validateGetElement(id);\n\n  if (element.nodeName !== 'INPUT') {\n    throw new Error(\n      `${element.nodeName.toLowerCase()}#${id} is not an <input> element\\n`,\n    );\n  }\n  if (element.type !== 'checkbox') {\n    throw new Error(\n      `input#${id}[type=${element.type.toLowerCase()}] is not for booleans.\\n\\n` +\n        '- you should use input[type=checkbox]\\n',\n    );\n  }\n\n  validateIsFormChild(element);\n\n  // validateHasLabel(element);\n\n  return element.checked;\n};\n\n// --- reading a number ---\n\nconst numberInputTypes = ['number', 'range'];\n\nexport const readNumber = (id = NO_ARG) => {\n  const functionName = 'readNumber';\n\n  validateId(id, functionName);\n\n  const element = validateGetElement(id);\n\n  if (element.nodeName !== 'INPUT') {\n    throw new Error(\n      `${element.nodeName.toLowerCase()}#${id} is not an <input> element\\n`,\n    );\n  }\n  if (!numberInputTypes.includes(element.type)) {\n    throw new Error(\n      `input#${id}[type=${element.type}] is not supported for numbers, try using one of these instead:\\n- ` +\n        numberInputTypes.map((type) => `input[type=${type}]`).join('\\n- ') +\n        '\\n',\n    );\n  }\n\n  validateIsFormChild(element);\n\n  // validateHasLabel(element);\n\n  return Number(element.value || 0);\n};\n\n// ===== output function =====\n\nexport const displayString = (id = NO_ARG, text = NO_ARG) => {\n  const functionName = 'displayString';\n\n  validateId(id, functionName);\n\n  if (text === NO_ARG) {\n    throw new Error(\n      `you did not pass a string to display.\\n-> second argument of ${functionName}\\n`,\n    );\n  }\n  if (typeof text !== 'string') {\n    throw new TypeError(\n      `value to display must be a string.\\n-> second argument of ${functionName}\\n`,\n    );\n  }\n\n  const element = validateGetElement(id);\n\n  if (element.nodeName !== 'PRE') {\n    throw new Error(\n      `${element.nodeName.toLowerCase()}#${id} is not a <pre> tag, try:\\n\\n` +\n        '- changing the tag to a <pre>\\n' +\n        '- making sure you passed the correct id\\n',\n    );\n  }\n\n  validateIsFormChild(element, false);\n\n  element.innerText = text;\n};\n\n// ===== hoisted utility functions =====\n\nfunction validateId(id = '', functionName = '') {\n  if (id === NO_ARG) {\n    throw new Error(\n      `you did not pass an id.\\n-> first argument of ${functionName}\\n`,\n    );\n  }\n  if (typeof id !== 'string') {\n    throw new TypeError(\n      `id is not a string.\\n-> first argument of ${functionName}\\n`,\n    );\n  }\n}\n\nfunction validateGetElement(id = '') {\n  const element = document.getElementById(id);\n  if (element === null) {\n    throw new Error(`there is no element with id \"${id}\"\\n`);\n  }\n  return element;\n}\n\nfunction validateIsFormChild(element, shouldBe = true) {\n  let parent = element.parentElement;\n  while (parent !== null) {\n    if (!shouldBe && parent.nodeName === 'FORM') {\n      throw new Error(\n        `${element.nodeName.toLowerCase()}#${\n          element.id\n        } is in a <form> but it should not be, try either:\\n\\n` +\n          '- moving the element out of the form\\n' +\n          '- changing the element to an input\\n' +\n          '- making sure you are using the correct id\\n',\n      );\n    } else if (shouldBe && parent.node === 'FORM') {\n      break;\n    }\n    parent = parent.parentElement;\n  }\n  if (shouldBe && parent !== null) {\n    throw new Error(\n      `${element.nodeName.toLowerCase()}#${\n        element.id\n      } is not in a <form> but it should be, try either:\\n\\n` +\n        '- moving the element into a form\\n' +\n        '- using a different element\\n' +\n        '- making sure you are using the correct id\\n',\n    );\n  }\n}\n\n// not using for the moment, too strict\nfunction validateHasLabel(element) {\n  // https://stackoverflow.com/a/285565\n  let itDoes = false;\n\n  const labels = Array.from(document.getElementsByTagName('label'));\n  for (const label of labels) {\n    if (\n      (label.htmlFor && element.id && label.htmlFor === element.id) ||\n      label.contains(element)\n    ) {\n      itDoes = true;\n      break;\n    }\n  }\n\n  if (!itDoes) {\n    throw new Error(\n      `${element.nodeName.toLowerCase()}#${element.id}${\n        element.nodeName === 'INPUT' ? `[type=${element.type}]` : ''\n      } does not have a label.\\n`,\n    );\n  }\n}\n\nfunction readFieldsetValue(element) {\n  if (element.childElementCount === 0) {\n    throw new Error(\n      `fieldset#${element.id} is empty.\\n\\n- try adding inputs with [type=radio]\\n`,\n    );\n  }\n\n  const children = Array.from(element.querySelectorAll('input'));\n  if (!children.some((child) => child.nodeName === 'INPUT')) {\n    throw new Error(`fieldset#${element.id} contains no <input> elements.\\n`);\n  }\n\n  const inputChildren = children.filter((el) => el.nodeName === 'INPUT');\n  if (!inputChildren.every((child) => child.type === 'radio')) {\n    throw new Error(\n      `fieldset#${element.id} contains <input> elements that are not [type=radio].\\n`,\n    );\n  }\n\n  const firstName = inputChildren[0].name;\n  for (const child of inputChildren) {\n    if (firstName !== child.name) {\n      throw new Error(\n        `all radio inputs in fieldset#${element.id} do not have the same name, try:\\n\\n` +\n          '- making all of the names the same\\n' +\n          '- using more than one <fieldset> elements\\n',\n      );\n    }\n  }\n\n  const radioSiblings = Array.from(\n    document.querySelectorAll(`input[name=${firstName}]`),\n  );\n\n  const isChildOfFiledset = (el) =>\n    el === element\n      ? true\n      : el === null\n      ? false\n      : isChildOfFiledset(el.parentElement);\n  if (!radioSiblings.every(isChildOfFiledset)) {\n    throw new Error(\n      `some radio inputs with [name=${firstName}] are not in fieldset#${element.id}, try:\\n\\n` +\n        `- moving all radios with this name into this fieldset#${element.id}\\n` +\n        `- renaming radios with this that are not in fieldset#${element.id}\\n`,\n    );\n  }\n\n  // for (const radioSib of radioSiblings) {\n  //   validateHasLabel(radioSib);\n  // }\n\n  const checkedSibling = radioSiblings.find((sib) => sib.checked);\n  if (checkedSibling) {\n    return checkedSibling.value;\n  } else {\n    throw new Error(\n      `Failed to read value from fieldset#${element.id}, no radios with [name=${firstName}] are selected. Try:\\n\\n` +\n        '- or adding the `checked` attribute one of the radios in this <fieldset>\\n',\n    );\n  }\n}\n\nfunction readSelectValue(element) {\n  const children = Array.from(element.children);\n\n  if (children.length === 0) {\n    throw new Error(`select#${element.id} has no children.\\n`);\n  }\n\n  if (children.some((child) => child.nodeName !== 'OPTION')) {\n    throw new Error(\n      `some children of select#${element.id} are not <option> tags.\\n`,\n    );\n  }\n\n  if (children.some((child) => child.value === '' && child.innerText === '')) {\n    throw new Error(\n      `some options in select#${element.id} do not have a value.\\n`,\n    );\n  }\n\n  if (children.some((child) => child.value !== '' && child.innerText === '')) {\n    throw new Error(\n      `some options in select#${element.id} do not have any text.\\n`,\n    );\n  }\n\n  return element.value;\n}"
+                },
+                {
+                  "name": "README.md",
+                  "type": "file",
+                  "ext": ".md",
+                  "base": "README",
+                  "dir": "2-integrate/lib/dom-io",
+                  "path": "/2-integrate/lib/dom-io/README.md",
+                  "lang": ".md",
+                  "content": "# DOM IO\n\nA small library of functions to build simple programs that read user input from\nthe DOM and output a string to the DOM. The API is scoped for building I/O\nprograms that listen to a form change then read strings, numbers or booleans and\ndisplay a formatted string in a `<pre>` tag. There is no support for DOM\nmanipulation or dynamically modifying styles.\n\nThis tight scope allows you to focus on the relationship between program inputs\nand outputs, types, and debugging without getting lost in the syntax or\ncomplexity of a full DOM-based web page.\n\n- [documentation for the 5 library functions](DOCS.md)\n- [an example of the programs you can build](./example/README.md)"
+                },
+                {
+                  "name": "DOCS.md",
+                  "type": "file",
+                  "ext": ".md",
+                  "base": "DOCS",
+                  "dir": "2-integrate/lib/dom-io",
+                  "path": "/2-integrate/lib/dom-io/DOCS.md",
+                  "lang": ".md",
+                  "content": "# DOM IO Functions\n\nThere are 5 functions in this DOM IO library to help you transition from\n`prompt`/`alert`/`confirm` to projects that use HTML/CSs/JS. They are simple\nfunctions but just enough to build basic web pages that process user input.\n\nYou will not be able to do everything you see in online DOM tutorials, but you\ncan learn many foundational skills with less distraction including:\n\n- reading documentation (this README!)\n- using functions from a library\n- using HTML + JS to read user input\n- _event-driven programming_\n- ... and much more\n\n## Helpful Errors\n\nThese functions will throw many errors, that's a good thing! The errors are\nthere to help catch your mistakes before they become frustrating mysteries, and\nto help you learn to use DOM elements correctly.\n\nThe most common errors you will get are because:\n\n- one of the arguments you passed is the wrong type\n- there is not element with the ID you requested\n- you are trying to read/set an element with the wrong data type\n- an input element does not have a label (important for accessibility)\n\n## The Functions\n\n- [When Form Data Changes](#whenformdatachangesid-function)\n- [Read String](#readstringid)\n- [Read Boolean](#readbooleanid)\n- [Read Number](#readnumberid)\n- [Display String](#displaystringid-text)\n\n---\n\n---\n\n### `whenFormDataChanges('id', function)`\n\nThis function takes the ID of a `<form>` element and a _handler\nfunction_<sup>\\*</sup> describing what should happen when the user changes the\nform's data.\n\nWhen the user change's the form data, the code in your handler will be executed.\n\n```js\n// log the user's favorite number each time they change the input\n\nwhenFormDataChanges('user-data', () => {\n  console.log('you just changed the form data!');\n});\n```\n\nThis function supports these HTML elements:\n\n```html\n<!-- a form with an id -->\n<form id=\"user-data\"></form>\n```\n\n> <sup>\\*</sup> _handler function_: You will learn about functions & handlers in\n> later modules, for now you can just use the syntax from this example.\n\n[Table of Contents](#the-functions)\n\n---\n\n---\n\n## `readString(\"id\")`\n\nThis function takes in the ID of the `<input>` or `<textarea>` and returns the\nstring value it stores.\n\n```js\nconst someWords = readString('words');\nconst anOption = readString('radio-options');\nconst aSelection = readString('selection');\n\nconsole.log(someWords, anOption, aSelection);\n```\n\nThis function supports these HTML elements:\n\n```html\n<!-- all <input>, <fieldset> and <select> must be inside a <form> -->\n<form>\n  <!-- labeled text inputs with an id -->\n  <label>inputs with type \"text\"<input id=\"words\" type=\"text\" /></label>\n\n  <!-- fieldsets with an id, containing labeled & named radio inputs -->\n  <fieldset id=\"radio-options\">\n    <label>red: <input type=\"radio\" name=\"color\" checked /></label>\n    <label>blue: <input type=\"radio\" name=\"color\" /></label>\n    <!-- ... -->\n  </fieldset>\n\n  <!-- select elements with an id, containing options -->\n  <select id=\"selection\">\n    <option>A</option>\n    <option value=\"B\">b</option>\n    <!-- ... -->\n  </select>\n</form>\n```\n\n[Table of Contents](#the-functions)\n\n---\n\n## `readBoolean(\"id\")`\n\nThis function takes in the ID of an `<input>` and returns the boolean value it\nstores.\n\n```js\nconst storeAllTheirData = readBoolean('cookies');\n\nconsole.log(storeAllTheirData);\n```\n\nThis function supports these HTML elements:\n\n```html\n<!-- all <input> must be inside a <form> -->\n<form>\n  <!-- a labeled checkbox input with an id -->\n  <label><input id=\"cookies\" type=\"checkbox\" /> accept all cookies</label>\n</form>\n```\n\n[Table of Contents](#the-functions)\n\n---\n\n## `readNumber(\"id\")`\n\nThis function takes in the ID of the `<input>` and returns the user's number.\n\n```js\nconst userAge = readNumber('age');\nconst userRange = readNumber('one-to-hundred');\n\nconsole.log(userAge, userRange);\n```\n\nThis function supports these HTML elements:\n\n```html\n<!-- all <input> must be inside a <form> -->\n<form>\n  <!-- a labeled number input with an id -->\n  <label>your age: <input id=\"age\" type=\"number\" /></label>\n\n  <!-- a labeled range input with an id -->\n  <label>between 1-100 <input id=\"one-to-hundred\" type=\"range\" /></label>\n</form>\n```\n\n[Table of Contents](#the-functions)\n\n---\n\n---\n\n## `displayString(\"id\", \"text\")`\n\nDisplays a string inside a `<pre>` tag.\n\n```js\ndisplayString('program-output', 'Good Morning!');\n```\n\nThis functions supports these HTML elements:\n\n```html\n<form></form>\n\n<!-- the <pre> element must have an id and be outside of a <form> -->\n<pre id=\"program-output\"></pre>\n```\n\n[Table of Contents](#the-functions)"
+                },
+                {
+                  "name": "example",
+                  "type": "directory",
+                  "path": "/2-integrate/lib/dom-io/example",
+                  "children": [
+                    {
+                      "name": "README.md",
+                      "type": "file",
+                      "ext": ".md",
+                      "base": "README",
+                      "dir": "2-integrate/lib/dom-io/example",
+                      "path": "/2-integrate/lib/dom-io/example/README.md",
+                      "lang": ".md",
+                      "content": "# DOM IO: Example\n\nA program that repeats a user's input any number of times, and sets the repeated\ntext to either upper or lower case."
+                    },
+                    {
+                      "name": "index.html",
+                      "type": "file",
+                      "ext": ".html",
+                      "base": "index",
+                      "dir": "2-integrate/lib/dom-io/example",
+                      "path": "/2-integrate/lib/dom-io/example/index.html",
+                      "lang": ".html",
+                      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <title>dom io example</title>\n\n    <link href=\"./index.css\" rel=\"stylesheet\" />\n  </head>\n\n  <body>\n    <div>\n      <form id=\"repeaty\">\n        <label>repeat this: <input id=\"to-repeat\" type=\"text\" /></label>\n        <br />\n        <label>\n          this many times: <input id=\"repeats\" type=\"number\" value=\"1\"\n        /></label>\n        <br />\n        <label><input id=\"loud\" type=\"checkbox\" /> upper case</label>\n      </form>\n\n      <hr />\n\n      <pre id=\"out\" class=\"computery\"></pre>\n    </div>\n\n    <script src=\"index.js\" type=\"module\"></script>\n  </body>\n</html>"
+                    },
+                    {
+                      "name": "index.js",
+                      "type": "file",
+                      "ext": ".js",
+                      "base": "index",
+                      "dir": "2-integrate/lib/dom-io/example",
+                      "path": "/2-integrate/lib/dom-io/example/index.js",
+                      "lang": ".js",
+                      "content": "import {\n  whenFormDataChanges,\n  readString,\n  readBoolean,\n  readNumber,\n  displayString,\n} from '../index.js';\n\nwhenFormDataChanges('repeaty', () => {\n  // debugger;\n\n  // --- read user input ---\n\n  const text = readString('to-repeat');\n  const repetitions = readNumber('repeats');\n  const screaming = readBoolean('loud');\n\n  // --- repeat the string input ---\n\n  let repeated = '';\n  while (repeated.length < text.length * repetitions) {\n    repeated = repeated + text;\n  }\n\n  // --- set to upper or lower case ---\n\n  let finalText = '';\n  if (screaming) {\n    finalText = repeated.toUpperCase();\n  } else {\n    finalText = repeated.toLowerCase();\n  }\n\n  // --- display the final text ---\n\n  displayString('out', finalText);\n});"
+                    },
+                    {
+                      "name": "index.css",
+                      "type": "file",
+                      "ext": ".css",
+                      "base": "index",
+                      "dir": "2-integrate/lib/dom-io/example",
+                      "path": "/2-integrate/lib/dom-io/example/index.css",
+                      "lang": ".css",
+                      "content": ".computery {\n  font-family: monospace;\n  color: chartreuse;\n  background-color: black;\n}"
+                    }
+                  ]
+                },
+                {
+                  "name": "test",
+                  "type": "directory",
+                  "path": "/2-integrate/lib/dom-io/test",
+                  "children": [
+                    {
+                      "name": "index.html",
+                      "type": "file",
+                      "ext": ".html",
+                      "base": "index",
+                      "dir": "2-integrate/lib/dom-io/test",
+                      "path": "/2-integrate/lib/dom-io/test/index.html",
+                      "lang": ".html",
+                      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <title>testing dom io</title>\n\n    <style></style>\n  </head>\n\n  <body>\n    <div>\n      <form id=\"user-data\">\n        <!-- valid boolean inputs -->\n\n        <label><input id=\"red\" type=\"checkbox\" /> the color red</label>\n        <br />\n\n        <!-- valid string inputs -->\n\n        <label for=\"words\">cool fish</label\n        ><input id=\"words\" type=\"text\" value=\"ray\" />\n        <br />\n        <!-- --- error case: unsupported input type -->\n        <!-- <label\n          >a secret\n          <input id=\"pw\" type=\"password\" value=\"secret\" />\n        </label> -->\n\n        <label for=\"pig\">p, i, g</label>\n        <select id=\"pig\">\n          <!-- --- error case: an option with no value or inner text -->\n          <!-- <option></option> -->\n          <option>p</option>\n          <!-- --- error case: an option with a value but not text -->\n          <!-- <option value=\"i\"></option> -->\n          <option value=\"i\">I</option>\n          <option selected>g</option>\n          <!-- --- error case: a non-option element -->\n          <!-- <div></div> -->\n          <!-- --- error case: no options in a select -->\n        </select>\n\n        <fieldset id=\"toad\">\n          <label\n            >t<input type=\"radio\" name=\"toad-letters\" value=\"t\" checked\n          /></label>\n          <br />\n          <!-- --- error case: none of the radios are checked -->\n          <!-- <label>t<input type=\"radio\" name=\"toad-letters\" value=\"t\" /></label> -->\n          <!-- --- error case: no label -->\n          <!-- t<input type=\"radio\" name=\"toad-letters\" value=\"t\" checked /> -->\n          <label>o<input type=\"radio\" name=\"toad-letters\" value=\"o\" /></label\n          ><br />\n          <label>a<input type=\"radio\" name=\"toad-letters\" value=\"a\" /></label\n          ><br />\n          <label>d<input type=\"radio\" name=\"toad-letters\" value=\"d\" /></label\n          ><br />\n          <!-- --- error case: radio input with a different name inside this fieldset -->\n          <!-- <label>d<input type=\"radio\" name=\"letters\" value=\"d\" /></label> -->\n          <!-- --- error case: non-radio input inside this fieldset -->\n          <!-- <label>d<input type=\"text\" name=\"toad-letters\" value=\"d\" /></label> -->\n        </fieldset>\n        <!-- --- error case: radio input with matching name outside of the fieldset -->\n        <!-- <input type=\"radio\" name=\"toad-letters\" value=\"d\" /> -->\n\n        <!-- valid number inputs  -->\n\n        <label>x<input type=\"range\" id=\"x\" /></label>\n        <br />\n        <label>y<input type=\"number\" id=\"y\" value=\"22\" /></label>\n\n        <!-- --- error case: <pre> output is in a form -->\n        <!-- <pre id=\"should-not-be-in-a-form\"></pre> -->\n      </form>\n\n      <hr />\n\n      <!-- valid output container -->\n      <pre id=\"out\"></pre>\n\n      <!-- --- error cases: inputs are out of a form -->\n      <!-- <input id=\"should-be-in-a-form-n\" type=\"number\" /> -->\n      <!-- <input id=\"should-be-in-a-form-s\" type=\"text\" /> -->\n      <!-- <input id=\"should-be-in-a-form-b\" type=\"checkbox\" /> -->\n    </div>\n\n    <script src=\"./index.js\" type=\"module\"></script>\n  </body>\n</html>"
+                    },
+                    {
+                      "name": "index.js",
+                      "type": "file",
+                      "ext": ".js",
+                      "base": "index",
+                      "dir": "2-integrate/lib/dom-io/test",
+                      "path": "/2-integrate/lib/dom-io/test/index.js",
+                      "lang": ".js",
+                      "content": "import {\n  whenFormDataChanges,\n  readString,\n  readBoolean,\n  readNumber,\n  displayString,\n} from '../index.js';\n\n// ===== success cases =====\n\nwhenFormDataChanges('user-data', () => {\n  // debugger\n\n  // --- reading strings ---\n\n  const word = readString('words'); // input text\n  const pig = readString('pig'); // select options\n  const toad = readString('toad'); // fieldset input radio\n\n  // --- reading booleans ---\n\n  const red = readBoolean('red'); // input checkbox\n\n  // --- reading numbers ---\n\n  const x = readNumber('x'); // input range\n  const y = readNumber('y'); // input number\n\n  // --- displaying strings ---\n\n  const message = [red, word, pig, toad, x, y].join(', ');\n  displayString('out', message);\n});\n\n// ===== error cases =====\n\n// --- passing no/wrong arguments ---\n\n// whenFormDataChanges();\n// whenFormDataChanges(true);\n// whenFormDataChanges('');\n// whenFormDataChanges('', true);\n\n// whenFormDataChanges('user-data', () => readNumber());\n// whenFormDataChanges('user-data', () => readNumber(true));\n\n// whenFormDataChanges('user-data', () => readString());\n// whenFormDataChanges('user-data', () => readString(true));\n\n// whenFormDataChanges('user-data', () => readBoolean());\n// whenFormDataChanges('user-data', () => readBoolean(true));\n\n// whenFormDataChanges('user-data', () => displayString());\n// whenFormDataChanges('user-data', () => displayString(true));\n// whenFormDataChanges('user-data', () => displayString(''));\n// whenFormDataChanges('user-data', () => displayString('', true));\n\n// --- element does not exist ---\n\n// whenFormDataChanges('asdf', () => {});\n// whenFormDataChanges('user-data', () => readBoolean('asdf'));\n// whenFormDataChanges('user-data', () => readString('asdf'));\n// whenFormDataChanges('user-data', () => readNumber('asdf'));\n// whenFormDataChanges('user-data', () => displayString('asdf', ''));\n\n// --- accessing wrong element types ---\n\n// whenFormDataChanges('user-data', () => readString('red')); // wrong input type\n// whenFormDataChanges('user-data', () => readNumber('red')); // wrong input type\n// whenFormDataChanges('user-data', () => readBoolean('t')); // wrong input type\n// whenFormDataChanges('user-data', () => readBoolean('out')); // not an input\n// whenFormDataChanges('user-data', () => readNumber('out')); // not an input\n// whenFormDataChanges('user-data', () => readString('out')); // not an input\n// whenFormDataChanges('user-data', () => displayString('t', ''));\n// whenFormDataChanges('red', () => {});\n\n// --- elements are/not in a form ---\n\n// whenFormDataChanges('user-data', () =>\n//   readNumber('should-be-in-a-form-n'),\n// );\n// whenFormDataChanges('user-data', () =>\n//   readString('should-be-in-a-form-s'),\n// );\n// whenFormDataChanges('user-data', () =>\n//   readBoolean('should-be-in-a-form-b'),\n// );\n// whenFormDataChanges('user-data', () =>\n//   displayString('should-not-be-in-a-form', ''),\n// );"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

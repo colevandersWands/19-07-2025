@@ -1,0 +1,128 @@
+/* Exercise Renderer Styles */
+
+.rendererContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #1e1e1e;
+}
+
+.exerciseContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Empty states */
+.emptyState {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px;
+  text-align: center;
+}
+
+.emptyIcon {
+  font-size: 64px;
+  opacity: 0.6;
+}
+
+.emptyState h2 {
+  color: #9cdcfe;
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.emptyState h3 {
+  color: #f48771;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.emptyState p {
+  color: #cccccc;
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.8;
+  max-width: 400px;
+}
+
+/* Loading state */
+.loadingState {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px;
+}
+
+.loadingSpinner {
+  font-size: 48px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loadingState p {
+  color: #cccccc;
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Error state */
+.errorState {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px;
+  text-align: center;
+}
+
+.errorIcon {
+  font-size: 48px;
+}
+
+.errorState h3 {
+  color: #f48771;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.errorState p {
+  color: #cccccc;
+  margin: 0;
+  font-size: 14px;
+  max-width: 400px;
+}
+
+.retryButton {
+  background: #0e639c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.retryButton:hover {
+  background: #1177bb;
+}

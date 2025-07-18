@@ -1,0 +1,384 @@
+/* Embedded Trace Component Styles */
+
+.embeddedTrace {
+  background: #2d2d30;
+  border: 1px solid #464647;
+  border-radius: 6px;
+  margin-top: 1rem;
+}
+
+.traceControls {
+  padding: 1rem;
+  border-bottom: 1px solid #464647;
+}
+
+.traceControls h4 {
+  margin: 0 0 0.75rem 0;
+  color: #4fc3f7;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.traceButton {
+  background: #007acc;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.traceButton:hover:not(:disabled) {
+  background: #005a9e;
+}
+
+.traceButton:disabled {
+  background: #464647;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Trace Table */
+.traceTable {
+  background: #1e1e1e;
+  max-height: 200px;
+  overflow-y: auto;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 12px;
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 50px 80px 100px 1fr;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: #252526;
+  border-bottom: 1px solid #464647;
+  font-weight: 600;
+  color: #9cdcfe;
+  position: sticky;
+  top: 0;
+}
+
+.tableBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 50px 80px 100px 1fr;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-bottom: 1px solid #333;
+  transition: background-color 0.1s ease;
+}
+
+.tableRow:hover {
+  background: #2d2d30;
+}
+
+.tableRow:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.tableRow span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #d4d4d4;
+}
+
+.action {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 11px;
+  color: #4fc3f7 !important;
+  font-weight: 600;
+}
+
+.variable {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 11px;
+  color: #9cdcfe !important;
+  font-weight: 500;
+}
+
+.value {
+  font-weight: 500;
+  color: #ce9178;
+}
+
+.tableFooter {
+  padding: 0.5rem;
+  text-align: center;
+  color: #858585;
+  font-size: 11px;
+  border-top: 1px solid #464647;
+  background: #252526;
+}
+
+/* Hidden iframe for trace execution */
+.hiddenIframe {
+  display: none;
+  width: 0;
+  height: 0;
+  border: none;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .buttonGroup {
+    flex-direction: column;
+  }
+  
+  .traceButton {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+  
+  .tableHeader,
+  .tableRow {
+    grid-template-columns: 40px 1fr 1fr 50px;
+    font-size: 11px;
+  }
+  
+  .traceTable {
+    max-height: 150px;
+  }
+}
+
+/* Scrollbar styling */
+.traceTable::-webkit-scrollbar {
+  width: 6px;
+}
+
+.traceTable::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.traceTable::-webkit-scrollbar-thumb {
+  background: #464647;
+  border-radius: 3px;
+}
+
+.traceTable::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+/* Dropdown styles */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdownContent {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #2d2d30;
+  border: 1px solid #464647;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  min-width: 200px;
+  padding: 12px;
+  font-size: 12px;
+}
+
+.configSection {
+  margin-bottom: 12px;
+}
+
+.configSection:last-child {
+  margin-bottom: 0;
+}
+
+.configSection label {
+  display: block;
+  margin-bottom: 6px;
+  color: #d4d4d4;
+  cursor: pointer;
+  user-select: none;
+}
+
+.configSection input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.subOptions {
+  margin-left: 20px;
+  margin-top: 6px;
+}
+
+.subOptions label {
+  font-size: 11px;
+  color: #cccccc;
+  margin-bottom: 4px;
+}
+
+.textInput {
+  margin-top: 6px;
+}
+
+.textInput label {
+  display: block;
+  font-size: 10px;
+  color: #999;
+  margin-bottom: 3px;
+}
+
+.textInput input[type="text"] {
+  width: 100%;
+  padding: 4px 6px;
+  font-size: 10px;
+  background: #1e1e1e;
+  border: 1px solid #464647;
+  border-radius: 2px;
+  color: #d4d4d4;
+}
+
+.textInput input[type="text"]:focus {
+  outline: none;
+  border-color: #4fc3f7;
+}
+
+.dropdownItem {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  color: #d4d4d4;
+  text-align: left;
+  cursor: pointer;
+  font-size: 12px;
+  border-radius: 2px;
+  margin-bottom: 4px;
+}
+
+.dropdownItem:hover {
+  background: #464647;
+  color: #4fc3f7;
+}
+
+.dropdownItem:last-child {
+  margin-bottom: 0;
+}
+
+/* SL1-style hovering trace table */
+.hoverTableOverlay {
+  position: fixed;
+  top: 50px;
+  right: 20px;
+  width: 400px;
+  height: auto;
+  max-height: 600px;
+  background: #1e1e1e;
+  border: 1px solid #464647;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.hoverTableContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.hoverTableHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #252526;
+  border-bottom: 1px solid #464647;
+}
+
+.hoverTableHeader h4 {
+  margin: 0;
+  color: #4fc3f7;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: #cccccc;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 2px;
+  line-height: 1;
+}
+
+.closeButton:hover {
+  background: #464647;
+  color: #ffffff;
+}
+
+.hoverTableContent {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+.hoverTraceTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 11px;
+}
+
+.hoverTraceTable th {
+  background: #2d2d30;
+  color: #9cdcfe;
+  padding: 8px 6px;
+  text-align: left;
+  border-bottom: 1px solid #464647;
+  font-weight: 600;
+  font-size: 10px;
+}
+
+.hoverTraceTable td {
+  padding: 6px;
+  border-bottom: 1px solid #333;
+  color: #d4d4d4;
+  vertical-align: top;
+}
+
+.hoverTraceTable tr:hover {
+  background: #2d2d30;
+}
+
+.hoverTraceTable tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.hoverTableAction {
+  color: #4fc3f7 !important;
+  font-weight: 600;
+}
+
+.hoverTableVariable {
+  color: #9cdcfe !important;
+  font-weight: 500;
+}
+
+.hoverTableValue {
+  color: #ce9178 !important;
+  font-weight: 400;
+}

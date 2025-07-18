@@ -1,0 +1,124 @@
+.tracingLens {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid #464647;
+  background: #252526;
+  flex-wrap: wrap;
+}
+
+.header h3 {
+  margin: 0;
+  color: #cccccc;
+  font-size: 1.1rem;
+}
+
+.fileName {
+  color: #808080;
+  font-size: 0.9rem;
+  font-family: 'Courier New', monospace;
+}
+
+.subtitle {
+  color: #4fc3f7;
+  font-size: 0.85rem;
+  font-style: italic;
+  margin-left: auto;
+}
+
+.traceContainer {
+  flex: 1;
+  background: #1e1e1e;
+  overflow: hidden;
+  border: none;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  text-align: center;
+  color: #808080;
+  padding: 3rem;
+}
+
+.emptyIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.emptyState h3 {
+  margin: 0 0 0.5rem 0;
+  color: #cccccc;
+  font-size: 1.2rem;
+}
+
+.emptyState p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.instructions {
+  background: #2d2d30;
+  border-top: 1px solid #464647;
+  padding: 1rem;
+  font-size: 0.9rem;
+}
+
+.instructions h4 {
+  margin: 0 0 0.5rem 0;
+  color: #4fc3f7;
+  font-size: 1rem;
+}
+
+.instructions ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.instructions li {
+  margin: 0.25rem 0;
+  line-height: 1.4;
+}
+
+.instructions strong {
+  color: #4fc3f7;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .subtitle {
+    margin-left: 0;
+  }
+  
+  .instructions {
+    padding: 0.75rem;
+  }
+  
+  .emptyState {
+    padding: 2rem;
+  }
+  
+  .emptyIcon {
+    font-size: 3rem;
+  }
+}

@@ -1,0 +1,254 @@
+/* Exercise Picker Styles */
+
+.pickerContainer {
+  border-top: 1px solid #464647;
+  display: flex;
+  flex-direction: column;
+  max-height: 400px;
+  overflow: hidden;
+}
+
+.pickerHeader {
+  padding: 15px 20px;
+  border-bottom: 1px solid #464647;
+  background: #2d2d30;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pickerHeader h3 {
+  font-size: 14px;
+  color: #9cdcfe;
+  margin: 0;
+  font-weight: 600;
+}
+
+.fileType {
+  background: #0e639c;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.emptyMessage {
+  padding: 20px;
+  text-align: center;
+  color: #888;
+  font-size: 12px;
+}
+
+.markdownMessage {
+  padding: 20px;
+  color: #d4d4d4;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.markdownMessage p {
+  margin: 0 0 10px 0;
+}
+
+.markdownMessage p:last-child {
+  margin-bottom: 0;
+}
+
+.section {
+  padding: 15px 20px;
+  border-bottom: 1px solid #3c3c3c;
+}
+
+.sectionTitle {
+  font-size: 12px;
+  color: #cccccc;
+  margin: 0 0 10px 0;
+  font-weight: 600;
+}
+
+/* Colorize Option Styles */
+.colorizeOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #d4d4d4;
+  margin-bottom: 5px;
+  height: 1.5em; /* One line height */
+  position: relative;
+}
+
+.colorizeOption input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  accent-color: #007acc;
+}
+
+.colorizeLabel {
+  font-weight: 500;
+}
+
+/* Tooltip styles */
+.colorizeOption::after {
+  content: attr(title);
+  position: absolute;
+  left: 0;
+  top: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  z-index: 1000;
+  margin-top: 2px;
+}
+
+.colorizeOption:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Keep old pseudocode styles for backward compatibility */
+.pseudocodeOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #d4d4d4;
+  margin-bottom: 5px;
+}
+
+.pseudocodeOption input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  accent-color: #007acc;
+}
+
+.pseudocodeLabel {
+  font-weight: 500;
+}
+
+.pseudocodeDesc {
+  font-size: 10px;
+  color: #888;
+  margin-left: 22px;
+}
+
+/* Edit Button - Full Width at Top */
+.editButton {
+  background: #2d2d30;
+  border: 1px solid #464647;
+  color: #d4d4d4;
+  padding: 12px 16px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+  font-weight: 600;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.editButton:hover {
+  background: #383838;
+  border-color: #555;
+}
+
+.editButton.active {
+  background: #094771;
+  border-color: #007acc;
+  color: #ffffff;
+}
+
+/* Exercise Grid Styles */
+.exerciseGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.exerciseButton {
+  background: #2d2d30;
+  border: 1px solid #464647;
+  color: #d4d4d4;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+  font-weight: 500;
+}
+
+.exerciseButton:hover {
+  background: #383838;
+  border-color: #555;
+}
+
+.exerciseButton.active {
+  background: #094771;
+  border-color: #007acc;
+  color: #ffffff;
+}
+
+.exerciseName {
+  font-weight: 500;
+}
+
+.exerciseFeatures {
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+.transformList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.transformCheckbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #d4d4d4;
+}
+
+.transformCheckbox input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  accent-color: #007acc;
+}
+
+.transformName {
+  flex: 1;
+}
+
+.infoSection {
+  padding: 15px 20px;
+  background: #262626;
+}
+
+.infoTitle {
+  font-size: 11px;
+  color: #9cdcfe;
+  margin: 0 0 5px 0;
+  font-weight: 600;
+}
+
+.infoContent {
+  font-size: 11px;
+  color: #cccccc;
+  line-height: 1.4;
+}

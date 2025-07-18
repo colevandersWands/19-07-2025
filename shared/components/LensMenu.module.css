@@ -1,0 +1,265 @@
+/* Lens Menu Styles */
+
+.lensMenu {
+  position: fixed;
+  background: #2d2d30;
+  border: 1px solid #464647;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  color: #d4d4d4;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  z-index: 1000;
+  min-width: 320px;
+  max-width: 450px;
+  max-height: 90vh;
+  overflow: visible;
+  animation: slideIn 0.15s ease-out;
+  outline: none;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menuHeader {
+  padding: 12px 16px;
+  background: #383838;
+  border-bottom: 1px solid #464647;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menuTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #9cdcfe;
+}
+
+.selectionInfo {
+  font-size: 11px;
+  color: #888;
+}
+
+.lensSection {
+  padding: 12px 16px;
+}
+
+.lensSection:not(:last-child) {
+  border-bottom: 1px solid #464647;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #cccccc;
+  margin-bottom: 8px;
+}
+
+.sectionIcon {
+  font-size: 14px;
+}
+
+.lensGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
+  max-height: none;
+  overflow: visible;
+}
+
+.lensButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #1e1e1e;
+  border: 1px solid #464647;
+  border-radius: 4px;
+  color: #d4d4d4;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 44px; /* Touch-friendly minimum size */
+  touch-action: manipulation; /* Prevent double-tap zoom */
+}
+
+.lensButton:hover {
+  background: #0e639c;
+  border-color: #007acc;
+  color: white;
+}
+
+.lensButton:active {
+  background: #0a4a73;
+  transform: translateY(1px);
+}
+
+.lensButton.selected {
+  background: #0e639c;
+  border-color: #007acc;
+  color: white;
+  box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.3);
+}
+
+.lensIcon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.lensName {
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menuFooter {
+  padding: 8px 16px;
+  background: #383838;
+  border-top: 1px solid #464647;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.closeButton {
+  background: transparent;
+  border: 1px solid #464647;
+  color: #cccccc;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background: #464647;
+  color: white;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .lensMenu {
+    min-width: 250px;
+    max-width: 90vw;
+    left: 50% !important;
+    transform: translateX(-50%);
+    top: 20px !important;
+  }
+  
+  .lensGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .menuHeader {
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+    padding: 10px 12px;
+  }
+  
+  .menuTitle {
+    font-size: 13px;
+  }
+  
+  .selectionInfo {
+    font-size: 10px;
+  }
+  
+  .lensSection {
+    padding: 10px 12px;
+  }
+  
+  .sectionTitle {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+  
+  .sectionIcon {
+    font-size: 12px;
+  }
+  
+  .lensButton {
+    padding: 12px 14px;
+    font-size: 11px;
+    min-height: 48px; /* Larger touch targets on mobile */
+  }
+  
+  .lensIcon {
+    font-size: 12px;
+  }
+  
+  .menuFooter {
+    padding: 6px 12px;
+  }
+  
+  .closeButton {
+    padding: 4px 10px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lensMenu {
+    min-width: 200px;
+    max-width: 95vw;
+  }
+  
+  .menuHeader {
+    padding: 8px 10px;
+  }
+  
+  .menuTitle {
+    font-size: 12px;
+  }
+  
+  .selectionInfo {
+    font-size: 9px;
+  }
+  
+  .lensSection {
+    padding: 8px 10px;
+  }
+  
+  .sectionTitle {
+    font-size: 10px;
+    margin-bottom: 5px;
+  }
+  
+  .sectionIcon {
+    font-size: 11px;
+  }
+  
+  .lensButton {
+    padding: 14px 12px;
+    font-size: 10px;
+    gap: 6px;
+    min-height: 52px; /* Even larger touch targets on small screens */
+  }
+  
+  .lensIcon {
+    font-size: 11px;
+  }
+  
+  .menuFooter {
+    padding: 5px 10px;
+  }
+  
+  .closeButton {
+    padding: 3px 8px;
+    font-size: 9px;
+  }
+}

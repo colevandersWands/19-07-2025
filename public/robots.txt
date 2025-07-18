@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://your-username.github.io/study-lenses/sitemap.xml
+
+# Disallow common build artifacts
+Disallow: /dist/
+Disallow: /node_modules/
+Disallow: /*.map$
+Disallow: /src/test/

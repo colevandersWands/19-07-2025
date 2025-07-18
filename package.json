@@ -1,0 +1,44 @@
+{
+  "name": "study-lenses",
+  "version": "2.0.0",
+  "type": "module",
+  "description": "Learning platform for studying code through interactive lenses",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:prod": "NODE_ENV=production vite build",
+    "build:19-07-2025": "NODE_ENV=production vite build",
+    "preview": "vite preview",
+    "preview:19-07-2025": "vite preview --base /19-07-2025/",
+    "lint": "eslint . --ext .js,.jsx --fix",
+    "lint:check": "eslint . --ext .js,.jsx",
+    "type-check": "tsc --noEmit --checkJs",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@codemirror/autocomplete": "^6.18.6",
+    "@codemirror/lang-javascript": "^6.2.4",
+    "@codemirror/lint": "^6.8.5",
+    "@codemirror/state": "^6.5.2",
+    "@codemirror/theme-one-dark": "^6.1.3",
+    "@codemirror/view": "^6.38.0",
+    "codemirror": "^6.0.2",
+    "js2flowchart": "^1.3.5",
+    "preact": "^10.19.3",
+    "prettier": "^3.6.2",
+    "shift-parser": "^8.0.0",
+    "shift-scope": "^6.0.0"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.8.1",
+    "@vitest/ui": "^3.2.4",
+    "eslint": "^9.30.1",
+    "jsdom": "^26.1.0",
+    "typescript": "^5.8.3",
+    "vite": "^5.0.10",
+    "vitest": "^3.2.4"
+  }
+}

@@ -1,0 +1,113 @@
+/* RunCode Component Styles */
+
+.runCodeContainer {
+  margin: 10px 0;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.runButton {
+  background: #0e639c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.runButton:hover:not(:disabled) {
+  background: #1177bb;
+}
+
+.runButton:disabled {
+  background: #464647;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.optionsContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.optionsButton {
+  background: #464647;
+  color: #d4d4d4;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.optionsButton:hover {
+  background: #525252;
+}
+
+.optionsPanel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #2d2d30;
+  border: 1px solid #464647;
+  border-radius: 4px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.optionsPanel label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #d4d4d4;
+  cursor: pointer;
+}
+
+.optionsPanel input[type="checkbox"] {
+  margin: 0;
+}
+
+.numberInput {
+  background: #1e1e1e;
+  border: 1px solid #464647;
+  color: #d4d4d4;
+  padding: 4px 6px;
+  border-radius: 3px;
+  width: 60px;
+  font-size: 12px;
+  margin-left: 6px;
+}
+
+.numberInput:focus {
+  outline: none;
+  border-color: #007acc;
+}
+
+.executionContainer {
+  margin-top: 10px;
+}
+
+.executionContainer iframe {
+  display: none;
+}
+
+/* Console output styling is handled inline in the component 
+   since it's dynamically created in the iframe context */
