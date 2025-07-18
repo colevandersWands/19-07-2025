@@ -10,20 +10,6 @@ import { pointcut } from './pointcut.js';
 import { print } from './lib/trace-log.js';
 import { walk } from './estree-walker/index.js';
 
-// Dynamic base path detection
-function getBasePath() {
-  // Check if we're in development (localhost) or production
-  const isDev =
-    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-  return isDev ? '' : '/19-07-2025';
-}
-
-function getStaticPath(path) {
-  const basePath = getBasePath();
-  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-  return basePath ? `${basePath}/${cleanPath}` : `/${cleanPath}`;
-}
-
 // Global loading state
 window.traceSystemLoading = false;
 window.traceSystemLoaded = false;

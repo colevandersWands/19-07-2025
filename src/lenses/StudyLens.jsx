@@ -3,10 +3,12 @@ import { memo } from 'preact/compat';
 import RunCode from '../../shared/components/RunCode.jsx';
 import EmbeddedTrace from '../../shared/components/EmbeddedTrace.jsx';
 import StepThroughModal from '../components/StepThroughModal.jsx';
+import { getCurrentContent as getCurrentContentForAsking } from '../../shared/utils/getCurrentContent.js';
 import { useApp } from '../../shared/context/AppContext.jsx';
 import { setCurrentEditor } from '../utils/editorAdapter.js';
 import { useFileEditor } from '../hooks/useFileEditor.js';
 import styles from './StudyLens.module.css';
+import { askOpenEnded } from '../../public/static/ask/component/ask-questions.js';
 
 /**
  * StudyLens - Interactive code editor with lens selection system
@@ -18,17 +20,39 @@ const StudyLens = ({ resource }) => {
   const code = resource?.content || '';
   const fileName = resource?.name || '';
   const filePath = resource?.path || '';
-  
 
-  const { resetFileContent, currentScope, setCurrentScope } = useApp();
-  const { 
-    file: getFileEditor, 
-    debouncedUpdateFileContent, 
-    getEditorInstance, 
-    getEditorContainer, 
-    setEditorInstance, 
-    clearEditorInstance 
+  const { resetFileContent, currentScope, setCurrentScope, virtualFS } = useApp();
+  const {
+    file: getFileEditor,
+    debouncedUpdateFileContent,
+    getEditorInstance,
+    getEditorContainer,
+    setEditorInstance,
+    clearEditorInstance,
   } = useFileEditor(filePath);
+
+  // Get file editor to access latest content
+  const getFileEditorForAsking = useCallback(() => {
+    if (!virtualFS || !resource.path) return null;
+
+    const findFile = (node, path) => {
+      if (node.path === path) return node;
+      if (node.children && Array.isArray(node.children)) {
+        for (const child of node.children) {
+          const found = findFile(child, path);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+
+    return findFile(virtualFS, resource.path);
+  }, [virtualFS, resource.path]);
+
+  // Get current content (edited or original)
+  const getCurrentCode = useCallback(() => {
+    return getCurrentContentForAsking(resource, getFileEditorForAsking, '');
+  }, [resource, getFileEditorForAsking]);
 
   // Get current editor content from virtual file system or transformed resource - memoized
   const getCurrentContent = useMemo(() => {
@@ -42,10 +66,10 @@ const StudyLens = ({ resource }) => {
   }, [getFileEditor, code, resource]);
 
   // Note: Using getCurrentContent dynamically instead of static initialContent
-  
+
   // Track current file path to detect changes
   const currentFilePathRef = useRef(filePath);
-  
+
   const [showInstructions, setShowInstructions] = useState(false);
   const [showHtmlPreview, setShowHtmlPreview] = useState(false);
   const [showStepThroughModal, setShowStepThroughModal] = useState(false);
@@ -58,33 +82,34 @@ const StudyLens = ({ resource }) => {
     fileName.toLowerCase().endsWith('.webm') ||
     fileName.toLowerCase().endsWith('.mov');
 
-
-
   // Editor container ref - this will be the mounting point for existing or new editors
   const editorContainerRef = useRef(null);
-  
+
   // Track editor setup state to prevent render loops
   const editorSetupRef = useRef(new Map()); // Map of filePath -> boolean
-  
+
   // Create or reuse existing editor instance - only run once per file
   useEffect(() => {
     if (!editorContainerRef.current) return;
-    
+
     // Skip if already set up for this file
     if (editorSetupRef.current.get(filePath)) {
       return;
     }
-    
+
     // Check if file already has an editor instance
     const existingEditor = getEditorInstance();
     const existingContainer = getEditorContainer();
-    
+
     if (existingEditor && existingContainer) {
-      // Only append if not already in DOM to prevent flickering
-      if (!existingContainer.parentNode) {
-        editorContainerRef.current.appendChild(existingContainer);
+      // Clear any existing content from the mount point
+      while (editorContainerRef.current.firstChild) {
+        editorContainerRef.current.removeChild(editorContainerRef.current.firstChild);
       }
-      
+
+      // Append the existing container to restore the editor
+      editorContainerRef.current.appendChild(existingContainer);
+
       // Update content if different (get current content dynamically)
       const currentContent = existingEditor.state.doc.toString();
       const expectedContent = getCurrentContent;
@@ -93,19 +118,19 @@ const StudyLens = ({ resource }) => {
           changes: {
             from: 0,
             to: existingEditor.state.doc.length,
-            insert: expectedContent
-          }
+            insert: expectedContent,
+          },
         });
       }
     } else {
       // Create new editor instance
       createNewEditor();
     }
-    
+
     // Mark as set up for this file
     editorSetupRef.current.set(filePath, true);
-    
-    // Cleanup - remove container from DOM when component unmounts
+
+    // Cleanup - remove container from DOM when component unmounts but preserve for reuse
     return () => {
       const container = getEditorContainer();
       if (container && container.parentNode) {
@@ -115,7 +140,7 @@ const StudyLens = ({ resource }) => {
       editorSetupRef.current.delete(filePath);
     };
   }, [filePath]); // Re-run when file changes
-  
+
   // Function to create a new editor instance
   const createNewEditor = () => {
     // Import CodeMirror modules
@@ -124,11 +149,10 @@ const StudyLens = ({ resource }) => {
         import('codemirror').then(({ basicSetup }) => {
           import('@codemirror/lang-javascript').then(({ javascript }) => {
             import('@codemirror/theme-one-dark').then(({ oneDark }) => {
-              
               // Create a dedicated container for this editor
               const editorContainer = document.createElement('div');
               editorContainer.className = 'codemirror-editor-container';
-              
+
               // Create extensions
               const extensions = [
                 basicSetup,
@@ -137,40 +161,39 @@ const StudyLens = ({ resource }) => {
                 EditorView.updateListener.of((update) => {
                   if (update.docChanged) {
                     const content = update.state.doc.toString();
-                    
+
                     // Update file content using the new hook
                     debouncedUpdateFileContent(content);
                   }
                 }),
               ];
-              
+
               // Create editor state with initial content
               const state = EditorState.create({
                 doc: getCurrentContent,
-                extensions
+                extensions,
               });
-              
+
               // Create editor view and append to dedicated container
               const view = new EditorView({
                 state,
-                parent: editorContainer
+                parent: editorContainer,
               });
-              
+
               // Store editor instance and container in virtual file system
               setEditorInstance(view, editorContainer);
-              
+
               // Append the container to the current mount point
               if (editorContainerRef.current) {
                 editorContainerRef.current.appendChild(editorContainer);
               }
-              
             });
           });
         });
       });
     });
   };
-  
+
   // Helper functions for external access
   const getEditor = useCallback(() => getEditorInstance(), [getEditorInstance]);
   const getValue = useCallback(() => {
@@ -184,12 +207,11 @@ const StudyLens = ({ resource }) => {
       return {
         from: selection.from,
         to: selection.to,
-        text: editor.state.doc.sliceString(selection.from, selection.to)
+        text: editor.state.doc.sliceString(selection.from, selection.to),
       };
     }
     return null;
   }, [getEditorInstance]);
-  
 
   // Update the global editor adapter for SL1 ask-me component
   useEffect(() => {
@@ -211,11 +233,9 @@ const StudyLens = ({ resource }) => {
     };
   }, []);
 
-
-
   // Initialize scope only once when component mounts
   const scopeInitializedRef = useRef(false);
-  
+
   useEffect(() => {
     // Only initialize scope once
     if (!scopeInitializedRef.current) {
@@ -235,7 +255,7 @@ const StudyLens = ({ resource }) => {
   useEffect(() => {
     if (currentFilePathRef.current !== filePath) {
       currentFilePathRef.current = filePath;
-      
+
       // Get content directly without using memoized getCurrentContent to break dependency cycle
       let newContent = code;
       if (resource?.isPseudocode || resource?.originalContent) {
@@ -243,7 +263,7 @@ const StudyLens = ({ resource }) => {
       } else if (getFileEditor) {
         newContent = getFileEditor.editorContent || getFileEditor.content || code;
       }
-      
+
       // Update CodeMirror content
       const editor = getEditorInstance();
       if (editor && newContent !== editor.state.doc.toString()) {
@@ -251,11 +271,11 @@ const StudyLens = ({ resource }) => {
           changes: {
             from: 0,
             to: editor.state.doc.length,
-            insert: newContent
-          }
+            insert: newContent,
+          },
         });
       }
-      
+
       // Update scope for new file only when file actually changes
       if (scopeInitializedRef.current) {
         setCurrentScope({
@@ -269,22 +289,24 @@ const StudyLens = ({ resource }) => {
     }
   }, [filePath]); // Only depend on filePath to reduce unnecessary renders
 
-
   return (
-    <div className={styles.studyLens} style={{ 
-      // HACK: Force hardware acceleration to prevent flickering
-      transform: 'translateZ(0)',
-      backfaceVisibility: 'hidden',
-      perspective: '1000px'
-    }}>
+    <div
+      className={styles.studyLens}
+      style={{
+        // HACK: Force hardware acceleration to prevent flickering
+        transform: 'translateZ(0)',
+        backfaceVisibility: 'hidden',
+        perspective: '1000px',
+      }}
+    >
       <div className={styles.header}>
         <h3>📖 Study Mode</h3>
         {fileName && <span className={styles.fileName}>{fileName}</span>}
-        <div className={styles.scopeDisplay}>
+        {/* <div className={styles.scopeDisplay}>
           {currentScope.type === 'selection'
             ? `Lines ${currentScope.lines?.start}-${currentScope.lines?.end}`
             : 'Whole File'}
-        </div>
+        </div> */}
         <div className={styles.saveStatus}>
           {(() => {
             const file = getFileEditor;
@@ -314,8 +336,8 @@ const StudyLens = ({ resource }) => {
                           changes: {
                             from: 0,
                             to: editor.state.doc.length,
-                            insert: originalContent
-                          }
+                            insert: originalContent,
+                          },
                         });
                       }
 
@@ -341,6 +363,75 @@ const StudyLens = ({ resource }) => {
             }
           })()}
         </div>
+        <button
+          className={styles.askMeButton}
+          onClick={async () => {
+            try {
+              // Use current code
+              const codeToAnalyze = getCurrentCode();
+
+              // Generate and log questions using SL1 library
+              askOpenEnded(codeToAnalyze);
+            } catch (error) {
+              console.error('Error loading SL1 ask-me library:', error);
+              console.log('Fallback: Manual code analysis questions');
+              console.log('--- --- --- --- --- --- ---');
+              console.log('Consider these questions about your code:');
+              console.log('- What does this code do step by step?');
+              console.log('- What are the main variables and their purposes?');
+              console.log('- Are there any patterns or structures you recognize?');
+              console.log('--- --- --- --- --- --- ---');
+            }
+          }}
+          title="Generate questions about this code (logged to console)"
+        >
+          💬 Ask Me
+        </button>
+      </div>
+
+      {/* Compact Dynamic Study Options - moved above editor */}
+      <div className={styles.compactToolsPanel}>
+        {!isVideoFile && (
+          <>
+            {/* Execute Code */}
+            <div className={styles.compactTool}>
+              <RunCode
+                code={getCurrentCode()}
+                scopedCode={getCurrentCode()}
+                buttonText={
+                  currentScope.type === 'selection' ? 'Run Selection' : 'Run Code'
+                }
+                showOptions={false}
+                language="javascript"
+              />
+            </div>
+
+            {/* Code Tracing */}
+            <div className={styles.compactTool}>
+              <EmbeddedTrace
+                code={getCurrentCode()}
+                fileName={fileName}
+                scope={currentScope}
+                onTraceData={(data) => undefined}
+              />
+            </div>
+
+            {/* Step-Through Visualization */}
+            {(fileName.endsWith('.js') ||
+              fileName.endsWith('.jsx') ||
+              fileName.endsWith('.py')) && (
+              <div className={styles.compactTool}>
+                <button
+                  className={styles.compactButton}
+                  onClick={() => setShowStepThroughModal(true)}
+                  title="Open interactive step-through visualization"
+                >
+                  🔍 Step-Through
+                </button>
+              </div>
+            )}
+          </>
+        )}
       </div>
 
       <div className={styles.editorContainer}>
@@ -388,22 +479,9 @@ const StudyLens = ({ resource }) => {
         )}
       </div>
 
-      <div className={styles.toolsPanel}>
-        {!isVideoFile && (
-          <div className={styles.runSection}>
-            <h4>🚀 Execute Code</h4>
-            <RunCode
-              code={currentScope.type === 'selection' ? currentScope.code : (currentScope.code || '')}
-              scopedCode={currentScope.type === 'selection' ? currentScope.code : null}
-              buttonText={currentScope.type === 'selection' ? 'Run Selection' : 'Run Code'}
-              showOptions={true}
-              language="javascript"
-            />
-          </div>
-        )}
-
-        {/* HTML Preview for HTML files - only show if no embedded trace for cleaner UI */}
-        {isHtmlFile && (
+      {/* Additional Tools Panel for HTML Preview (kept below editor) */}
+      {isHtmlFile && (
+        <div className={styles.additionalToolsPanel}>
           <div className={styles.htmlSection}>
             <h4>🌐 HTML Live Preview</h4>
             <div className={styles.htmlControls}>
@@ -447,36 +525,8 @@ const StudyLens = ({ resource }) => {
               </div>
             )}
           </div>
-        )}
-
-        {/* Embedded Trace functionality - only for JavaScript files */}
-        {!isHtmlFile && !isVideoFile && (
-          <EmbeddedTrace
-            code={currentScope.type === 'selection' ? currentScope.code : (currentScope.code || '')}
-            fileName={fileName}
-            scope={currentScope}
-            onTraceData={(data) => {
-              console.log('Trace data:', data);
-            }}
-          />
-        )}
-
-        {!isVideoFile &&
-          (fileName.endsWith('.js') ||
-            fileName.endsWith('.jsx') ||
-            fileName.endsWith('.py')) && (
-            <div className={styles.stepThroughSection}>
-              <h4>🔍 Step-Through Visualization</h4>
-              <button
-                className={styles.stepThroughButton}
-                onClick={() => setShowStepThroughModal(true)}
-                title="Open interactive step-through visualization"
-              >
-                📊 Step-Through Code
-              </button>
-            </div>
-          )}
-      </div>
+        </div>
+      )}
 
       <div className={styles.instructions}>
         <h4
@@ -510,7 +560,10 @@ const StudyLens = ({ resource }) => {
       <StepThroughModal
         isOpen={showStepThroughModal}
         onClose={() => setShowStepThroughModal(false)}
-        code={currentScope.code || ''}
+        code={
+          getCurrentCode()
+          // currentScope.code || ''
+        }
         fileName={fileName}
         language={resource?.lang || '.js'}
       />

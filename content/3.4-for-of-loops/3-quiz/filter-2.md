@@ -1,6 +1,5 @@
 # Quiz
 
-> #todo
 
 ## Filter 2
 

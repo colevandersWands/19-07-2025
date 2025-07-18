@@ -46,7 +46,7 @@ const VariablesLens = ({ resource, selectedCode, onHighlight }) => {
     if (variablesConfig) {
       try {
         // Variables lens might have highlighting options in the future
-        console.log('Applied variables configuration from URL:', variablesConfig);
+        variablesConfig
       } catch (error) {
         console.warn('Failed to parse variables parameters:', error);
       }

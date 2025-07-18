@@ -18,7 +18,7 @@
 }
 
 .sidebarHeader {
-  padding: 20px;
+  padding: 5px;
   border-bottom: 1px solid #464647;
   background: #2d2d30;
 }
@@ -127,10 +127,10 @@
     overflow-y: auto;
   }
   
-  .sidebarHeader {
-    padding: 15px;
+  /* .sidebarHeader {
+    padding: 5px;
   }
-  
+   */
   .appTitle {
     font-size: 18px;
   }

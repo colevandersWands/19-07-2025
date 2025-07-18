@@ -1,6 +1,7 @@
 import { createContext } from 'preact';
 import { useContext, useState, useCallback, useEffect } from 'preact/hooks';
 import URLManager from '../utils/urlManager.js';
+import { setVirtualFS as setGlobalVirtualFS } from '../../fs.js';
 
 // Create the context
 const AppContext = createContext(null);
@@ -8,9 +9,15 @@ const AppContext = createContext(null);
 // Context provider component
 export const AppProvider = ({ children }) => {
   // File system state
-  const [virtualFS, setVirtualFS] = useState(null);
+  const [virtualFS, setVirtualFSState] = useState(null);
   const [currentFile, setCurrentFile] = useState(null);
   const [fileHistory, setFileHistory] = useState([]);
+  
+  // Wrapped setVirtualFS that also updates global virtualFS
+  const setVirtualFS = useCallback((fs) => {
+    setVirtualFSState(fs);
+    setGlobalVirtualFS(fs);
+  }, []);
   
   // Exercise system state
   const [currentExercise, setCurrentExercise] = useState('edit');

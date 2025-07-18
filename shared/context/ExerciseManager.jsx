@@ -53,15 +53,11 @@ export const useExerciseManager = () => {
     
     // Create new exercise component
     try {
-      console.log(`🏗️ Attempting to load exercise: ${exerciseType} for resource:`, resource);
       
       // For now, let's import the study exercise directly to avoid dynamic import issues
       if (exerciseType === 'edit' || exerciseType === 'study') {
-        console.log('📦 Importing study exercise...');
         const studyModule = await import('../../src/lenses/StudyLens.jsx');
-        console.log('📦 Study module imported:', studyModule);
         const StudyExercise = studyModule.default;
-        console.log('📦 Study exercise component:', StudyExercise);
         
         // Create component instance and store it on the resource
         const componentInstance = () => (
@@ -72,12 +68,10 @@ export const useExerciseManager = () => {
         );
         
         resource.exerciseComponents[exerciseType] = componentInstance;
-        console.log(`✅ Study exercise loaded for ${resource.name}`);
         return componentInstance;
       }
       
       // For other exercise types, fall back to edit for now
-      console.log(`⚠️ Exercise type ${exerciseType} not implemented yet, falling back to edit`);
       return getOrCreateExercise(resource, 'edit');
       
     } catch (error) {

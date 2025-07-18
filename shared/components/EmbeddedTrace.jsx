@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'preact/hooks';
 import { useColorize } from '../context/ColorizeContext.jsx';
 import styles from './EmbeddedTrace.module.css';
+import { BASE_PATH } from '../../src/CONSTANTS.js';
+import '../../public/static/trace-loader.js';
 
 /**
  * EmbeddedTrace - Compact trace functionality for embedding in study lenses
@@ -34,6 +36,20 @@ const EmbeddedTrace = ({ code, fileName, onTraceData, scope }) => {
     console: true,
   });
 
+  // Handle escape key to close modal
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === 'Escape' && showTablesDropdown) {
+        setShowTablesDropdown(false);
+      }
+    };
+
+    if (showTablesDropdown) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
+  }, [showTablesDropdown]);
+
   // Check if SL1 trace system is loaded (using trace-loader.js)
   const ensureTraceSystemLoaded = () => {
     return new Promise((resolve) => {
@@ -63,7 +79,7 @@ const EmbeddedTrace = ({ code, fileName, onTraceData, scope }) => {
         } else if (attempts < maxAttempts) {
           setTimeout(checkAgain, 300);
         } else {
-          console.error('SL1 trace system not available after waiting');
+          // console.error('SL1 trace system not available after waiting');
           resolve(false);
         }
       };
@@ -191,7 +207,6 @@ const EmbeddedTrace = ({ code, fileName, onTraceData, scope }) => {
         }, 2000);
       } else {
         // Try to load trace system
-        // console.log('🔄 Loading SL1 trace system...');
         const traceSystemReady = await ensureTraceSystemLoaded();
 
         if (traceSystemReady && window.trace) {
@@ -265,7 +280,7 @@ const EmbeddedTrace = ({ code, fileName, onTraceData, scope }) => {
       <html>
       <head>
         <title>Trace Execution - ${fileName}</title>
-        ${enableColorize ? '<link rel="stylesheet" href="/static/prism/style.css" />' : ''}
+        ${enableColorize ? `<link rel="stylesheet" href="${BASE_PATH}/static/prism/style.css" />'` : ''}
         <style>
           body { 
             font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; 
@@ -435,7 +450,7 @@ const EmbeddedTrace = ({ code, fileName, onTraceData, scope }) => {
             line-height: 1;
           }
         </style>
-        ${enableColorize ? '<script src="/static/prism/script.js"></script>' : ''}
+        ${enableColorize ? `<script src="${BASE_PATH}/static/prism/script.js"></script>` : ''}
       </head>
       <body>
         <div class="left-panel">
@@ -756,226 +771,172 @@ const EmbeddedTrace = ({ code, fileName, onTraceData, scope }) => {
 
   return (
     <div className={styles.embeddedTrace}>
-      <div className={styles.traceControls}>
-        <h4>
-          🔍 Code Tracing
-        </h4>
-        <div className={styles.buttonGroup}>
+      <div className={styles.buttonGroup}>
+        <button
+          className={styles.traceButton}
+          onClick={runTrace}
+          disabled={isTracing || !code.trim()}
+        >
+          {isTracing ? '⏳ Tracing...' : '▶️ Run Trace'}
+        </button>
+
+        <div className={styles.dropdown}>
           <button
             className={styles.traceButton}
-            onClick={runTrace}
-            disabled={isTracing || !code.trim()}
+            onClick={() => setShowTraceConfig(!showTraceConfig)}
           >
-            {isTracing ? '⏳ Tracing...' : '▶️ Run Trace'}
+            ⚙️ Options
           </button>
-
-          <div className={styles.dropdown}>
-            <button
-              className={styles.traceButton}
-              onClick={() => setShowTraceConfig(!showTraceConfig)}
-            >
-              ⚙️ Options
-            </button>
-            {showTraceConfig && (
-              <div className={styles.dropdownContent}>
-                <div className={styles.configSection}>
+          {showTraceConfig && (
+            <div className={styles.dropdownContent}>
+              <div className={styles.configSection}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={traceConfig.variables}
+                    onChange={(e) => handleConfigChange('variables', e.target.checked)}
+                  />
+                  Variables
+                </label>
+                <div className={styles.subOptions}>
                   <label>
                     <input
                       type="checkbox"
-                      checked={traceConfig.variables}
-                      onChange={(e) => handleConfigChange('variables', e.target.checked)}
-                    />
-                    Variables
-                  </label>
-                  <div className={styles.subOptions}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={traceConfig.variablesDeclare}
-                        onChange={(e) =>
-                          handleConfigChange('variablesDeclare', e.target.checked)
-                        }
-                      />
-                      declare
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={traceConfig.variablesAssign}
-                        onChange={(e) =>
-                          handleConfigChange('variablesAssign', e.target.checked)
-                        }
-                      />
-                      assign
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={traceConfig.variablesRead}
-                        onChange={(e) =>
-                          handleConfigChange('variablesRead', e.target.checked)
-                        }
-                      />
-                      read
-                    </label>
-                    <div className={styles.textInput}>
-                      <label>Specific variables:</label>
-                      <input
-                        type="text"
-                        placeholder="e.g. x, y, counter"
-                        value={traceConfig.variablesList || ''}
-                        onChange={(e) =>
-                          handleConfigChange('variablesList', e.target.value)
-                        }
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className={styles.configSection}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={traceConfig.operators}
-                      onChange={(e) => handleConfigChange('operators', e.target.checked)}
-                    />
-                    Operators
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={traceConfig.controlFlow}
+                      checked={traceConfig.variablesDeclare}
                       onChange={(e) =>
-                        handleConfigChange('controlFlow', e.target.checked)
+                        handleConfigChange('variablesDeclare', e.target.checked)
                       }
                     />
-                    Control flow
+                    declare
                   </label>
                   <label>
                     <input
                       type="checkbox"
-                      checked={traceConfig.functions}
-                      onChange={(e) => handleConfigChange('functions', e.target.checked)}
+                      checked={traceConfig.variablesAssign}
+                      onChange={(e) =>
+                        handleConfigChange('variablesAssign', e.target.checked)
+                      }
                     />
-                    Function calls
+                    assign
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={traceConfig.variablesRead}
+                      onChange={(e) =>
+                        handleConfigChange('variablesRead', e.target.checked)
+                      }
+                    />
+                    read
                   </label>
                   <div className={styles.textInput}>
-                    <label>Specific functions:</label>
+                    <label>Specific variables:</label>
                     <input
                       type="text"
-                      placeholder="e.g. calculate, render"
-                      value={traceConfig.functionsList || ''}
+                      placeholder="e.g. x, y, counter"
+                      value={traceConfig.variablesList || ''}
                       onChange={(e) =>
-                        handleConfigChange('functionsList', e.target.value)
+                        handleConfigChange('variablesList', e.target.value)
                       }
                     />
                   </div>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={traceConfig.this}
-                      onChange={(e) => handleConfigChange('this', e.target.checked)}
-                    />
-                    This keyword
-                  </label>
-                </div>
-
-                <div className={styles.configSection}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={traceConfig.lines}
-                      onChange={(e) => handleConfigChange('lines', e.target.checked)}
-                    />
-                    Line numbers
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={traceConfig.steps}
-                      onChange={(e) => handleConfigChange('steps', e.target.checked)}
-                    />
-                    Step numbers
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={traceConfig.console}
-                      onChange={(e) => handleConfigChange('console', e.target.checked)}
-                    />
-                    Console output
-                  </label>
                 </div>
               </div>
-            )}
-          </div>
 
-          <button
-            className={styles.traceButton}
-            onClick={openTracePopup}
-            disabled={traceLog.length === 0}
-            title={
-              traceLog.length === 0
-                ? 'Run trace first to see data'
-                : 'Open trace data in popup window'
-            }
-          >
-            🪟 Popup Table
-          </button>
-
-          <button className={styles.traceButton} onClick={toggleTraceTable}>
-            📊 {showTraceTable ? 'Hide' : 'Show'} ({traceLog.length})
-          </button>
-
-          <div className={styles.dropdown}>
-            <button
-              className={styles.traceButton}
-              onClick={() => setShowTablesDropdown(!showTablesDropdown)}
-              title="Show/hide trace table options"
-            >
-              🔥 Trace Tables {showTablesDropdown ? '▼' : '▶'}
-            </button>
-            {showTablesDropdown && (
-              <div className={styles.dropdownContent}>
-                <button
-                  className={styles.dropdownItem}
-                  onClick={() => {
-                    setHoverTableType('steps');
-                    setShowHoverTable(true);
-                    setShowTablesDropdown(false);
-                  }}
-                >
-                  👣 Steps Table
-                </button>
-                <button
-                  className={styles.dropdownItem}
-                  onClick={() => {
-                    setHoverTableType('values');
-                    setShowHoverTable(true);
-                    setShowTablesDropdown(false);
-                  }}
-                >
-                  📊 Values Table
-                </button>
-                <button
-                  className={styles.dropdownItem}
-                  onClick={() => {
-                    setHoverTableType('operators');
-                    setShowHoverTable(true);
-                    setShowTablesDropdown(false);
-                  }}
-                >
-                  ⚙️ Operators Table
-                </button>
+              <div className={styles.configSection}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={traceConfig.operators}
+                    onChange={(e) => handleConfigChange('operators', e.target.checked)}
+                  />
+                  Operators
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={traceConfig.controlFlow}
+                    onChange={(e) => handleConfigChange('controlFlow', e.target.checked)}
+                  />
+                  Control flow
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={traceConfig.functions}
+                    onChange={(e) => handleConfigChange('functions', e.target.checked)}
+                  />
+                  Function calls
+                </label>
+                <div className={styles.textInput}>
+                  <label>Specific functions:</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. calculate, render"
+                    value={traceConfig.functionsList || ''}
+                    onChange={(e) => handleConfigChange('functionsList', e.target.value)}
+                  />
+                </div>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={traceConfig.this}
+                    onChange={(e) => handleConfigChange('this', e.target.checked)}
+                  />
+                  This keyword
+                </label>
               </div>
-            )}
-          </div>
+
+              <div className={styles.configSection}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={traceConfig.lines}
+                    onChange={(e) => handleConfigChange('lines', e.target.checked)}
+                  />
+                  Line numbers
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={traceConfig.steps}
+                    onChange={(e) => handleConfigChange('steps', e.target.checked)}
+                  />
+                  Step numbers
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={traceConfig.console}
+                    onChange={(e) => handleConfigChange('console', e.target.checked)}
+                  />
+                  Console output
+                </label>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <button
+          className={styles.traceButton}
+          onClick={openTracePopup}
+          disabled={traceLog.length === 0}
+          title={
+            traceLog.length === 0
+              ? 'Run trace first to see data'
+              : 'Open trace data in popup window'
+          }
+        >
+          🪟 Popup Table
+        </button>
+
+        <div className={styles.traceTablesContainer}>
           <button
             className={styles.traceButton}
-            onClick={clearTrace}
-            disabled={traceLog.length === 0}
+            onClick={() => setShowTablesDropdown(!showTablesDropdown)}
+            title="Show/hide trace table options"
           >
-            🗑️ Clear
+            🔥 Trace Tables
           </button>
         </div>
       </div>
@@ -1006,6 +967,56 @@ const EmbeddedTrace = ({ code, fileName, onTraceData, scope }) => {
 
       {/* SL1 Trace Tables - Direct insertion of web components */}
       {showHoverTable && <div ref={traceTableContainerRef} />}
+
+      {/* Trace Tables Modal */}
+      {showTablesDropdown && (
+        <div className={styles.modalOverlay} onClick={() => setShowTablesDropdown(false)}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <h3>Select Trace Table Type</h3>
+              <button 
+                className={styles.closeButton} 
+                onClick={() => setShowTablesDropdown(false)}
+                title="Close modal"
+              >
+                ×
+              </button>
+            </div>
+            <div className={styles.modalBody}>
+              <button
+                className={styles.dropdownItem}
+                onClick={() => {
+                  setHoverTableType('steps');
+                  setShowHoverTable(true);
+                  setShowTablesDropdown(false);
+                }}
+              >
+                👣 Steps Table
+              </button>
+              <button
+                className={styles.dropdownItem}
+                onClick={() => {
+                  setHoverTableType('values');
+                  setShowHoverTable(true);
+                  setShowTablesDropdown(false);
+                }}
+              >
+                📊 Values Table
+              </button>
+              <button
+                className={styles.dropdownItem}
+                onClick={() => {
+                  setHoverTableType('operators');
+                  setShowHoverTable(true);
+                  setShowTablesDropdown(false);
+                }}
+              >
+                ⚙️ Operators Table
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Using SL1 trace system directly - no iframe needed */}
     </div>

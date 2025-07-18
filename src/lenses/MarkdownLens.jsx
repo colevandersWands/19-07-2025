@@ -5,6 +5,7 @@ import RunCode from '../../shared/components/RunCode.jsx';
 import StepThroughModal from '../components/StepThroughModal.jsx';
 import EmbeddedTrace from '../../shared/components/EmbeddedTrace.jsx';
 import styles from './MarkdownLens.module.css';
+import { BASE_PATH } from '../CONSTANTS.js';
 
 // Import marked for robust markdown parsing
 import { marked } from 'marked';
@@ -73,7 +74,7 @@ const MarkdownExercise = ({ resource }) => {
     const renderer = new marked.Renderer();
 
     // Configure base URL for assets
-    marked.use(baseUrl('/19-07-2025/content-assets/'));
+    marked.use(baseUrl(`${BASE_PATH}/content-assets/`));
 
     // Configure marked options
     marked.setOptions({
@@ -144,25 +145,31 @@ const MarkdownExercise = ({ resource }) => {
   }, []);
 
   // Panel management functions
-  const showRunPanel = useCallback((code, language) => {
-    setRunCode(code);
-    setRunLanguage(language);
-    setActivePanel('run');
-    trackStudyAction('markdown_run_code', resource, {
-      language,
-      codeLength: code.length,
-    });
-  }, [resource, trackStudyAction]);
+  const showRunPanel = useCallback(
+    (code, language) => {
+      setRunCode(code);
+      setRunLanguage(language);
+      setActivePanel('run');
+      trackStudyAction('markdown_run_code', resource, {
+        language,
+        codeLength: code.length,
+      });
+    },
+    [resource, trackStudyAction],
+  );
 
-  const showTracePanel = useCallback((code, language) => {
-    setTracedCode(code);
-    setTracedLanguage(language);
-    setActivePanel('trace');
-    trackStudyAction('markdown_trace_code', resource, {
-      language,
-      codeLength: code.length,
-    });
-  }, [resource, trackStudyAction]);
+  const showTracePanel = useCallback(
+    (code, language) => {
+      setTracedCode(code);
+      setTracedLanguage(language);
+      setActivePanel('trace');
+      trackStudyAction('markdown_trace_code', resource, {
+        language,
+        codeLength: code.length,
+      });
+    },
+    [resource, trackStudyAction],
+  );
 
   const closePanels = useCallback(() => {
     setActivePanel('none');
@@ -198,7 +205,6 @@ const MarkdownExercise = ({ resource }) => {
   const handleAnnotate = useCallback(
     (codeId) => {
       // Toggle annotation mode for this code block
-      console.log('Annotating code block:', codeId);
       trackStudyAction('markdown_annotate_code', resource, { codeId });
     },
     [resource, trackStudyAction],
@@ -515,7 +521,7 @@ const MarkdownExercise = ({ resource }) => {
                 language={runLanguage}
                 buttonText="Run Code"
                 showOptions={true}
-                onExecute={() => console.log('Code executed')}
+                onExecute={() => undefined}
                 scopedCode={null}
               />
             ) : (
@@ -545,7 +551,7 @@ const MarkdownExercise = ({ resource }) => {
                 code={tracedCode}
                 fileName={resource.name}
                 scope={null}
-                onTraceData={(data) => console.log('Trace data:', data)}
+                onTraceData={(data) => undefined}
               />
             ) : (
               <p className={styles.panelHint}>

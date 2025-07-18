@@ -14,11 +14,11 @@ const TracingLens = ({ resource }) => {
   const fileName = resource?.name || '';
   const { enableColorize } = useColorize();
   const { virtualFS } = useApp();
-  
+
   // Get file editor to access latest content
   const getFileEditor = useCallback(() => {
     if (!virtualFS || !resource.path) return null;
-    
+
     const findFile = (node, path) => {
       if (node.path === path) return node;
       if (node.children && Array.isArray(node.children)) {
@@ -29,13 +29,13 @@ const TracingLens = ({ resource }) => {
       }
       return null;
     };
-    
+
     return findFile(virtualFS, resource.path);
   }, [virtualFS, resource.path]);
-  
+
   // Get current content (edited or original)
   const code = getCurrentContent(resource, getFileEditor, '');
-  
+
   const [isTracing, setIsTracing] = useState(false);
   const [traceTableVisible, setTraceTableVisible] = useState(false);
   const iframeRef = useRef(null);
@@ -43,7 +43,9 @@ const TracingLens = ({ resource }) => {
 
   // Create the trace HTML content using SL1's proven approach
   const createTraceHTML = (sourceCode) => {
-    const prismCSS = enableColorize ? '<link rel="stylesheet" href="/static/prism/style.css">' : '';
+    const prismCSS = enableColorize
+      ? '<link rel="stylesheet" href="/static/prism/style.css">'
+      : '';
     return `<!DOCTYPE html>
 <html>
 <head>
@@ -157,14 +159,12 @@ const TracingLens = ({ resource }) => {
         if (traceScript) {
             traceScript.addEventListener('load', () => {
                 traceReady = true;
-                console.log('🔍 Trace system loaded and ready');
             });
         }
         
         // Also check if trace is already available
         if (window.trace) {
             traceReady = true;
-            console.log('🔍 Trace system already available');
         }
 
         function runTrace() {
@@ -174,10 +174,6 @@ const TracingLens = ({ resource }) => {
             }
             
             console.clear();
-            console.log('🚀 Starting trace execution...');
-            console.log('📝 Code to trace:');
-            console.log(decodeURI("${encodeURI(sourceCode)}"));
-            console.log('\\n' + '='.repeat(50) + '\\n');
             
             try {
                 window.trace(decodeURI("${encodeURI(sourceCode)}"));
@@ -195,12 +191,10 @@ const TracingLens = ({ resource }) => {
             const traceTable = document.createElement('trace-table');
             document.body.appendChild(traceTable);
             
-            console.log('📊 Trace table opened');
         }
 
         function clearTrace() {
             console.clear();
-            console.log('🗑️ Trace cleared');
             
             const existingTable = document.querySelector('trace-table');
             if (existingTable) {
@@ -213,7 +207,6 @@ const TracingLens = ({ resource }) => {
             const codeLines = decodeURI("${encodeURI(sourceCode)}").split('\\n').filter(line => line.trim()).length;
             if (codeLines <= 10) {
                 setTimeout(() => {
-                    console.log('🔄 Auto-running trace for simple code...');
                     runTrace();
                 }, 1000);
             }
@@ -281,19 +274,29 @@ const TracingLens = ({ resource }) => {
         {fileName && <span className={styles.fileName}>{fileName}</span>}
         <span className={styles.subtitle}>Using SL1's proven trace library</span>
       </div>
-      
+
       <div className={styles.traceContainer} ref={traceContainerRef}>
         {/* Iframe content will be inserted here */}
       </div>
-      
+
       <div className={styles.instructions}>
         <h4>🎯 About Code Tracing</h4>
         <ul>
-          <li><strong>Full instrumentation:</strong> Uses Aran to analyze every line of code</li>
-          <li><strong>DevTools integration:</strong> All output goes to browser console</li>
-          <li><strong>Interactive tables:</strong> Custom-designed for beginner JS learners</li>
-          <li><strong>Variable tracking:</strong> See how variables change during execution</li>
-          <li><strong>Proven system:</strong> Battle-tested with students and educators</li>
+          <li>
+            <strong>Full instrumentation:</strong> Uses Aran to analyze every line of code
+          </li>
+          <li>
+            <strong>DevTools integration:</strong> All output goes to browser console
+          </li>
+          <li>
+            <strong>Interactive tables:</strong> Custom-designed for beginner JS learners
+          </li>
+          <li>
+            <strong>Variable tracking:</strong> See how variables change during execution
+          </li>
+          <li>
+            <strong>Proven system:</strong> Battle-tested with students and educators
+          </li>
         </ul>
       </div>
     </div>

@@ -1,76 +1,97 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <!-- Title and Description -->
-  <title>Study Lenses - Learn Code Through Interactive Lenses</title>
-  <meta name="description" content="Learn programming through interactive code study lenses. Analyze variables, generate exercises, and visualize code flow with advanced educational tools." />
-  
-  <!-- SEO and Social Media -->
-  <meta name="keywords" content="programming, code study, interactive learning, education, javascript, code analysis, study tools" />
-  <meta name="author" content="Study Lenses" />
-  <meta name="robots" content="index, follow" />
-  
-  <!-- Open Graph (Facebook/LinkedIn) -->
-  <meta property="og:title" content="Study Lenses - Learn Code Through Interactive Lenses" />
-  <meta property="og:description" content="Learn programming through interactive code study lenses. Analyze variables, generate exercises, and visualize code flow." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://your-username.github.io/study-lenses/" />
-  <meta property="og:image" content="https://your-username.github.io/study-lenses/og-image.png" />
-  
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Study Lenses - Learn Code Through Interactive Lenses" />
-  <meta name="twitter:description" content="Learn programming through interactive code study lenses. Analyze variables, generate exercises, and visualize code flow." />
-  <meta name="twitter:image" content="https://your-username.github.io/study-lenses/og-image.png" />
-  
-  <!-- Performance Optimizations -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://api.github.com" />
-  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
-  
-  <!-- Theme Color -->
-  <meta name="theme-color" content="#2d2d30" />
-  <meta name="msapplication-TileColor" content="#2d2d30" />
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  
-  <!-- Manifest -->
-  <link rel="manifest" href="/manifest.json" />
-  
-  <!-- SL1 Trace System Dependencies -->
-  <script src="/static/aran-build.js"></script>
-  <script type="module" src="/static/trace-loader.js"></script>
-  
-  <!-- jQuery for draggable trace tables -->
-  <script src="/static/parsonizer/jquery.min.js"></script>
-  <script src="/static/parsonizer/jquery-ui.min.js"></script>
-  
-  <!-- SL1 Trace Table Web Components -->
-  <script type="module" src="/static/wc-trace-table/index.js"></script>
-  
-  <!-- Acorn Parser for Blanks Lens -->
-  <script src="https://unpkg.com/acorn@8/dist/acorn.js"></script>
-  
-  <!-- Editor Adapter for SL1 ask-me -->
-  <script type="module" src="/src/utils/editorAdapter.js"></script>
-  
-  <!-- SL1 Ask-Me Component -->
-  <script type="module" src="/static/ask/component/ask-me.js"></script>
-  
-  <!-- Prism.js for syntax highlighting -->
-  <link rel="stylesheet" href="/static/prism/style.css" />
-  <script src="/static/prism/script.js"></script>
-  <script src="/static/prism/toolbar.js"></script>
-  
-  <!-- LZ-String for JSViz URL compression -->
-  <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
-</head>
-<body>
-  <div id="app"></div>
-  <script type="module" src="./src/main.jsx"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Title and Description -->
+    <title>Study Lenses - Learn Code Through Interactive Lenses</title>
+    <meta
+      name="description"
+      content="Learn programming through interactive code study lenses. Analyze variables, generate exercises, and visualize code flow with advanced educational tools."
+    />
+
+    <!-- SEO and Social Media -->
+    <meta
+      name="keywords"
+      content="programming, code study, interactive learning, education, javascript, code analysis, study tools"
+    />
+    <meta name="author" content="Study Lenses" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph (Facebook/LinkedIn) -->
+    <meta
+      property="og:title"
+      content="Study Lenses - Learn Code Through Interactive Lenses"
+    />
+    <meta
+      property="og:description"
+      content="Learn programming through interactive code study lenses. Analyze variables, generate exercises, and visualize code flow."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://your-username.github.io/study-lenses/" />
+    <meta
+      property="og:image"
+      content="https://your-username.github.io/study-lenses/og-image.png"
+    />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Study Lenses - Learn Code Through Interactive Lenses"
+    />
+    <meta
+      name="twitter:description"
+      content="Learn programming through interactive code study lenses. Analyze variables, generate exercises, and visualize code flow."
+    />
+    <meta
+      name="twitter:image"
+      content="https://your-username.github.io/study-lenses/og-image.png"
+    />
+
+    <!-- Performance Optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://api.github.com" />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#2d2d30" />
+    <meta name="msapplication-TileColor" content="#2d2d30" />
+
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- SL1 Trace System Dependencies -->
+    <script src="/static/aran-build.js"></script>
+    <script type="module" src="/static/trace-loader.js"></script>
+
+    <!-- jQuery for draggable trace tables -->
+    <script src="/static/parsonizer/jquery.min.js"></script>
+    <script src="/static/parsonizer/jquery-ui.min.js"></script>
+
+    <!-- SL1 Trace Table Web Components -->
+    <script type="module" src="/static/wc-trace-table/index.js"></script>
+
+    <!-- Acorn Parser for Blanks Lens -->
+    <script src="https://unpkg.com/acorn@8/dist/acorn.js"></script>
+
+    <!-- Editor Adapter for SL1 ask-me -->
+    <script type="module" src="/src/utils/editorAdapter.js"></script>
+
+    <!-- SL1 Ask-Me Component -->
+    <script type="module" src="/static/ask/component/ask-me.js"></script>
+
+    <!-- Prism.js for syntax highlighting -->
+    <link rel="stylesheet" href="/static/prism/style.css" />
+    <script src="/static/prism/script.js"></script>
+    <script src="/static/prism/toolbar.js"></script>
+
+    <!-- LZ-String for JSViz URL compression -->
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="./src/main.jsx"></script>
+  </body>
 </html>

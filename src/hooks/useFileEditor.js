@@ -137,6 +137,34 @@ export function useFileEditor(filePath) {
     const updatedFS = updateFileInNode(virtualFS, filePath);
     setVirtualFS(updatedFS);
   };
+
+  // Save editor state to virtual file system
+  const saveEditorState = () => {
+    if (!virtualFS || !filePath) return;
+    
+    const updateFileInNode = (node, path) => {
+      if (node.path === path && node.editorInstance) {
+        const currentContent = node.editorInstance.state.doc.toString();
+        return {
+          ...node,
+          editorContent: currentContent,
+          hasChanges: currentContent !== node.content,
+        };
+      }
+      if (node.children && Array.isArray(node.children)) {
+        return {
+          ...node,
+          children: node.children.map((child) =>
+            updateFileInNode(child, path),
+          ),
+        };
+      }
+      return node;
+    };
+    
+    const updatedFS = updateFileInNode(virtualFS, filePath);
+    setVirtualFS(updatedFS);
+  };
   
   return {
     file: findFile,
@@ -146,5 +174,6 @@ export function useFileEditor(filePath) {
     getEditorContainer,
     setEditorInstance,
     clearEditorInstance,
+    saveEditorState,
   };
 }

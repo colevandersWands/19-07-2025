@@ -31,7 +31,6 @@ const ExerciseRenderer = () => {
         return;
       }
       
-      // console.log('🎯 Loading exercise:', currentExercise, 'for file:', currentFile.name);
       setIsLoading(true);
       setError(null);
       
@@ -114,7 +113,6 @@ const ExerciseRenderer = () => {
         });
         
         setIsLoading(false);
-        // console.log('✅ Exercise loaded successfully');
         
       } catch (err) {
         console.error('Failed to apply transforms:', err);

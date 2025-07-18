@@ -1,6 +1,5 @@
 # Quiz
 
-> #todo
 
 ## Length 1
 

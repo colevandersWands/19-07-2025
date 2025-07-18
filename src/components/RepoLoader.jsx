@@ -26,7 +26,6 @@ const findReadmeFile = (node) => {
 const findAndSelectReadme = (virtualFS, setCurrentFile) => {
   const readmeFile = findReadmeFile(virtualFS);
   if (readmeFile) {
-    console.log('📖 Auto-selecting README:', readmeFile.name);
     setCurrentFile(readmeFile);
     return readmeFile;
   }
@@ -55,7 +54,6 @@ const RepoLoader = () => {
     setError(null);
 
     try {
-      console.log('🔄 Loading repository:', repoUrl);
       
       // Load the repository using the existing fs.js loadFS function
       const newVirtualFS = await loadFS(repoUrl.trim());
@@ -69,7 +67,6 @@ const RepoLoader = () => {
         setCurrentFile(null);
       }
       
-      console.log('✅ Repository loaded successfully');
       
       // Clear the input after successful load
       setRepoUrl('');
@@ -102,7 +99,6 @@ const RepoLoader = () => {
     setError(null);
 
     try {
-      console.log('📁 Processing uploaded files...', files.length);
       
       // Create virtual filesystem from uploaded files
       const virtualFS = {
@@ -142,7 +138,6 @@ const RepoLoader = () => {
         setCurrentFile(null);
       }
       
-      console.log('✅ Files uploaded successfully:', virtualFS.children.length);
       
     } catch (err) {
       console.error('❌ Failed to upload files:', err);

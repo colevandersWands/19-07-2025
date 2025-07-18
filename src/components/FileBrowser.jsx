@@ -13,9 +13,9 @@ const FileBrowser = () => {
   if (!virtualFS) {
     return (
       <div className={styles.browserContainer}>
-        <div className={styles.browserHeader}>
+        {/* <div className={styles.browserHeader}>
           <h3>📁 Files</h3>
-        </div>
+        </div> */}
         <div className={styles.loadingMessage}>
           Loading files...
         </div>
@@ -27,7 +27,6 @@ const FileBrowser = () => {
     if (file.type === 'file') {
       // Load content for GitHub files if needed
       if (file.githubRepo && !file.content) {
-        console.log('🔄 Loading GitHub file content...');
         try {
           await loadFileContent(file);
         } catch (error) {
@@ -101,14 +100,14 @@ const FileBrowser = () => {
   
   return (
     <div className={styles.browserContainer}>
-      <div className={styles.browserHeader}>
+      {/* <div className={styles.browserHeader}>
         <h3>📁 Files</h3>
         {currentFile && (
           <div className={styles.currentFile}>
             {currentFile.name}
           </div>
         )}
-      </div>
+      </div> */}
       
       <div className={styles.fileTree}>
         {virtualFS.children ? 

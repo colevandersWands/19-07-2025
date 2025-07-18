@@ -44,5 +44,3 @@ window.editor = {
     };
   }
 };
-
-console.log('Editor adapter initialized - SL1 ask-me component can now access editor');

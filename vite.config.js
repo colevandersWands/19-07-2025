@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import preact from '@preact/preset-vite';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { BASE_PATH } from './src/CONSTANTS';
 
 export default defineConfig({
   plugins: [
@@ -16,7 +17,7 @@ export default defineConfig({
   ],
 
   // Base path configuration for deployment
-  base: process.env.NODE_ENV === 'production' ? '/19-07-2025/' : '/',
+  base: process.env.NODE_ENV === 'production' ? BASE_PATH : '/',
 
   // CSS Modules configuration
   css: {

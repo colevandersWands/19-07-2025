@@ -185,7 +185,6 @@ ${guardedCode}`;
     cleanupIframes();
     
     try {
-      // console.log('🚀 RunCode: Starting execution of:', jsCode.substring(0, 100) + '...'); // Remove app logging
       
       // Prepare code with optional modifications
       let finalCode = jsCode;
@@ -199,21 +198,21 @@ ${guardedCode}`;
       }
       
       // Create console output area FIRST
-      const consoleOutput = document.createElement('div');
-      consoleOutput.style.cssText = `
-        font-family: Monaco, Menlo, 'Ubuntu Mono', monospace;
-        font-size: 12px;
-        color: #d4d4d4;
-        background: #1e1e1e;
-        padding: 10px;
-        white-space: pre-wrap;
-        max-height: 200px;
-        overflow-y: auto;
-        border: 1px solid #464647;
-        margin-top: 5px;
-        border-radius: 4px;
-      `;
-      consoleOutput.textContent = '📝 Code Output:\n';
+      // const consoleOutput = document.createElement('div');
+      // consoleOutput.style.cssText = `
+      //   font-family: Monaco, Menlo, 'Ubuntu Mono', monospace;
+      //   font-size: 12px;
+      //   color: #d4d4d4;
+      //   background: #1e1e1e;
+      //   padding: 10px;
+      //   white-space: pre-wrap;
+      //   max-height: 200px;
+      //   overflow-y: auto;
+      //   border: 1px solid #464647;
+      //   margin-top: 5px;
+      //   border-radius: 4px;
+      // `;
+      // consoleOutput.textContent = '📝 Code Output:\n';
       
       // Create iframe for execution
       const iframe = document.createElement('iframe');
@@ -226,14 +225,13 @@ ${guardedCode}`;
       
       // Add both to container immediately
       if (iframeContainerRef.current) {
-        iframeContainerRef.current.appendChild(consoleOutput);
+        // iframeContainerRef.current.appendChild(consoleOutput);
         iframeContainerRef.current.appendChild(iframe);
       }
       
       // Set up iframe load handler
       iframe.onload = () => {
         try {
-          // console.log('🔧 RunCode: Iframe loaded, setting up execution environment'); // Remove app logging
           
           const iframeWindow = iframe.contentWindow;
           const iframeDocument = iframe.contentDocument;
@@ -250,18 +248,18 @@ ${guardedCode}`;
               const output = args.map(arg => 
                 typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
               ).join(' ');
-              consoleOutput.textContent += output + '\n';
+              // consoleOutput.textContent += output + '\n';
               originalConsole.log(...args);
             },
             error: (...args) => {
               const output = 'ERROR: ' + args.map(arg => String(arg)).join(' ');
-              consoleOutput.textContent += output + '\n';
-              consoleOutput.style.color = '#f14c4c';
+              // consoleOutput.textContent += output + '\n';
+              // consoleOutput.style.color = '#f14c4c';
               originalConsole.error(...args);
             },
             warn: (...args) => {
               const output = 'WARN: ' + args.map(arg => String(arg)).join(' ');
-              consoleOutput.textContent += output + '\n';
+              // consoleOutput.textContent += output + '\n';
               originalConsole.warn(...args);
             }
           };
@@ -289,12 +287,12 @@ To fix this:
 
 Your testing functions will then be available!`;
               
-              consoleOutput.textContent += helpMsg + '\n\n';
-              consoleOutput.style.color = '#f39c12'; // Orange for helpful warnings
+              // consoleOutput.textContent += helpMsg + '\n\n';
+              // consoleOutput.style.color = '#f39c12'; // Orange for helpful warnings
             } else {
-              const errorMsg = `ERROR: ${event.message} (Line: ${event.lineno})`;
-              consoleOutput.textContent += errorMsg + '\n';
-              consoleOutput.style.color = '#f14c4c';
+              // const errorMsg = `ERROR: ${event.message} (Line: ${event.lineno})`;
+              // consoleOutput.textContent += errorMsg + '\n';
+              // consoleOutput.style.color = '#f14c4c';
             }
             console.error('RunCode iframe error:', event);
           });
@@ -309,7 +307,6 @@ Your testing functions will then be available!`;
           
           // Execute the script
           iframeDocument.body.appendChild(script);
-          // console.log('✅ RunCode: Script executed successfully'); // Remove app logging
           
           // Call onExecute callback if provided
           if (onExecute) {
@@ -318,8 +315,8 @@ Your testing functions will then be available!`;
           
         } catch (error) {
           console.error('❌ RunCode execution error:', error);
-          consoleOutput.textContent += `EXECUTION ERROR: ${error.message}\n`;
-          consoleOutput.style.color = '#f14c4c';
+          // consoleOutput.textContent += `EXECUTION ERROR: ${error.message}\n`;
+          // consoleOutput.style.color = '#f14c4c';
           
           if (onExecute) {
             onExecute({ success: false, error: error.message, type: 'javascript' });
@@ -330,8 +327,8 @@ Your testing functions will then be available!`;
       // Set iframe error handler
       iframe.onerror = (error) => {
         console.error('❌ RunCode iframe error:', error);
-        consoleOutput.textContent += `IFRAME ERROR: ${error}\n`;
-        consoleOutput.style.color = '#f14c4c';
+        // consoleOutput.textContent += `IFRAME ERROR: ${error}\n`;
+        // consoleOutput.style.color = '#f14c4c';
       };
       
       // Load empty page in iframe

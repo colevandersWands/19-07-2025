@@ -14,6 +14,11 @@ let virtualFS = null;
 
 export const getVirtualFS = () => virtualFS;
 
+export const setVirtualFS = (fs) => {
+  virtualFS = fs;
+  return fs;
+};
+
 export const loadFS = async (source = './public/variablesing.json') => {
   try {
     if (isGitHubUrl(source)) {
@@ -31,7 +36,7 @@ export const loadFS = async (source = './public/variablesing.json') => {
     } else {
       const response = await fetch(source);
       virtualFS = await response.json();
-      
+
       // Add root and toCwd to loaded virtual FS
       addVirtualFSMetadata(virtualFS, '/');
     }
@@ -44,13 +49,27 @@ export const loadFS = async (source = './public/variablesing.json') => {
 };
 
 export const getFile = (path) => {
-  const parts = path.split('/').filter((p) => p);
+  if (!path || !virtualFS) {
+    return null;
+  }
+
+  // Handle absolute paths by removing leading slash
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  const parts = cleanPath.split('/').filter((p) => p);
+
   let current = virtualFS;
 
   for (const part of parts) {
     if (current?.children) {
-      current = current.children.find((child) => child.name === part);
+      current = current.children.find(
+        (child) => (console.log(child), child.name === part),
+      );
+      if (!current) {
+        console.warn(`File path segment "${part}" not found in virtual filesystem`);
+        return null;
+      }
     } else {
+      console.warn(`No children found for path segment "${part}"`);
       return null;
     }
   }
@@ -156,10 +175,15 @@ const addVirtualFSMetadata = (node, root) => {
 
 export const getRandomFile = (dir = virtualFS) => {
   if (!dir) {
-    console.warn('getRandomFile called with null/undefined directory');
+    console.warn('getRandomFile called with null/undefined directory, using virtualFS');
+    dir = virtualFS;
+  }
+
+  if (!dir) {
+    console.warn('No virtual filesystem available for getRandomFile');
     return null;
   }
-  
+
   const files = [];
   const collect = (node) => {
     if (!node) return;
@@ -172,4 +196,54 @@ export const getRandomFile = (dir = virtualFS) => {
   };
   collect(dir);
   return files.length > 0 ? files[Math.floor(Math.random() * files.length)] : null;
+};
+
+export const findSimilarFile = (requestedPath) => {
+  if (!virtualFS || !requestedPath) {
+    return null;
+  }
+
+  // Try to find files with similar names or in similar directories
+  const allFiles = [];
+  const collect = (node) => {
+    if (!node) return;
+    if (node.type === 'file') allFiles.push(node);
+    else if (node.children) {
+      for (const child of node.children) {
+        collect(child);
+      }
+    }
+  };
+  collect(virtualFS);
+
+  // Extract the directory and filename from the requested path
+  const pathParts = requestedPath.split('/').filter((p) => p);
+  const requestedDir = pathParts.slice(0, -1).join('/');
+  const requestedFilename = pathParts[pathParts.length - 1];
+
+  // Try to find a file with similar name in the same directory
+  if (requestedDir && requestedFilename) {
+    const similarFiles = allFiles.filter((file) => {
+      const fileDir = file.path.split('/').slice(0, -1).join('/');
+      return fileDir.includes(requestedDir) || requestedDir.includes(fileDir);
+    });
+
+    if (similarFiles.length > 0) {
+      return similarFiles[0];
+    }
+  }
+
+  // Fallback to any file in a similar directory structure
+  const dirKeywords = pathParts.slice(0, -1);
+  if (dirKeywords.length > 0) {
+    const matchingFiles = allFiles.filter((file) => {
+      return dirKeywords.some((keyword) => file.path.includes(keyword));
+    });
+
+    if (matchingFiles.length > 0) {
+      return matchingFiles[0];
+    }
+  }
+
+  return null;
 };

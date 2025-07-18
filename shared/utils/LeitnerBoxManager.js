@@ -37,7 +37,6 @@ class LeitnerBoxManager {
       this.studyHistory = leitnerConfig.studyHistory || [];
     }
     
-    console.log('📚 Loaded Leitner box configuration:', this.getBoxSummary());
   }
 
   /**
@@ -112,7 +111,6 @@ class LeitnerBoxManager {
       sessionCards: studyCards
     };
     
-    console.log(`📖 Study session prepared: ${studyCards.length} cards`);
     return studyCards;
   }
 
@@ -138,12 +136,10 @@ class LeitnerBoxManager {
       const nextBox = Math.min(currentBox + 1, 7);
       this.boxes[nextBox].push(cardPath);
       this.currentSession.correct++;
-      console.log(`✅ ${cardPath}: Box ${currentBox} → Box ${nextBox}`);
     } else {
       // Move back to box 1 (needs more practice)
       this.boxes[1].push(cardPath);
       this.currentSession.incorrect++;
-      console.log(`❌ ${cardPath}: Box ${currentBox} → Box 1`);
     }
     
     // Record in session
@@ -184,12 +180,10 @@ class LeitnerBoxManager {
   addNewCard(cardPath) {
     // Check if card already exists
     if (this.findCardBox(cardPath) !== null) {
-      console.log('Card already exists:', cardPath);
       return;
     }
     
     this.boxes[1].push(cardPath);
-    console.log('📝 Added new card to Box 1:', cardPath);
   }
 
   /**

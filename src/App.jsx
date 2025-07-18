@@ -7,7 +7,7 @@ import FileBrowser from './components/FileBrowser.jsx';
 import RepoLoader from './components/RepoLoader.jsx';
 import ExercisePicker from './components/ExercisePicker.jsx';
 import ExerciseRenderer from './components/ExerciseRenderer.jsx';
-import { loadFS, getRandomFile, getFile } from '../fs.js';
+import { loadFS, getRandomFile, getFile, findSimilarFile, setVirtualFS } from '../fs.js';
 import URLManager from '../shared/utils/urlManager.js';
 import styles from './App.module.css';
 
@@ -61,9 +61,11 @@ const AppContent = () => {
         setIsLoading(true);
 
         // Load initial filesystem (examples or from URL)
-        // const virtualFS = await loadFS('./variablesing.json');
-        const virtualFS = setVirtualFS(content);
+        // Use the imported content as the virtual filesystem
+        setVirtualFS(content);
 
+        // Wait a bit to ensure virtual FS is set before file operations
+        await new Promise((resolve) => setTimeout(resolve, 10));
 
         // Check if URL specifies a file to load or has compressed code
         const { filePath, lensParams, compressedCode, pseudocode } =
@@ -73,7 +75,6 @@ const AppContent = () => {
 
         if (compressedCode) {
           // Handle code sharing - create a virtual file from compressed code
-          console.log('🔗 Loading shared code from URL');
           const decompressedCode = URLManager.decompressCode(compressedCode);
 
           if (decompressedCode) {
@@ -85,39 +86,36 @@ const AppContent = () => {
               type: 'file',
             };
 
-            console.log('✅ Created virtual file from shared code');
             setCurrentFile(sharedFile);
             fileToLoad = sharedFile;
 
             // Switch to the specified exercise type
             if (exerciseType) {
-              console.log('🎮 Switching to exercise:', exerciseType);
               switchExercise(exerciseType);
             }
           } else {
             console.warn('❌ Failed to decompress shared code');
           }
         } else if (filePath) {
-          console.log('🎯 Loading file from URL:', filePath);
           fileToLoad = getFile(filePath);
 
           if (fileToLoad) {
-            console.log('✅ Found file:', fileToLoad.name);
             setCurrentFile(fileToLoad);
 
             // Switch to the specified exercise type
             if (exerciseType) {
-              console.log('🎮 Switching to exercise:', exerciseType);
               switchExercise(exerciseType);
             }
           } else {
             console.warn('❌ File not found:', filePath, '- loading random file instead');
+            // Try to find a similar file or use fallback logic
+            const fallbackFile = findSimilarFile(filePath) || getRandomFile();
+            if (fallbackFile) {
+              setCurrentFile(fallbackFile);
+              fileToLoad = fallbackFile;
+              console.log('📢 Loaded fallback file:', fallbackFile.name);
+            }
           }
-        }
-
-        // Log pseudocode setting for debugging
-        if (pseudocode) {
-          console.log('🧠 Pseudocode mode enabled from URL');
         }
 
         // Fallback: Load README or index if no URL file or file not found
@@ -140,7 +138,6 @@ const AppContent = () => {
           }
 
           if (fallbackFile) {
-            console.log('📋 Loading fallback file:', fallbackFile.name);
             setCurrentFile(fallbackFile);
 
             // Show notification if we were looking for a specific file
@@ -155,7 +152,6 @@ const AppContent = () => {
             // Last resort - get any file from the filesystem
             const anyFile = getRandomFile(virtualFS);
             if (anyFile) {
-              console.log('🎲 No standard files found, loading:', anyFile.name);
               setCurrentFile(anyFile);
             }
           }
@@ -180,7 +176,6 @@ const AppContent = () => {
 
       if (compressedCode) {
         // Handle shared code
-        console.log('🔄 Hash changed - loading shared code');
         const decompressedCode = URLManager.decompressCode(compressedCode);
 
         if (decompressedCode) {
@@ -201,7 +196,6 @@ const AppContent = () => {
           console.warn('❌ Failed to decompress shared code after hash change');
         }
       } else if (filePath) {
-        console.log('🔄 Hash changed - loading file:', filePath);
         const fileToLoad = getFile(filePath);
 
         if (fileToLoad) {
@@ -228,7 +222,6 @@ const AppContent = () => {
           }
 
           if (fallbackFile) {
-            console.log('📋 Loading fallback after hash change:', fallbackFile.name);
             setCurrentFile(fallbackFile);
             // TODO: Show toast notification
           }
@@ -268,8 +261,8 @@ const AppContent = () => {
     <div className={styles.appContainer}>
       <div className={styles.sidebar}>
         <div className={styles.sidebarHeader}>
-          <h1 className={styles.appTitle}>📚 Study Lenses</h1>
-          <p className={styles.appSubtitle}>Learn code through interactive lenses</p>
+          <h1 className={styles.appTitle}>July 19th, 2025</h1>
+          {/* <p className={styles.appSubtitle}>Learn code through interactive lenses</p> */}
         </div>
 
         <FileBrowser />

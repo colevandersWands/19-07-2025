@@ -1,6 +1,5 @@
 # Quiz
 
-> #todo
 
 ## Reverse a String
 

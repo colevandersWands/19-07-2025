@@ -92,7 +92,6 @@ class TraceButton extends HTMLElement {
 
     // Access parent window utilities
     if (window.parent && window.parent.spiralLens) {
-      console.log('🔍 Tracing code via parent utilities');
       const traceData = window.parent.spiralLens.trace(this.resource);
       
       // Optionally create a trace table with the data

@@ -1,6 +1,5 @@
 # Quiz
 
-> #todo
 
 ## Stepper Variables
 

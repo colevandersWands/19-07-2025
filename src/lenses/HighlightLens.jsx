@@ -5,6 +5,7 @@ import { getCurrentContent } from '../../shared/utils/getCurrentContent.js';
 import CodeBlock, { InlineCode } from '../../shared/components/CodeBlock.jsx';
 import EmbeddedTrace from '../../shared/components/EmbeddedTrace.jsx';
 import { convertCodeToSvg, convertCodeToFlowTree } from 'js2flowchart';
+import { askOpenEnded } from '../../public/static/ask/component/ask-questions.js';
 import styles from './HighlightLens.module.css';
 
 /**
@@ -13,11 +14,11 @@ import styles from './HighlightLens.module.css';
 const HighlightExercise = ({ resource }) => {
   const { updateFileContent, trackStudyAction, virtualFS } = useApp();
   const { enableColorize } = useColorize();
-  
+
   // Get file editor to access latest content
   const getFileEditor = useCallback(() => {
     if (!virtualFS || !resource.path) return null;
-    
+
     const findFile = (node, path) => {
       if (node.path === path) return node;
       if (node.children && Array.isArray(node.children)) {
@@ -28,18 +29,18 @@ const HighlightExercise = ({ resource }) => {
       }
       return null;
     };
-    
+
     return findFile(virtualFS, resource.path);
   }, [virtualFS, resource.path]);
-  
+
   // Get current content (edited or original)
   const getCurrentCode = useCallback(() => {
     return getCurrentContent(resource, getFileEditor, '');
   }, [resource, getFileEditor]);
-  
+
   // View mode state (needs to be declared first)
   const [viewMode, setViewMode] = useState('code'); // 'code' or 'flowchart'
-  
+
   // Annotation state
   const [selectedTool, setSelectedTool] = useState('highlight');
   const [selectedColor, setSelectedColor] = useState('#ffeb3b');
@@ -49,28 +50,34 @@ const HighlightExercise = ({ resource }) => {
   const [noteText, setNoteText] = useState('');
   const [currentStroke, setCurrentStroke] = useState([]);
   const [prismLoaded, setPrismLoaded] = useState(!!window.Prism);
-  
+
   // Separate annotation states for each view mode
   const [codeAnnotations, setCodeAnnotations] = useState(resource.codeAnnotations || []);
-  const [codeDrawingPaths, setCodeDrawingPaths] = useState(resource.codeDrawingPaths || []);
-  const [flowchartAnnotations, setFlowchartAnnotations] = useState(resource.flowchartAnnotations || []);
-  const [flowchartDrawingPaths, setFlowchartDrawingPaths] = useState(resource.flowchartDrawingPaths || []);
-  
+  const [codeDrawingPaths, setCodeDrawingPaths] = useState(
+    resource.codeDrawingPaths || [],
+  );
+  const [flowchartAnnotations, setFlowchartAnnotations] = useState(
+    resource.flowchartAnnotations || [],
+  );
+  const [flowchartDrawingPaths, setFlowchartDrawingPaths] = useState(
+    resource.flowchartDrawingPaths || [],
+  );
+
   // Current view annotations (computed based on viewMode)
   const annotations = viewMode === 'code' ? codeAnnotations : flowchartAnnotations;
   const drawingPaths = viewMode === 'code' ? codeDrawingPaths : flowchartDrawingPaths;
-  
+
   // Flowchart-specific state
   const [flowchartSvg, setFlowchartSvg] = useState('');
   const [flowchartError, setFlowchartError] = useState(null);
   const [flowchartLoading, setFlowchartLoading] = useState(false);
   const [selectedNode, setSelectedNode] = useState(null);
   const [astInfo, setAstInfo] = useState(null);
-  
+
   const codeRef = useRef(null);
   const overlayRef = useRef(null);
   const svgContainerRef = useRef(null);
-  
+
   // Initialize annotations from resource
   useEffect(() => {
     if (resource.codeAnnotations) {
@@ -85,7 +92,7 @@ const HighlightExercise = ({ resource }) => {
     if (resource.flowchartDrawingPaths) {
       setFlowchartDrawingPaths(resource.flowchartDrawingPaths);
     }
-    
+
     // Handle legacy annotations (migrate to code view if they exist)
     if (resource.annotations && !resource.codeAnnotations) {
       setCodeAnnotations(resource.annotations);
@@ -101,9 +108,9 @@ const HighlightExercise = ({ resource }) => {
       Prism = window.Prism;
       setPrismLoaded(true);
     };
-    
+
     window.addEventListener('prismLoaded', handlePrismLoaded);
-    
+
     return () => {
       window.removeEventListener('prismLoaded', handlePrismLoaded);
     };
@@ -119,7 +126,7 @@ const HighlightExercise = ({ resource }) => {
         link.href = '/static/prism/style.css';
         document.head.appendChild(link);
       }
-      
+
       // Load Prism JS
       if (!window.Prism) {
         const script = document.createElement('script');
@@ -142,7 +149,7 @@ const HighlightExercise = ({ resource }) => {
       setPrismLoaded(false);
     }
   }, [enableColorize]);
-  
+
   // Generate flowchart from code
   const generateFlowchart = async (sourceCode) => {
     if (!sourceCode.trim()) {
@@ -158,7 +165,7 @@ const HighlightExercise = ({ resource }) => {
       // Generate flowchart tree with full AST analysis
       const flowTree = convertCodeToFlowTree(sourceCode, {
         maxDepth: 50,
-        isDebug: false
+        isDebug: false,
       });
 
       // Convert flow tree to SVG
@@ -174,7 +181,6 @@ const HighlightExercise = ({ resource }) => {
       setTimeout(() => {
         enhanceFlowchartInteractivity();
       }, 100);
-
     } catch (err) {
       console.error('Flowchart generation error:', err);
       setFlowchartError(`Failed to generate flowchart: ${err.message}`);
@@ -193,7 +199,7 @@ const HighlightExercise = ({ resource }) => {
 
     // Add click handlers to flowchart nodes
     const nodes = svgElement.querySelectorAll('g[data-node-id], rect, circle, polygon');
-    
+
     nodes.forEach((node, index) => {
       // Add hover effects
       node.style.cursor = 'pointer';
@@ -201,7 +207,7 @@ const HighlightExercise = ({ resource }) => {
         node.style.opacity = '0.8';
         node.style.filter = 'brightness(1.2)';
       });
-      
+
       node.addEventListener('mouseleave', () => {
         if (selectedNode !== node) {
           node.style.opacity = '1';
@@ -212,7 +218,7 @@ const HighlightExercise = ({ resource }) => {
       // Add click handlers
       node.addEventListener('click', (e) => {
         e.stopPropagation();
-        
+
         // Clear previous selection
         if (selectedNode) {
           selectedNode.style.outline = 'none';
@@ -223,8 +229,6 @@ const HighlightExercise = ({ resource }) => {
         node.style.outline = '3px solid #007acc';
         node.style.filter = 'brightness(1.3)';
         setSelectedNode(node);
-
-        console.log('Flowchart node selected:', node);
       });
     });
   };
@@ -239,9 +243,9 @@ const HighlightExercise = ({ resource }) => {
 
   // Toggle between code and flowchart view
   const toggleViewMode = () => {
-    setViewMode(prev => prev === 'code' ? 'flowchart' : 'code');
+    setViewMode((prev) => (prev === 'code' ? 'flowchart' : 'code'));
   };
-  
+
   // Save annotations to resource
   const saveAnnotations = (newAnnotations) => {
     if (viewMode === 'code') {
@@ -249,24 +253,25 @@ const HighlightExercise = ({ resource }) => {
     } else {
       setFlowchartAnnotations(newAnnotations);
     }
-    
+
     // Save annotations to the resource
     const updatedResource = {
       ...resource,
       codeAnnotations: viewMode === 'code' ? newAnnotations : codeAnnotations,
-      flowchartAnnotations: viewMode === 'flowchart' ? newAnnotations : flowchartAnnotations,
+      flowchartAnnotations:
+        viewMode === 'flowchart' ? newAnnotations : flowchartAnnotations,
       codeDrawingPaths: codeDrawingPaths,
-      flowchartDrawingPaths: flowchartDrawingPaths
+      flowchartDrawingPaths: flowchartDrawingPaths,
     };
-    
+
     // Don't call updateFileContent for annotations - this causes unnecessary remounting
     // updateFileContent(resource.path, resource.content);
-    
+
     trackStudyAction('code_annotate', resource, {
       annotationType: selectedTool,
       annotationsCount: newAnnotations.length,
       drawingPathsCount: drawingPaths.length,
-      viewMode: viewMode
+      viewMode: viewMode,
     });
   };
 
@@ -277,25 +282,25 @@ const HighlightExercise = ({ resource }) => {
     } else {
       setFlowchartDrawingPaths(newPaths);
     }
-    
+
     // Update resource with drawing paths
     const updatedResource = {
       ...resource,
       codeAnnotations: codeAnnotations,
       flowchartAnnotations: flowchartAnnotations,
       codeDrawingPaths: viewMode === 'code' ? newPaths : codeDrawingPaths,
-      flowchartDrawingPaths: viewMode === 'flowchart' ? newPaths : flowchartDrawingPaths
+      flowchartDrawingPaths: viewMode === 'flowchart' ? newPaths : flowchartDrawingPaths,
     };
-    
+
     // Don't call updateFileContent for drawing paths - this causes unnecessary remounting
     // updateFileContent(resource.path, resource.content);
-    
+
     trackStudyAction('code_draw', resource, {
       drawingPathsCount: newPaths.length,
-      viewMode: viewMode
+      viewMode: viewMode,
     });
   };
-  
+
   // Handle mouse events for drawing and annotations
   const handleMouseDown = (event) => {
     if (selectedTool === 'pen') {
@@ -303,14 +308,14 @@ const HighlightExercise = ({ resource }) => {
       const rect = codeRef.current.getBoundingClientRect();
       const point = {
         x: event.clientX - rect.left,
-        y: event.clientY - rect.top
+        y: event.clientY - rect.top,
       };
       setCurrentStroke([point]);
     } else if (selectedTool === 'note') {
       const rect = codeRef.current.getBoundingClientRect();
       setNotePosition({
         x: event.clientX - rect.left,
-        y: event.clientY - rect.top
+        y: event.clientY - rect.top,
       });
       setShowNoteInput(true);
       setNoteText('');
@@ -322,9 +327,9 @@ const HighlightExercise = ({ resource }) => {
       const rect = codeRef.current.getBoundingClientRect();
       const point = {
         x: event.clientX - rect.left,
-        y: event.clientY - rect.top
+        y: event.clientY - rect.top,
       };
-      setCurrentStroke(prev => [...prev, point]);
+      setCurrentStroke((prev) => [...prev, point]);
     }
   };
 
@@ -335,7 +340,7 @@ const HighlightExercise = ({ resource }) => {
         points: currentStroke,
         color: selectedColor,
         tool: 'pen',
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
       saveDrawingPaths([...drawingPaths, newPath]);
       setCurrentStroke([]);
@@ -349,25 +354,25 @@ const HighlightExercise = ({ resource }) => {
       const rect = codeRef.current.getBoundingClientRect();
       const point = {
         x: event.clientX - rect.left,
-        y: event.clientY - rect.top
+        y: event.clientY - rect.top,
       };
-      
+
       // Remove drawing paths that intersect with eraser
-      const remainingPaths = drawingPaths.filter(path => {
-        return !path.points.some(pathPoint => {
+      const remainingPaths = drawingPaths.filter((path) => {
+        return !path.points.some((pathPoint) => {
           const distance = Math.sqrt(
-            Math.pow(pathPoint.x - point.x, 2) + Math.pow(pathPoint.y - point.y, 2)
+            Math.pow(pathPoint.x - point.x, 2) + Math.pow(pathPoint.y - point.y, 2),
           );
           return distance < 20; // Eraser radius
         });
       });
-      
+
       if (remainingPaths.length !== drawingPaths.length) {
         saveDrawingPaths(remainingPaths);
       }
     }
   };
-  
+
   // Handle line highlighting
   const handleLineHighlight = (lineNumber) => {
     if (selectedTool === 'highlight') {
@@ -376,13 +381,13 @@ const HighlightExercise = ({ resource }) => {
         type: 'highlight',
         lineNumber,
         color: selectedColor,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
-      
+
       saveAnnotations([...annotations, newAnnotation]);
     }
   };
-  
+
   // Handle note creation
   const handleCreateNote = () => {
     if (noteText.trim()) {
@@ -392,95 +397,101 @@ const HighlightExercise = ({ resource }) => {
         text: noteText.trim(),
         position: notePosition,
         color: selectedColor,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
-      
+
       saveAnnotations([...annotations, newAnnotation]);
     }
-    
+
     setShowNoteInput(false);
     setNoteText('');
   };
-  
+
   // Handle annotation deletion
   const handleDeleteAnnotation = (annotationId) => {
-    const updatedAnnotations = annotations.filter(ann => ann.id !== annotationId);
+    const updatedAnnotations = annotations.filter((ann) => ann.id !== annotationId);
     saveAnnotations(updatedAnnotations);
   };
-  
+
   // Clear all annotations and drawings for current view
   const handleClearAll = () => {
     const viewName = viewMode === 'code' ? 'code' : 'flowchart';
-    if (confirm(`Clear all annotations and drawings from ${viewName} view? This cannot be undone.`)) {
+    if (
+      confirm(
+        `Clear all annotations and drawings from ${viewName} view? This cannot be undone.`,
+      )
+    ) {
       saveAnnotations([]);
       saveDrawingPaths([]);
       trackStudyAction('annotations_cleared', resource, { viewMode: viewMode });
     }
   };
-  
+
   // Copy code to clipboard
   const handleCopyCode = async () => {
     try {
       await navigator.clipboard.writeText(getCurrentCode());
       trackStudyAction('code_copy', resource);
       // TODO: Show toast notification
-      console.log('Code copied to clipboard');
     } catch (error) {
       console.error('Failed to copy code:', error);
     }
   };
-  
+
   // Get language for Prism
   const getLanguageForFile = (filename, lang) => {
     if (lang) return lang.replace('.', '');
-    
+
     const ext = filename.split('.').pop()?.toLowerCase();
     const langMap = {
-      'js': 'javascript',
-      'jsx': 'jsx', 
-      'ts': 'typescript',
-      'tsx': 'tsx',
-      'py': 'python',
-      'html': 'markup',
-      'css': 'css',
-      'json': 'json',
-      'md': 'markdown',
-      'sh': 'bash',
-      'yml': 'yaml',
-      'yaml': 'yaml'
+      js: 'javascript',
+      jsx: 'jsx',
+      ts: 'typescript',
+      tsx: 'tsx',
+      py: 'python',
+      html: 'markup',
+      css: 'css',
+      json: 'json',
+      md: 'markdown',
+      sh: 'bash',
+      yml: 'yaml',
+      yaml: 'yaml',
     };
-    
+
     return langMap[ext] || 'javascript';
   };
 
   // Render code with syntax highlighting
   const renderCodeWithSyntaxHighlighting = (content) => {
     const prismLang = getLanguageForFile(resource.name, resource.lang);
-    
+
     return (
       <div className={styles.codeWrapper}>
-        <CodeBlock 
-          language={prismLang} 
+        <CodeBlock
+          language={prismLang}
           className={`${styles.syntaxHighlightedCode} line-numbers`}
         >
           {content}
         </CodeBlock>
-        
+
         {/* Annotation overlay */}
         <div className={styles.annotationOverlay}>
           {content.split('\n').map((line, index) => {
             const lineNumber = index + 1;
-            const lineAnnotations = annotations.filter(ann => 
-              ann.type === 'highlight' && ann.lineNumber === lineNumber
+            const lineAnnotations = annotations.filter(
+              (ann) => ann.type === 'highlight' && ann.lineNumber === lineNumber,
             );
-            
-            const highlightStyle = lineAnnotations.length > 0 ? {
-              backgroundColor: lineAnnotations[0].color + '40', // Add transparency
-              borderLeft: `3px solid ${lineAnnotations[0].color}`
-            } : {};
-            
+
+            const highlightStyle =
+              lineAnnotations.length > 0
+                ? {
+                    backgroundColor: lineAnnotations[0].color + '40', // Add transparency
+                    borderLeft: `3px solid ${lineAnnotations[0].color}`,
+                  }
+                : {};
+
             return (
-              <div 
+              <div
                 key={lineNumber}
                 className={styles.annotationLine}
                 style={highlightStyle}
@@ -509,7 +520,7 @@ const HighlightExercise = ({ resource }) => {
         <div className={styles.flowchartError}>
           <div className={styles.errorIcon}>❌</div>
           <p>{flowchartError}</p>
-          <button 
+          <button
             className={styles.retryButton}
             onClick={() => generateFlowchart(getCurrentCode())}
           >
@@ -530,7 +541,7 @@ const HighlightExercise = ({ resource }) => {
 
     return (
       <div className={styles.flowchartWrapper}>
-        <div 
+        <div
           className={styles.svgContainer}
           ref={svgContainerRef}
           dangerouslySetInnerHTML={{ __html: flowchartSvg }}
@@ -538,7 +549,7 @@ const HighlightExercise = ({ resource }) => {
       </div>
     );
   };
-  
+
   // Annotation tools configuration
   const tools = [
     { id: 'highlight', name: 'Highlight', icon: '🖍️', description: 'Highlight lines' },
@@ -546,18 +557,23 @@ const HighlightExercise = ({ resource }) => {
     { id: 'eraser', name: 'Eraser', icon: '🧽', description: 'Erase drawings' },
     { id: 'note', name: 'Note', icon: '📝', description: 'Add text notes' },
     { id: 'arrow', name: 'Arrow', icon: '➡️', description: 'Draw arrows (coming soon)' },
-    { id: 'circle', name: 'Circle', icon: '⭕', description: 'Circle text (coming soon)' }
+    {
+      id: 'circle',
+      name: 'Circle',
+      icon: '⭕',
+      description: 'Circle text (coming soon)',
+    },
   ];
-  
+
   const colors = [
     { name: 'Yellow', value: '#ffeb3b' },
     { name: 'Green', value: '#4caf50' },
     { name: 'Blue', value: '#2196f3' },
     { name: 'Orange', value: '#ff9800' },
     { name: 'Pink', value: '#e91e63' },
-    { name: 'Purple', value: '#9c27b0' }
+    { name: 'Purple', value: '#9c27b0' },
   ];
-  
+
   return (
     <div className={styles.highlightContainer}>
       {/* Header */}
@@ -568,7 +584,9 @@ const HighlightExercise = ({ resource }) => {
             <button
               className={`${styles.actionButton} ${styles.viewToggleButton}`}
               onClick={toggleViewMode}
-              title={viewMode === 'code' ? 'Switch to flowchart view' : 'Switch to code view'}
+              title={
+                viewMode === 'code' ? 'Switch to flowchart view' : 'Switch to code view'
+              }
             >
               {viewMode === 'code' ? '📊 Code to Flowchart' : '📄 Flowchart to Code'}
             </button>
@@ -579,45 +597,15 @@ const HighlightExercise = ({ resource }) => {
             <span className={styles.annotationCount}>
               {annotations.length} annotations
             </span>
-            <button 
+            <button
               className={styles.askMeButton}
               onClick={async () => {
                 try {
-                  // Load SL1 ask-me modules using script tag approach
-                  if (!window.askOpenEnded) {
-                    console.log('Loading SL1 ask-me library...');
-                    
-                    // Load the script dynamically instead of using import
-                    await new Promise((resolve, reject) => {
-                      const script = document.createElement('script');
-                      script.type = 'module';
-                      script.textContent = `
-                        import { askOpenEnded } from '/static/ask/component/ask-questions.js';
-                        window.askOpenEnded = askOpenEnded;
-                        window.dispatchEvent(new CustomEvent('askMeLoaded'));
-                      `;
-                      script.onload = resolve;
-                      script.onerror = reject;
-                      document.head.appendChild(script);
-                    });
-                    
-                    // Wait for the custom event
-                    await new Promise((resolve) => {
-                      const handler = () => {
-                        window.removeEventListener('askMeLoaded', handler);
-                        resolve();
-                      };
-                      window.addEventListener('askMeLoaded', handler);
-                    });
-                  }
-                  
                   // Use current code
                   const codeToAnalyze = getCurrentCode();
-                  console.log('Analyzing code for questions...');
-                  
+
                   // Generate and log questions using SL1 library
-                  window.askOpenEnded(codeToAnalyze);
-                  
+                  askOpenEnded(codeToAnalyze);
                 } catch (error) {
                   console.error('Error loading SL1 ask-me library:', error);
                   console.log('Fallback: Manual code analysis questions');
@@ -636,17 +624,18 @@ const HighlightExercise = ({ resource }) => {
           </div>
         </div>
       </div>
-      
+
       {/* Annotation Toolbar */}
       <div className={styles.toolbar}>
         <div className={styles.toolGroup}>
           <label className={styles.toolLabel}>Tools:</label>
           <div className={styles.tools}>
-            {tools.map(tool => {
+            {tools.map((tool) => {
               // Disable highlight tool in flowchart mode
-              const isDisabled = (viewMode === 'flowchart' && tool.id === 'highlight') || 
-                                !['highlight', 'pen', 'eraser', 'note'].includes(tool.id);
-              
+              const isDisabled =
+                (viewMode === 'flowchart' && tool.id === 'highlight') ||
+                !['highlight', 'pen', 'eraser', 'note'].includes(tool.id);
+
               return (
                 <button
                   key={tool.id}
@@ -661,11 +650,11 @@ const HighlightExercise = ({ resource }) => {
             })}
           </div>
         </div>
-        
+
         <div className={styles.toolGroup}>
           <label className={styles.toolLabel}>Colors:</label>
           <div className={styles.colors}>
-            {colors.map(color => (
+            {colors.map((color) => (
               <button
                 key={color.value}
                 className={`${styles.colorButton} ${selectedColor === color.value ? styles.active : ''}`}
@@ -676,40 +665,52 @@ const HighlightExercise = ({ resource }) => {
             ))}
           </div>
         </div>
-        
+
         <div className={styles.toolGroup}>
           <button className={styles.actionButton} onClick={handleCopyCode}>
             📋 Copy Code
           </button>
           {annotations.length > 0 && (
-            <button className={`${styles.actionButton} ${styles.clearButton}`} onClick={handleClearAll}>
+            <button
+              className={`${styles.actionButton} ${styles.clearButton}`}
+              onClick={handleClearAll}
+            >
               🗑️ Clear All
             </button>
           )}
         </div>
       </div>
-      
+
       {/* Main content area */}
       <div className={styles.content}>
         {/* Code or Flowchart display with annotations */}
-        <div 
+        <div
           className={`${styles.codeDisplay} ${viewMode === 'flowchart' ? styles.flowchartDisplay : ''}`}
           ref={codeRef}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
           onClick={selectedTool === 'eraser' ? handleErase : undefined}
-          style={{ cursor: selectedTool === 'pen' ? 'crosshair' : selectedTool === 'eraser' ? 'grab' : 'default' }}
+          style={{
+            cursor:
+              selectedTool === 'pen'
+                ? 'crosshair'
+                : selectedTool === 'eraser'
+                  ? 'grab'
+                  : 'default',
+          }}
         >
-          {viewMode === 'code' ? renderCodeWithSyntaxHighlighting(getCurrentCode()) : renderFlowchart()}
-          
+          {viewMode === 'code'
+            ? renderCodeWithSyntaxHighlighting(getCurrentCode())
+            : renderFlowchart()}
+
           {/* Drawing overlay */}
           <svg className={styles.drawingOverlay} ref={overlayRef}>
             {/* Existing drawing paths */}
-            {drawingPaths.map(path => (
+            {drawingPaths.map((path) => (
               <polyline
                 key={path.id}
-                points={path.points.map(p => `${p.x},${p.y}`).join(' ')}
+                points={path.points.map((p) => `${p.x},${p.y}`).join(' ')}
                 stroke={path.color}
                 strokeWidth="2"
                 fill="none"
@@ -717,11 +718,11 @@ const HighlightExercise = ({ resource }) => {
                 strokeLinejoin="round"
               />
             ))}
-            
+
             {/* Current stroke while drawing */}
             {currentStroke.length > 1 && (
               <polyline
-                points={currentStroke.map(p => `${p.x},${p.y}`).join(' ')}
+                points={currentStroke.map((p) => `${p.x},${p.y}`).join(' ')}
                 stroke={selectedColor}
                 strokeWidth="2"
                 fill="none"
@@ -731,24 +732,22 @@ const HighlightExercise = ({ resource }) => {
               />
             )}
           </svg>
-          
+
           {/* Note annotations overlay */}
           <div className={styles.notesOverlay}>
             {annotations
-              .filter(ann => ann.type === 'note')
-              .map(note => (
+              .filter((ann) => ann.type === 'note')
+              .map((note) => (
                 <div
                   key={note.id}
                   className={styles.noteAnnotation}
                   style={{
                     left: `${note.position.x}px`,
                     top: `${note.position.y}px`,
-                    borderColor: note.color
+                    borderColor: note.color,
                   }}
                 >
-                  <div className={styles.noteContent}>
-                    {note.text}
-                  </div>
+                  <div className={styles.noteContent}>{note.text}</div>
                   <button
                     className={styles.deleteNote}
                     onClick={() => handleDeleteAnnotation(note.id)}
@@ -757,18 +756,17 @@ const HighlightExercise = ({ resource }) => {
                     ×
                   </button>
                 </div>
-              ))
-            }
+              ))}
           </div>
         </div>
-        
+
         {/* Note input dialog */}
         {showNoteInput && (
-          <div 
+          <div
             className={styles.noteInput}
             style={{
               left: `${notePosition.x}px`,
-              top: `${notePosition.y}px`
+              top: `${notePosition.y}px`,
             }}
           >
             <textarea
@@ -788,8 +786,8 @@ const HighlightExercise = ({ resource }) => {
               <button className={styles.noteButton} onClick={handleCreateNote}>
                 Save
               </button>
-              <button 
-                className={styles.noteButton} 
+              <button
+                className={styles.noteButton}
                 onClick={() => setShowNoteInput(false)}
               >
                 Cancel
@@ -798,22 +796,21 @@ const HighlightExercise = ({ resource }) => {
           </div>
         )}
       </div>
-      
+
       {/* Embedded Trace functionality */}
-      <EmbeddedTrace 
+      <EmbeddedTrace
         code={getCurrentCode()}
         fileName={resource.name}
-        onTraceData={(data) => {
-          console.log('Highlight lens trace data:', data);
-        }}
+        onTraceData={(data) => undefined}
       />
-      
+
       {/* Instructions */}
       <div className={styles.instructions}>
         <div className={styles.instructionText}>
-          <strong>How to use:</strong> Toggle between code and flowchart view using the "Code to Flowchart" button. 
-          Select annotation tools to highlight code lines, draw, or add notes. 
-          Use different colors to organize your thoughts! All annotations are preserved when switching views.
+          <strong>How to use:</strong> Toggle between code and flowchart view using the
+          "Code to Flowchart" button. Select annotation tools to highlight code lines,
+          draw, or add notes. Use different colors to organize your thoughts! All
+          annotations are preserved when switching views.
         </div>
       </div>
     </div>

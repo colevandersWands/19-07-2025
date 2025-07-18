@@ -1,6 +1,5 @@
 # Quiz
 
-> #todo
 
 ## Program 2
 

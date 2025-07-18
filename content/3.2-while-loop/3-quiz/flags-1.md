@@ -1,6 +1,5 @@
 # Quiz
 
-> #todo
 
 ## Boolean Flag
 

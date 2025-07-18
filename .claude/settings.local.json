@@ -7,7 +7,9 @@
       "Bash(curl:*)",
       "Bash(pkill:*)",
       "Bash(true)",
-      "Bash(yamllint:*)"
+      "Bash(yamllint:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)"
     ],
     "deny": []
   }

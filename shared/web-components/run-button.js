@@ -88,7 +88,6 @@ class RunButton extends HTMLElement {
 
     // Access parent window utilities
     if (window.parent && window.parent.spiralLens) {
-      console.log('🚀 Running code via parent utilities');
       window.parent.spiralLens.runCode(this.resource);
     } else {
       console.error('❌ Spiral Lens utilities not available');

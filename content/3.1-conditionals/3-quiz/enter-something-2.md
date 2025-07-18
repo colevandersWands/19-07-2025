@@ -1,6 +1,5 @@
 # Quiz
 
-> #todo
 
 ## Enter Something 2
 
