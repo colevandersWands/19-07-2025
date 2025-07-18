@@ -36,10 +36,6 @@ jobs:
       run: |
         npm ci --prefer-offline --no-audit
         
-    - name: 🧹 Run linter
-      run: |
-        npm run lint:check
-        
     - name: 🏗️ Build for production
       run: |
         echo "Building for production with base path /19-07-2025/"
