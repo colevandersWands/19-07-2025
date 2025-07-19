@@ -1,18 +1,18 @@
 # Operators
 
-Operators are what you use to process or change the data in your programs.
-Operators take in values, do something, and return a new value. Each operator
-has it's own rules about what it does and how it does it. To understand an
-operator you need to understand these things:
+Operators are what you use to process or change the data in your programs. Operators take
+in values, do something, and return a new value. Each operator has it's own rules about
+what it does and how it does it. To understand an operator you need to understand these
+things:
 
 - **Syntax**: how do you write the operator in your code?
-- **Input(s)**: how many inputs does the operator take? what type are they? what
-  are their values?
+- **Input(s)**: how many inputs does the operator take? what type are they? what are their
+  values?
 - **Output**: What does the operator evaluate to? What type does it return?
 - **Behavior**: How does the operator use it's inputs to create an output?
 
-Here are a few of the operators you will learn about in Welcome to JS, you will
-learn more about operators as you need them:
+Here are a few of the operators you will learn about in Welcome to JS, you will learn more
+about operators as you need them:
 
 <details>
 <summary>🥚 <code>typeof</code> (type of)</summary>
@@ -130,6 +130,232 @@ console.log('-> addition: +');
 
 console.log(5 + 8); // 13
 console.log(3 + 3 + 3); // 9
+```
+
+</details>
+
+<details>
+<summary>🥚 <code>typeof</code></summary>
+
+```js
+'use strict';
+console.log('-- typeof booleans --');
+
+// they both have the type "boolean"
+console.log(typeof true); // 'boolean'
+console.log(typeof false); // 'boolean'
+```
+
+</details>
+<details>
+<summary>🥚 <code>===</code> strict equality</summary>
+
+```js
+'use strict';
+console.log('-- booleans: strict equality --');
+
+// boolean values are only strictly equal to themselves
+console.log(true === true); // true
+console.log(false === false); // true
+
+// they are not equal to each other
+console.log(true === false); // false
+console.log(false === true); // false
+
+// booleans are not equal to any other type
+console.log(true === 'true'); // false
+console.log(false === ''); // false
+console.log(true === 12); // false
+console.log(false === undefined); // false
+
+console.log('-- numbers: strict equality --');
+
+// are two numbers the same?
+console.log(1 === 1.0); // true
+console.log(12 === 12); // true
+console.log(-3.0 === -3); // true
+
+console.log(1 === 1.1); // false
+console.log(-12 === 12); // false
+console.log(0.3 === 3.0); // false
+
+// comparing with any other type will always be false
+console.log(1 === true); // false
+console.log(12 === '12'); // false
+console.log(0 === null); // false
+
+console.log('-- strings: strict equality --');
+
+// two strings are the same thing if they have exactly the same characters
+console.log('' === ''); // true
+console.log('asdf' === 'asdf'); // true
+console.log('12D' === '12D'); // true
+
+// two strings with different characters are not the same string
+console.log('' === ' '); // false
+console.log('asdf' === 'Asdf'); // false
+console.log('cow' === 'horse'); // false
+
+// strings are never the same as different types
+console.log('' === true); // false
+console.log('true' === true); // false
+console.log('12' === 12); // false
+console.log('null' === null); // false
+console.log('hello' === 100); // false
+```
+
+</details>
+<details>
+<summary>🐣 <code>!==</code>  strict inequality</summary>
+
+```js
+'use strict';
+console.log('-- numbers: strict inequality --');
+// this will always be the opposite of strict equality
+
+// are two numbers different?
+console.log(1 !== 1.0); // false
+console.log(12 !== 12); // false
+console.log(-3.0 !== -3); // false
+
+console.log(1 !== 1.1); // true
+console.log(-12 !== 12); // true
+console.log(0.3 !== 3.0); // true
+
+// comparing with any other type will always be true
+console.log(1 !== true); // true
+console.log(12 !== '12'); // true
+console.log(0 !== null); // true
+
+console.log('-- strings: strict inequality --');
+// the opposite of strict equality
+
+// two strings are not unequal if they have exactly the same characters
+console.log('' !== ''); // false
+console.log('asdf' !== 'asdf'); // false
+console.log('12D' !== '12D'); // false
+
+// two strings with different characters are unequal
+console.log('' !== ' '); // true
+console.log('asdf' !== 'Asdf'); // true
+console.log('cow' !== 'horse'); // true
+
+// strings are always unequal to different types
+console.log('' !== true); // true
+console.log('true' !== true); // true
+console.log('12' !== 12); // true
+console.log('null' !== null); // true
+console.log('hello' !== 100); // true
+```
+
+</details>
+<details>
+<summary>🥚  <code>!</code> not</summary>
+
+```js
+'use strict';
+console.log('-- not --');
+
+// you can use ! to reverse true and false
+console.log(!true); // false
+console.log(!false); // true
+```
+
+</details>
+<details>
+<summary>🐣 <code>&&</code> and</summary>
+
+```js
+'use strict';
+console.log('-- and --');
+
+console.log(true && true); // true
+console.log(true && false); // false
+console.log(false && true); // false
+console.log(false && false); // false
+```
+
+</details>
+<details>
+<summary>🐣 <code>||</code> or</summary>
+
+```js
+'use strict';
+console.log('-- or --');
+
+console.log(true || true); // true
+console.log(true || false); // true
+console.log(false || true); // true
+console.log(false || false); // false
+```
+
+</details>
+
+<details>
+<summary>🐣 arithmetic</summary>
+
+```js
+'use strict';
+console.log('-- numbers: arithmetic --');
+
+console.log(' +');
+// adding numbers
+console.log(1 + 1); // 2
+console.log(-1 + 1); // 0
+
+console.log(' -');
+// subtracting numbers
+console.log(3 - 2); // 1
+console.log(2 - 3); // -1
+
+console.log(' *');
+// multiplying numbers
+console.log(3 * 2); // 6
+console.log(3 * 5); // 15
+
+console.log(' /');
+// dividing numbers
+console.log(30 / 2); // 15
+console.log(12 * 3); // 4
+
+console.log(' %');
+// finding the remainder
+console.log(3 % 2); // 1
+console.log(3 % 3); // 0
+```
+
+</details>
+
+<details>
+<summary>🐣  comparisons</summary>
+
+```js
+'use strict';
+console.log('-- relational operators --');
+
+console.log(' >');
+// is the left number bigger than the right one?
+console.log(3 > 22); // false
+console.log(22 > 3); // true
+console.log(1 > 1); // false
+
+console.log(' <');
+// is the left number smaller than the right one?
+console.log(3 < 22); // true
+console.log(22 < 3); // false
+console.log(1 < 1); // false
+
+console.log(' >=');
+// is the left number bigger than OR equal to the right one?
+console.log(3 >= 22); // false
+console.log(22 >= 3); // true
+console.log(1 >= 1); // true
+
+console.log(' <=');
+// is the left number smaller than OR equal to the right one?
+console.log(3 <= 22); // true
+console.log(22 <= 3); // false
+console.log(1 <= 1); // true
 ```
 
 </details>

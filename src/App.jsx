@@ -262,6 +262,13 @@ const AppContent = () => {
       <div className={styles.sidebar}>
         <div className={styles.sidebarHeader}>
           <h1 className={styles.appTitle}>July 19th, 2025</h1>
+          <a
+            className={styles.appSubtitle}
+            href="https://github.com/colevandersWands/19-07-2025"
+            target="_blank"
+          >
+            (github repo)
+          </a>
           {/* <p className={styles.appSubtitle}>Learn code through interactive lenses</p> */}
         </div>
 

@@ -148,6 +148,22 @@ const countFiles = (dir) => {
   return count;
 };
 
+const sortChildrenFoldersFirst = (children) => {
+  if (!children || !Array.isArray(children)) {
+    return children;
+  }
+  
+  const directories = children
+    .filter(child => child.type === 'directory')
+    .sort((a, b) => a.name.localeCompare(b.name));
+  
+  const files = children
+    .filter(child => child.type === 'file')
+    .sort((a, b) => a.name.localeCompare(b.name));
+  
+  return [...directories, ...files];
+};
+
 const addVirtualFSMetadata = (node, root) => {
   // Add root reference
   node.root = root;
@@ -163,8 +179,11 @@ const addVirtualFSMetadata = (node, root) => {
     node.lang = node.ext;
   }
 
-  // Recursively process children
+  // Sort children to show folders before files
   if (node.children) {
+    node.children = sortChildrenFoldersFirst(node.children);
+    
+    // Recursively process children
     for (const child of node.children) {
       addVirtualFSMetadata(child, root);
     }

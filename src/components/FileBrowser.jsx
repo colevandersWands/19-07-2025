@@ -92,6 +92,13 @@ const FileBrowser = () => {
         
         {node.children && isExpanded && node.children
           .filter(child => child.name !== 'lenses.json' && !child.name.startsWith('.')) // Also filter children
+          .sort((a, b) => {
+            // Ensure folders come before files
+            if (a.type !== b.type) {
+              return a.type === 'directory' ? -1 : 1;
+            }
+            return a.name.localeCompare(b.name);
+          })
           .map(child => renderFileTree(child, depth + 1))
         }
       </div>
@@ -111,7 +118,16 @@ const FileBrowser = () => {
       
       <div className={styles.fileTree}>
         {virtualFS.children ? 
-          virtualFS.children.map(child => renderFileTree(child)) :
+          virtualFS.children
+            .filter(child => child.name !== 'lenses.json' && !child.name.startsWith('.'))
+            .sort((a, b) => {
+              // Ensure folders come before files
+              if (a.type !== b.type) {
+                return a.type === 'directory' ? -1 : 1;
+              }
+              return a.name.localeCompare(b.name);
+            })
+            .map(child => renderFileTree(child)) :
           renderFileTree(virtualFS)
         }
       </div>

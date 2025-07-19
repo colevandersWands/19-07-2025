@@ -1,82 +1,39 @@
-# What is Programming?
+# Saturday July 19th, 2025
 
-Programming is communication. It's also a lot of other things, but this
-introduction will focus on the different ways you communicate with your code.
+Today's plan.
 
-When you write code you are really just writing a text document, exactly like
-you might write an email or a note. The biggest difference between an email and
-a computer program is _who you are writing for_.
+## 11-11:15 - _offline_
 
-When you write an email you're writing for the person who will be reading it.
-When you write a computer program you are writing for 3 very different audiences
-at the same time! One single document (your code) needs to be understandable to:
+- Introductions
+- Building in pairs with supermag
 
-- **Developers**: A developer needs to read your code and understand what you
-  were trying to do and why.
-- **Computers**: Your code needs to have _perfect_ syntax so the computer can
-  parse it, and you must write instructions that are allowed by the programming
-  language or the computer will throw an error.
-- **Users**: The instructions you give to the computer must create an intuitive
-  and pleasant experience for the user.
+## 11:15-11:45 - _online_
 
-Being a developer means understanding how all these characters interact, and
-then communicating with everyone involved to deliver quality software within
-your project's constraints. This diagram shows the different channels of
-communication in a software project:
+- Begin by playing [compute-it](http://compute-it.toxicode.fr/) and
+  [little-dot](http://little-dot.toxicode.fr/) in pairs.
+- Ask ourselves; [What is Programming?](#0-what-is-programming/README.md)
+- [Predictive Stepping](#3-variables/predictive-stepping.md): Introduction to variables,
+  memory visualizations, and tracing
 
-![rhetorical situation](./the-big-picture.png)
+## 11:45-12 - _offline_
 
----
+Outdoor break!
 
-## Programming Languages
+## 12-12:45 - _online_
 
-High-level programming languages like JavaScript are a compromise between how
-people think and how a computer works. Programming languages are not always easy
-for people to learn but they're definitely easier than directly telling a
-computer what to do (writing 1's and 0's).
+- Paper code tracing activity -> [user input](#4-prompt-alert-confirm/README.md) &
+  [conditionals](#6-conditionals/README.md)
+- Introduction to [while loops](#7-while-loops/README.md).
 
-Because humans are so much better at learning and understanding than computers
-are (for now), programming languages have been designed to leave all the hard
-work for us. It's our job to make sure our instructions for the computer are
-perfectly structured and do exactly what we want. The computer just _parses_
-(interprets) our code and follows the instructions without any understanding or
-thinking.
+## 12:45-13 - _offline_
 
-You can think of a programming language as the developer's UI for the computer.
-Because this UI isn't very intuitive you will need to spend a lot of time
-studying syntax and other details before you can program with ease. This is why
-you will be focusing on _understanding_ programs before writing them.
+Outdoor break!
 
-[**_Learnable Programming_**](http://worrydream.com/LearnableProgramming/) said
-it best:
+## 13-13:45 - _online_
 
-> - **Programming is a way of thinking, not a rote skill**. Learning about "for"
->   loops is not learning to program, any more than learning about pencils is
->   learning to draw.
-> - **People understand what they can see**. If a programmer cannot see what a
->   program is doing, she can't understand it.
->
-> Thus, the goals of a programming system should be:
->
-> - to support and encourage powerful ways of thinking
-> - to enable programmers to see and understand the execution of their programs
->
-> ...
->
-> _How do we get people to understand programming?_
->
-> We change programming. We turn it into something that's understandable by
-> people.
+- [Review quiz](#8-review-quiz/README.md).
+- Introduction to [`for-of` loops](#9-for-of-loops/README.md) (_if there's time_)
 
-Until the future when computers are designed to understand us, we're stuck with
-programming systems where we do the hard work of understand computers. Hopefully
-Welcome to JS & Study Lenses can make this journey easier.
+## 13:45-14h - _offline_
 
----
-
-## References
-
-- [CodeCademy](https://www.codecademy.com/articles/what-is-programming)
-- [Khan Academy](https://www.khanacademy.org/computing/computer-programming/programming/intro-to-programming/v/programming-intro)
-- [The Coding Train](https://www.youtube.com/watch?v=AImF__7FyzM)
-- [Practical Introduction to JS](https://shawnr.gitbooks.io/practical-introduction-to-javascript/content/what-is-programming/)
+- Cleanup and goodbyes.

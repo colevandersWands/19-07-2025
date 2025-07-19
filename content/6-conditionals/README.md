@@ -83,16 +83,29 @@ alert(response);
 
 ---
 
+## Truthiness
+
+Truthiness is a tricky but _very_ important concept in JavaScript, it has to do with
+whether a value becomes `true` or `false` when you convert it to the `"boolean"` type. You
+do not need to understand everything about truthiness in this module, but understanding
+the basic idea will make logical operators and control flow more clear.
+
+To convert a value to type `"boolean"` you just need to pass it to the `Boolean` function
+that comes built into JS. Maybe the easiest way to begin learning truthiness is to learn
+the _falsy_ values, there are not very many values that convert to `false`. All the rest
+become `true`!
+
+---
+
 ## Execution Paths
 
-Code using conditionals has more than one _execution path_. An execution path is
-the specific lines of code that are executed when you run the program. This
-means that you can no longer just read a program from top to bottom to
-understand how it works, different values in a program can mean that different
-lines will execute!
+Code using conditionals has more than one _execution path_. An execution path is the
+specific lines of code that are executed when you run the program. This means that you can
+no longer just read a program from top to bottom to understand how it works, different
+values in a program can mean that different lines will execute!
 
-Creating trace tables, and using the `trace` or `openIn` buttons will help you
-understand how programs with conditionals behave.
+Creating trace tables, and using the `trace` or `openIn` buttons will help you understand
+how programs with conditionals behave.
 
 <details>
 <summary>🥚 2 paths: if else</summary>
@@ -168,9 +181,9 @@ alert(path);
 
 ## Nested Conditionals
 
-Programs with more execution paths are more complex to understand, but can also
-have a more interesting user experience. One way to write more interesting
-programs is to use _nested conditionals_ (conditionals inside of conditionals)
+Programs with more execution paths are more complex to understand, but can also have a
+more interesting user experience. One way to write more interesting programs is to use
+_nested conditionals_ (conditionals inside of conditionals)
 
 <details>
 <summary>🐣 memory game</summary>
@@ -180,14 +193,11 @@ programs is to use _nested conditionals_ (conditionals inside of conditionals)
 console.log('-- memory game --');
 
 let thingToRemember = prompt(
-  'enter some text, then remember it.\n\n' +
-    'if you remember it correctly you win',
+  'enter some text, then remember it.\n\n' + 'if you remember it correctly you win',
 );
 
 if (thingToRemember !== null) {
-  let displayTheText = confirm(
-    'would you like to see your text one more time?',
-  );
+  let displayTheText = confirm('would you like to see your text one more time?');
   if (displayTheText) {
     alert(thingToRemember);
   }
@@ -210,16 +220,15 @@ alert('good bye');
 
 ## Trace Exercises
 
-There will be two kinds of tracing exercises from now on, **interactive** and
-**not interactive**. Each will help you explore the different _execution paths_
-of a program.
+There will be two kinds of tracing exercises from now on, **interactive** and **not
+interactive**. Each will help you explore the different _execution paths_ of a program.
 
-The **interactive** trace exercises will use `prompt`, `alert` and `confirm` to
-introduce different values into your program.
+The **interactive** trace exercises will use `prompt`, `alert` and `confirm` to introduce
+different values into your program.
 
-The **not interactive** exercises will have a few variable declarations at the
-top of the file with different initial values. You can comment and uncomment the
-variables to see how the program behaves with different values:
+The **not interactive** exercises will have a few variable declarations at the top of the
+file with different initial values. You can comment and uncomment the variables to see how
+the program behaves with different values:
 
 <details>
 <summary>🥚 example not-interactive exercise</summary>

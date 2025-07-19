@@ -38,7 +38,7 @@ jobs:
 
     - name: Scrape Content to JSON
       run: |
-        node create-vir-dir.mjs content content.json
+        node create-vir-dir.mjs content
                 
     - name: 📦 Install dependencies
       run: |

@@ -296,7 +296,7 @@ const BlanksLens = ({ resource }) => {
 
         return result.blankedCode;
       } else {
-        console.warn('Blankenate returned invalid result:', result);
+        // console.warn('Blankenate returned invalid result:', result);
         return code; // Fallback to original
       }
     } catch (error) {

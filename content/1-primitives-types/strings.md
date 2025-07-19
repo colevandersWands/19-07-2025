@@ -1,7 +1,7 @@
 # Strings
 
-A primitive type used for saving and working with text. A string is anything
-wrapped in quotes: `'something'` or `"something"`:
+A primitive type used for saving and working with text. A string is anything wrapped in
+quotes: `'something'` or `"something"`:
 
 ```js
 'use strict';
@@ -22,102 +22,12 @@ console.log("strings can use 'single quotes'");
 console.log('');
 ```
 
-<details>
-<summary>🥚 typeof</summary>
-
-```js
-'use strict';
-console.log('-- typeof strings --');
-
-// strings are anything wrapped in quotations, ' or "
-console.log('hello!'); // 'hello!'
-console.log('you say "hello", i say "good bye"'); // 'you say "hello", i say "good bye"'
-console.log("you say 'hello', i say 'good bye'"); // "you say 'hello', i say 'good bye'"
-
-// this is the empty string. it is a string, but with no characters
-console.log(''); // ''
-
-// you can check if something is a string with typeof
-console.log(typeof ''); // 'string'
-console.log(typeof 'trees'); // 'string'
-console.log(typeof 'apple "the green" fruit'); // 'string'
-```
-
-</details>
-<details>
-<summary>🥚 strict equality</summary>
-
-```js
-'use strict';
-console.log('-- strings: strict equality --');
-
-// two strings are the same thing if they have exactly the same characters
-console.log('' === ''); // true
-console.log('asdf' === 'asdf'); // true
-console.log('12D' === '12D'); // true
-
-// two strings with different characters are not the same string
-console.log('' === ' '); // false
-console.log('asdf' === 'Asdf'); // false
-console.log('cow' === 'horse'); // false
-
-// strings are never the same as different types
-console.log('' === true); // false
-console.log('true' === true); // false
-console.log('12' === 12); // false
-console.log('null' === null); // false
-console.log('hello' === 100); // false
-```
-
-</details>
-<details>
-<summary>🥚 strict unequality</summary>
-
-```js
-'use strict';
-console.log('-- strings: strict inequality --');
-// the opposite of strict equality
-
-// two strings are not unequal if they have exactly the same characters
-console.log('' !== ''); // false
-console.log('asdf' !== 'asdf'); // false
-console.log('12D' !== '12D'); // false
-
-// two strings with different characters are unequal
-console.log('' !== ' '); // true
-console.log('asdf' !== 'Asdf'); // true
-console.log('cow' !== 'horse'); // true
-
-// strings are always unequal to different types
-console.log('' !== true); // true
-console.log('true' !== true); // true
-console.log('12' !== 12); // true
-console.log('null' !== null); // true
-console.log('hello' !== 100); // true
-```
-
-</details>
-<details>
-<summary>🥚 string concatenation</summary>
-
-```js
-'use strict';
-console.log('-- string concatenation --');
-
-// you can combine strings using +
-console.log('abc' + '123'); // 'abc123'
-console.log('a' + 'bc1' + '23'); // 'abc123'
-```
-
-</details>
-
 ---
 
 ## String Methods
 
-_String methods_ come built into JavaScript and are very useful for modifying
-your data. There are many string methods in JS, but you'll only need these for
-Welcome to JS:
+_String methods_ come built into JavaScript and are very useful for modifying your data.
+There are many string methods in JS, but you'll only need these for Welcome to JS:
 
 <details>
 <summary>🥚 .toLowerCase and .toUpperCase</summary>
@@ -185,8 +95,8 @@ console.log('hello  '.trim()); // 'hello'
 
 ## Characters in a String
 
-A string is made up of individual characters. You can find out how many
-characters are in a string, or access each character individually.
+A string is made up of individual characters. You can find out how many characters are in
+a string, or access each character individually.
 
 <details>
 <summary>🥚 .length</summary>

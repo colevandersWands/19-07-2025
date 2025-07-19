@@ -78,7 +78,7 @@ const MarkdownExercise = ({ resource }) => {
 
     // Configure marked options
     marked.setOptions({
-      breaks: true,
+      breaks: false,
       gfm: true,
     });
 

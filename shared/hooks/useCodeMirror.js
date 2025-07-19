@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'preact/hooks';
 import { EditorView, keymap } from '@codemirror/view';
-import { EditorState } from '@codemirror/state';
+import { EditorState, Compartment } from '@codemirror/state';
 import { basicSetup } from 'codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { oneDark } from '@codemirror/theme-one-dark';
@@ -24,6 +24,8 @@ export function useCodeMirror({
 }) {
   const editorRef = useRef(null);
   const viewRef = useRef(null);
+  const languageCompartment = useRef(new Compartment());
+  const themeCompartment = useRef(new Compartment());
   const onChangeRef = useRef(onChange);
   const onSelectionChangeRef = useRef(onSelectionChange);
   const onRunCodeRef = useRef(onRunCode);
@@ -205,37 +207,35 @@ export function useCodeMirror({
         );
       }
 
-      // Add language support and theme conditionally based on colorize setting
-      if (enableSyntaxHighlighting) {
-        // Add language support for syntax highlighting
-        extensions.push(javascript());
+      // Add language and theme extensions using compartments for dynamic reconfiguration
+      const getLanguageExtension = (enabled) => {
+        return enabled ? javascript() : [];
+      };
 
-        // Add dark theme with syntax colors
-        extensions.push(oneDark);
-      } else {
-        // Add minimal theme without syntax highlighting colors
-        // Keep the dark background but without syntax colors
-        extensions.push(
-          EditorView.theme({
-            '&': {
-              color: '#d4d4d4',
-              backgroundColor: '#1e1e1e',
-            },
-            '.cm-content': {
-              color: '#d4d4d4',
-            },
-            '.cm-cursor': {
-              borderLeftColor: '#d4d4d4',
-            },
-            '.cm-selectionBackground': {
-              backgroundColor: '#264f78',
-            },
-            '.cm-focused .cm-selectionBackground': {
-              backgroundColor: '#264f78',
-            },
-          }),
-        );
-      }
+      const getThemeExtension = (enabled) => {
+        return enabled ? oneDark : EditorView.theme({
+          '&': {
+            color: '#d4d4d4',
+            backgroundColor: '#1e1e1e',
+          },
+          '.cm-content': {
+            color: '#d4d4d4',
+          },
+          '.cm-cursor': {
+            borderLeftColor: '#d4d4d4',
+          },
+          '.cm-selectionBackground': {
+            backgroundColor: '#264f78',
+          },
+          '.cm-focused .cm-selectionBackground': {
+            backgroundColor: '#264f78',
+          },
+        });
+      };
+
+      // Add compartmentalized extensions
+      extensions.push(languageCompartment.current.of(getLanguageExtension(enableSyntaxHighlighting)));
+      extensions.push(themeCompartment.current.of(getThemeExtension(enableSyntaxHighlighting)));
 
       // Add readonly extension if needed
       if (readonly) {
@@ -320,10 +320,52 @@ export function useCodeMirror({
   // initialValue should only be used for initial render, not for updates
   // The editor instance is now the single source of truth for content
 
+  // Function to update syntax highlighting dynamically
+  const updateSyntaxHighlighting = (enabled) => {
+    if (viewRef.current) {
+      try {
+        const getLanguageExtension = (enabled) => {
+          return enabled ? javascript() : [];
+        };
+
+        const getThemeExtension = (enabled) => {
+          return enabled ? oneDark : EditorView.theme({
+            '&': {
+              color: '#d4d4d4',
+              backgroundColor: '#1e1e1e',
+            },
+            '.cm-content': {
+              color: '#d4d4d4',
+            },
+            '.cm-cursor': {
+              borderLeftColor: '#d4d4d4',
+            },
+            '.cm-selectionBackground': {
+              backgroundColor: '#264f78',
+            },
+            '.cm-focused .cm-selectionBackground': {
+              backgroundColor: '#264f78',
+            },
+          });
+        };
+
+        viewRef.current.dispatch({
+          effects: [
+            languageCompartment.current.reconfigure(getLanguageExtension(enabled)),
+            themeCompartment.current.reconfigure(getThemeExtension(enabled))
+          ]
+        });
+      } catch (error) {
+        console.error('❌ updateSyntaxHighlighting error:', error);
+      }
+    }
+  };
+
   return {
     editorRef,
     getEditor: () => viewRef.current,
     getEditorElement: () => editorRef.current,
+    updateSyntaxHighlighting,
     getValue: () => {
       const content = viewRef.current?.state.doc.toString() || '';
 

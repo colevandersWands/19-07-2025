@@ -5,8 +5,10 @@ import EmbeddedTrace from '../../shared/components/EmbeddedTrace.jsx';
 import StepThroughModal from '../components/StepThroughModal.jsx';
 import { getCurrentContent as getCurrentContentForAsking } from '../../shared/utils/getCurrentContent.js';
 import { useApp } from '../../shared/context/AppContext.jsx';
+import { useColorize } from '../../shared/context/ColorizeContext.jsx';
 import { setCurrentEditor } from '../utils/editorAdapter.js';
 import { useFileEditor } from '../hooks/useFileEditor.js';
+import { useCodeMirror } from '../../shared/hooks/useCodeMirror.js';
 import styles from './StudyLens.module.css';
 import { askOpenEnded } from '../../public/static/ask/component/ask-questions.js';
 
@@ -22,6 +24,7 @@ const StudyLens = ({ resource }) => {
   const filePath = resource?.path || '';
 
   const { resetFileContent, currentScope, setCurrentScope, virtualFS } = useApp();
+  const { enableColorize } = useColorize();
   const {
     file: getFileEditor,
     debouncedUpdateFileContent,
@@ -29,6 +32,7 @@ const StudyLens = ({ resource }) => {
     getEditorContainer,
     setEditorInstance,
     clearEditorInstance,
+    saveEditorState,
   } = useFileEditor(filePath);
 
   // Get file editor to access latest content
@@ -82,126 +86,54 @@ const StudyLens = ({ resource }) => {
     fileName.toLowerCase().endsWith('.webm') ||
     fileName.toLowerCase().endsWith('.mov');
 
-  // Editor container ref - this will be the mounting point for existing or new editors
-  const editorContainerRef = useRef(null);
-
-  // Track editor setup state to prevent render loops
-  const editorSetupRef = useRef(new Map()); // Map of filePath -> boolean
-
-  // Create or reuse existing editor instance - only run once per file
-  useEffect(() => {
-    if (!editorContainerRef.current) return;
-
-    // Skip if already set up for this file
-    if (editorSetupRef.current.get(filePath)) {
-      return;
-    }
-
-    // Check if file already has an editor instance
-    const existingEditor = getEditorInstance();
-    const existingContainer = getEditorContainer();
-
-    if (existingEditor && existingContainer) {
-      // Clear any existing content from the mount point
-      while (editorContainerRef.current.firstChild) {
-        editorContainerRef.current.removeChild(editorContainerRef.current.firstChild);
-      }
-
-      // Append the existing container to restore the editor
-      editorContainerRef.current.appendChild(existingContainer);
-
-      // Update content if different (get current content dynamically)
-      const currentContent = existingEditor.state.doc.toString();
-      const expectedContent = getCurrentContent;
-      if (currentContent !== expectedContent) {
-        existingEditor.dispatch({
-          changes: {
-            from: 0,
-            to: existingEditor.state.doc.length,
-            insert: expectedContent,
-          },
-        });
-      }
-    } else {
-      // Create new editor instance
-      createNewEditor();
-    }
-
-    // Mark as set up for this file
-    editorSetupRef.current.set(filePath, true);
-
-    // Cleanup - remove container from DOM when component unmounts but preserve for reuse
-    return () => {
-      const container = getEditorContainer();
-      if (container && container.parentNode) {
-        container.parentNode.removeChild(container);
-      }
-      // Clear setup flag when component unmounts
-      editorSetupRef.current.delete(filePath);
-    };
-  }, [filePath]); // Re-run when file changes
-
-  // Function to create a new editor instance
-  const createNewEditor = () => {
-    // Import CodeMirror modules
-    import('@codemirror/view').then(({ EditorView, keymap }) => {
-      import('@codemirror/state').then(({ EditorState }) => {
-        import('codemirror').then(({ basicSetup }) => {
-          import('@codemirror/lang-javascript').then(({ javascript }) => {
-            import('@codemirror/theme-one-dark').then(({ oneDark }) => {
-              // Create a dedicated container for this editor
-              const editorContainer = document.createElement('div');
-              editorContainer.className = 'codemirror-editor-container';
-
-              // Create extensions
-              const extensions = [
-                basicSetup,
-                javascript(),
-                oneDark,
-                EditorView.updateListener.of((update) => {
-                  if (update.docChanged) {
-                    const content = update.state.doc.toString();
-
-                    // Update file content using the new hook
-                    debouncedUpdateFileContent(content);
-                  }
-                }),
-              ];
-
-              // Create editor state with initial content
-              const state = EditorState.create({
-                doc: getCurrentContent,
-                extensions,
-              });
-
-              // Create editor view and append to dedicated container
-              const view = new EditorView({
-                state,
-                parent: editorContainer,
-              });
-
-              // Store editor instance and container in virtual file system
-              setEditorInstance(view, editorContainer);
-
-              // Append the container to the current mount point
-              if (editorContainerRef.current) {
-                editorContainerRef.current.appendChild(editorContainer);
-              }
-            });
-          });
-        });
-      });
+  // CodeMirror hook - minimal version without expensive operations
+  const { editorRef, getEditor, updateSyntaxHighlighting, getValue, setValue } =
+    useCodeMirror({
+      initialValue: getCurrentContentForAsking(resource, getFileEditorForAsking, code), // Use current content like other lenses
+      onChange: undefined, // Remove onChange to stop virtual FS updates
+      enableSyntaxHighlighting: enableColorize, // Enable reactive colorization
+      language: 'javascript',
+      theme: 'dark',
+      readonly: false,
     });
-  };
 
-  // Helper functions for external access
-  const getEditor = useCallback(() => getEditorInstance(), [getEditorInstance]);
-  const getValue = useCallback(() => {
+  // Listen for colorize state changes and update editor
+  useEffect(() => {
+    updateSyntaxHighlighting(enableColorize);
+  }, [enableColorize, updateSyntaxHighlighting]);
+
+  // Track file path changes to update content when switching files only
+  const previousFilePathRef = useRef(filePath);
+  useEffect(() => {
+    if (previousFilePathRef.current !== filePath) {
+      // File changed - update editor content
+      setValue(getCurrentContentForAsking(resource, getFileEditorForAsking, code)); // Use current content like other lenses
+      previousFilePathRef.current = filePath;
+    }
+  }, [filePath, setValue, resource, getFileEditorForAsking, code]);
+
+  // Store editor instance in virtual file system when ready
+  useEffect(() => {
+    const editor = getEditor();
+    if (editor && editorRef.current) {
+      setEditorInstance(editor, editorRef.current);
+    }
+  }, [getEditor, setEditorInstance]);
+
+  // Helper functions for external access (legacy support)
+  const getEditorLegacy = useCallback(() => getEditorInstance(), [getEditorInstance]);
+  const getValueLegacy = useCallback(() => {
+    // Try to get value from useCodeMirror hook first
+    const hookValue = getValue();
+    if (hookValue) return hookValue;
+
+    // Fallback to legacy editor instance
     const editor = getEditorInstance();
     return editor ? editor.state.doc.toString() : '';
-  }, [getEditorInstance]);
+  }, [getEditorInstance, getValue]);
   const getSelection = useCallback(() => {
-    const editor = getEditorInstance();
+    // Try to get selection from useCodeMirror hook first
+    const editor = getEditor();
     if (editor) {
       const selection = editor.state.selection.main;
       return {
@@ -210,28 +142,37 @@ const StudyLens = ({ resource }) => {
         text: editor.state.doc.sliceString(selection.from, selection.to),
       };
     }
+
+    // Fallback to legacy editor instance
+    const legacyEditor = getEditorInstance();
+    if (legacyEditor) {
+      const selection = legacyEditor.state.selection.main;
+      return {
+        from: selection.from,
+        to: selection.to,
+        text: legacyEditor.state.doc.sliceString(selection.from, selection.to),
+      };
+    }
     return null;
-  }, [getEditorInstance]);
+  }, [getEditorInstance, getEditor]);
 
   // Update the global editor adapter for SL1 ask-me component
   useEffect(() => {
-    const editor = getEditorInstance();
+    const editor = getEditor();
     if (editor) {
       setCurrentEditor(editor);
     }
-  }, [getEditorInstance]);
+  }, [getEditor]);
 
   // Component unmount cleanup
   useEffect(() => {
     return () => {
-      // When StudyLens component unmounts, ensure editor container is removed from DOM
-      // but don't destroy the editor instance - it's stored in virtualFS for reuse
-      const container = getEditorContainer();
-      if (container && container.parentNode) {
-        container.parentNode.removeChild(container);
-      }
+      // Save current editor content to virtual FS before unmounting
+      saveEditorState();
+      // useCodeMirror hook handles its own cleanup automatically
+      // Virtual file system editor instance is preserved for reuse
     };
-  }, []);
+  }, [saveEditorState]);
 
   // Initialize scope only once when component mounts
   const scopeInitializedRef = useRef(false);
@@ -264,16 +205,10 @@ const StudyLens = ({ resource }) => {
         newContent = getFileEditor.editorContent || getFileEditor.content || code;
       }
 
-      // Update CodeMirror content
-      const editor = getEditorInstance();
-      if (editor && newContent !== editor.state.doc.toString()) {
-        editor.dispatch({
-          changes: {
-            from: 0,
-            to: editor.state.doc.length,
-            insert: newContent,
-          },
-        });
+      // Update CodeMirror content using hook
+      const currentValue = getValue();
+      if (newContent !== currentValue) {
+        setValue(newContent);
       }
 
       // Update scope for new file only when file actually changes
@@ -314,53 +249,39 @@ const StudyLens = ({ resource }) => {
             const hasEditorContent =
               file?.editorContent && file.editorContent !== file.content;
 
-            if (hasChanges || hasEditorContent) {
-              return (
-                <div className={styles.statusContainer}>
-                  <span className={styles.modified}>● Modified</span>
-                  <button
-                    className={styles.resetButton}
-                    onClick={() => {
-                      // Get the file to find original content
-                      const file = getFileEditor;
-                      const originalContent =
-                        file?.originalContent || file?.content || code;
+            return (
+              <div className={styles.statusContainer}>
+                <button
+                  className={styles.resetButton}
+                  onClick={() => {
+                    // Get the file to find original content
+                    const file = getFileEditor;
+                    const originalContent =
+                      file?.originalContent || file?.content || code;
 
-                      // Reset in AppContext
-                      resetFileContent(resource.path);
+                    // Reset in AppContext
+                    resetFileContent(resource.path);
 
-                      // Update CodeMirror content
-                      const editor = getEditorInstance();
-                      if (editor) {
-                        editor.dispatch({
-                          changes: {
-                            from: 0,
-                            to: editor.state.doc.length,
-                            insert: originalContent,
-                          },
-                        });
-                      }
+                    // Update CodeMirror content using hook
+                    setValue(originalContent);
 
-                      // Update scope if in whole-file mode
-                      if (currentScope.type === 'whole-file') {
-                        setCurrentScope({
-                          type: 'whole-file',
-                          code: originalContent,
-                          text: originalContent,
-                          lines: null,
-                          selection: null,
-                        });
-                      }
-                    }}
-                    title="Reset to original code"
-                  >
-                    Reset
-                  </button>
-                </div>
-              );
-            } else {
-              return <span className={styles.original}>Original</span>;
-            }
+                    // Update scope if in whole-file mode
+                    if (currentScope.type === 'whole-file') {
+                      setCurrentScope({
+                        type: 'whole-file',
+                        code: originalContent,
+                        text: originalContent,
+                        lines: null,
+                        selection: null,
+                      });
+                    }
+                  }}
+                  title="Reset to original code"
+                >
+                  Reset
+                </button>
+              </div>
+            );
           })()}
         </div>
         <button
@@ -474,7 +395,7 @@ const StudyLens = ({ resource }) => {
         ) : (
           /* CodeMirror Editor for non-video files */
           <div className={styles.editorWrapper}>
-            <div ref={editorContainerRef} className={styles.codeEditor} />
+            <div ref={editorRef} className={styles.codeEditor} />
           </div>
         )}
       </div>

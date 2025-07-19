@@ -74,10 +74,9 @@ export async function crawlDirectory(relativePath) {
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const relPathIn = process.argv[2];
-  const relPathOut = process.argv[3];
-  if (!relPathIn || !relPathOut) {
+  if (!relPathIn) {
     console.error(
-      'Usage: node crawl-dir.js <relative-path-input> <relative-path-output>',
+      'Usage: node crawl-dir.js <relative-path-input>',
     );
     process.exit(1);
   }
@@ -86,6 +85,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   // const baseName = basename(absRoot);
   const virDir = await crawlDirectory(absPathIn);
 
-  const absPathOut = resolve(join('public', relPathOut));
+  const absPathOut = resolve(join('public', relPathIn + '.json'));
   await writeFile(absPathOut, JSON.stringify(virDir, null, ''), 'utf-8');
 }

@@ -1,6 +1,6 @@
 # Variable Names: 2
 
-Which two programs have the same computer instructions for the computer?
+Which two programs have the same instructions for the computer?
 
 <table>
 
