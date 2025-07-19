@@ -41,6 +41,7 @@ export default defineConfig({
 
   // Build configuration
   build: {
+    target: 'es2016',
     outDir: 'dist',
     sourcemap: true,
     chunkSizeWarningLimit: 1000,
