@@ -8,7 +8,9 @@ import { config } from '../config.js';
 
 window.addEventListener('DOMContentLoaded', () => {
   class TraceIt extends HTMLElement {
-    questionType = 'openEnded';
+    constructor() {
+      this.questionType = 'openEnded';
+    }
 
     connectedCallback() {
       const shadow = this.attachShadow({ mode: 'open' });
@@ -67,10 +69,7 @@ window.addEventListener('DOMContentLoaded', () => {
           typeof window.config.locals.ask === 'object'
         ) {
           for (const key in ask.config) {
-            if (
-              key === 'levels' &&
-              Array.isArray(window.config.locals.ask.levels)
-            ) {
+            if (key === 'levels' && Array.isArray(window.config.locals.ask.levels)) {
               ask.config.levels = window.config.locals.ask.levels;
             } else if (typeof window.config.locals.ask[key] === 'boolean') {
               ask.config[key].ask = window.config.locals.ask[key];
@@ -167,10 +166,7 @@ window.addEventListener('DOMContentLoaded', () => {
             } else {
               ask.config.levels.splice(indexOfLevel, 1);
             }
-          } else if (
-            ask.config[option] &&
-            typeof ask.config[option].ask === 'boolean'
-          ) {
+          } else if (ask.config[option] && typeof ask.config[option].ask === 'boolean') {
             ask.config[option].ask = !ask.config[option].ask;
           }
 
